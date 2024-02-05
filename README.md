@@ -48,4 +48,5 @@ Repository for FIT VUT ICP project.
 
 ## Rotation:
 #### -> ANTI-Clockwise
+    Internally all the angles are represented in radians.
 -------------------------------------------------------------------------------
