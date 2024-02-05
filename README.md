@@ -9,7 +9,8 @@ Repository for FIT VUT ICP project.
     2. Variable and function names:     snake_case
         f.e. name_of_function (...)
     3. Type and structure names:        PascalCase
-        f.e. StructName {...}
+        f.e. StructName {...},
+        class name
     4. Constant/maker names:            SCREAMING_SNAKE_CASE
         f.e. #define CONST_NAME 1
     5. Pointers names:                  with var's data type
