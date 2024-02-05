@@ -37,6 +37,15 @@ Repository for FIT VUT ICP project.
   https://cpb-us-w2.wpmucdn.com/u.osu.edu/dist/7/11881/files/2018/02/QtCreatorGitTutorial-2ahr2m0.pdf
   ```
   #### 3) Find suitable IDE to code, in my case: VsCode for code editing and Git operations + QT Creator for compiling
+
+## Axis:
+       Y        
+       ^    
+       |
+       |    
+       |    
+    [0, 0] - - - > X
+
+## Rotation:
+#### -> ANTI-Clockwise
 -------------------------------------------------------------------------------
-
-
