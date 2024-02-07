@@ -12,9 +12,16 @@ TARGET = ICP-Project
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += Sources/main.cpp \
+           Sources/mainwindow.cpp \
+           Sources/Obstacle.cpp \
+           Sources/PlayGround.cpp \
+           Sources/Robot.cpp
 
-HEADERS  += mainwindow.h
+HEADERS += Headers/mainwindow.h \
+           Headers/Obstacle.h \
+           Headers/PlayGround.h \
+           Headers/Robot.h \
+           Headers/Consts.h
 
-FORMS    += mainwindow.ui
+FORMS   += Forms\mainwindow.ui
