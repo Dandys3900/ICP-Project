@@ -40,7 +40,7 @@ class PlayGround : public QGraphicsRectItem {
         // Events:
         // -> Handling key press
         void keyPressEvent (QKeyEvent* event);
-        // -> Handling mouse move event
+// -> Handling mouse move event
         void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
         // -> Handling mouse press event
         void mousePressEvent (QGraphicsSceneMouseEvent* event);

@@ -35,8 +35,10 @@ void PlayGround::constructor_actions () {
 
 void PlayGround::set_moved_obj (MoveableObject* object) {
     if (m_moved_obj) {
-        // Unmark current object
-        m_moved_obj->set_marked(false);
+        if (m_moved_obj != object) {
+            // Unmark current object as it differs from newly selected one
+            m_moved_obj->set_marked(false);
+        }
     }
 
     m_moved_obj = object;
@@ -84,16 +86,7 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
 void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
     // There is an object to be moved with
     if (m_moved_obj) {
-        QPointF orig_pos = m_moved_obj->get_pos();
-
-        // Set its position to be same as mouse's
-        m_moved_obj->set_obj_pos(event->pos());
-
-        // Check if still fits to the window
-        if (!mp_scene->sceneRect().contains(m_moved_obj->get_pos())) {
-            // If not, revert to previous pos
-            m_moved_obj->set_obj_pos(orig_pos);
-        }
+        m_moved_obj->mouseMoveEvent(event);
     }
 }
 
@@ -102,9 +95,12 @@ void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
         if (event->button() == Qt::MouseButton::RightButton) {
             // Pressing right mouse key means to reset moving object pos
             m_moved_obj->set_obj_pos(mp_moved_obj_orig_pos);
+            m_moved_obj->set_marked(false);
         }
 
-        if (m_moved_obj->get_pos() != mp_moved_obj_orig_pos) {
+        // Left key pressed outside moving object -> stop moving and unmark
+        if (event->button() == Qt::MouseButton::LeftButton) {
+            m_moved_obj->set_marked(false);
             set_moved_obj(nullptr);
         }
     }

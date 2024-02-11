@@ -33,6 +33,7 @@ class Obstacle : public MoveableObject, public QGraphicsRectItem {
         QPointF get_pos () override;
         void set_obj_pos (QPointF pos) override;
         void set_marked (bool marked) override;
+        void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
 
     protected:
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;

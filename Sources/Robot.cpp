@@ -126,3 +126,16 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
         mp_playground->set_moved_obj(this);
     }
 }
+
+void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
+    QPointF orig_pos = this->get_pos();
+
+    // Set its position to be same as mouse's
+    this->set_obj_pos(event->pos());
+
+    // Check if still fits to the window
+    if (!scene()->sceneRect().contains(this->get_pos())) {
+        // If not, revert to previous pos
+        this->set_obj_pos(orig_pos);
+    }
+}

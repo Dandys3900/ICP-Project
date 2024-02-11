@@ -42,6 +42,7 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
         QPointF get_pos () override;
         void set_obj_pos (QPointF pos) override;
         void set_marked (bool marked) override;
+        void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
 
         QGraphicsPolygonItem* m_arrow;
 
