@@ -7,13 +7,12 @@
 #include <QKeyEvent>
 #include <QtMath>
 #include <QTimer>
-#include <QObject>
 
 #include "Headers/Consts.h"
+#include "Headers/MoveableObject.h"
+#include "Headers/PlayGround.h"
 
-class Robot : public QObject, public QGraphicsEllipseItem {
-    Q_OBJECT
-
+class Robot : public MoveableObject, public QGraphicsEllipseItem {
     private:
         qreal mp_diameter;
         qreal mp_coord_x;
@@ -21,24 +20,33 @@ class Robot : public QObject, public QGraphicsEllipseItem {
 
         size_t mp_rotation;
 
+        QString mp_type;
+
+        class PlayGround* mp_playground;
+
         void do_rotation (const size_t angle);
         void move_forward ();
-
-        void set_new_pos (qreal new_x, qreal new_y);
 
     public:
         Robot (const qreal size,
                const qreal axis_x,
-               const qreal axis_y);
+               const qreal axis_y,
+               PlayGround* playground);
         ~Robot ();
 
+        // Implementations of virtual base class methdos
+        QString get_type () override;
+        MoveableObject* get_object () override;
         // Handling key press
-        void keyPressEvent (const QKeyEvent* event);
+        void keyPressEvent (QKeyEvent* event) override;
+        QPointF get_pos () override;
+        void set_obj_pos (QPointF pos) override;
+        void set_marked (bool marked) override;
 
         QGraphicsPolygonItem* m_arrow;
 
-    public slots:
-        void detect_objects ();
+    protected:
+        void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
 };
 
 #endif // ROBOT_H

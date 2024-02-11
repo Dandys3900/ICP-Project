@@ -13,15 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += Sources/main.cpp \
-           Sources/mainwindow.cpp \
            Sources/Obstacle.cpp \
            Sources/PlayGround.cpp \
            Sources/Robot.cpp
 
-HEADERS += Headers/mainwindow.h \
-           Headers/Obstacle.h \
+HEADERS += Headers/Obstacle.h \
            Headers/PlayGround.h \
            Headers/Robot.h \
+           Headers/MoveableObject.h \
            Headers/Consts.h
 
 FORMS   += Forms\mainwindow.ui

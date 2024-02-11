@@ -1,12 +1,14 @@
 #include "Headers/PlayGround.h"
 
-PlayGround::PlayGround (const qreal width, const qreal height, const qreal axis_x, const qreal axis_y)
-    : mp_width  (width),
-      mp_height (height),
-      mp_coord_x(axis_x),
-      mp_coord_y(axis_y)
+PlayGround::PlayGround (const qreal width, const qreal height, QGraphicsScene* scene)
+    : mp_width              (width),
+      mp_height             (height),
+      mp_objs_vec           (),
+      mp_moved_obj_orig_pos (),
+      mp_scene              (scene),
+      m_moved_obj           (nullptr)
 {
-    this->setRect(mp_coord_x, mp_coord_y, mp_width, mp_height);
+    this->setRect(ZERO_VAL, ZERO_VAL, scene->sceneRect().width(), scene->sceneRect().height());
 
     // Create black pen
     QPen pen(Qt::black);
@@ -27,30 +29,83 @@ void PlayGround::constructor_actions () {
     this->setFlag(QGraphicsItem::ItemIsFocusable);
     this->setFocus();
 
-    // Clean vectors - not neccessary
-    mp_obstacle_vec.clear();
-    mp_robot_vec.clear();
-
     // Add PlayGround to the scene
-    scene()->addItem(this);
+    mp_scene->addItem(this);
 }
 
-void PlayGround::addRobot (Robot* robot) {
-    mp_robot_vec.push_back(robot);
-    // Add robot + its arrow
-    scene()->addItem(robot->m_arrow);
-    scene()->addItem(robot);
+void PlayGround::set_moved_obj (MoveableObject* object) {
+    if (m_moved_obj) {
+        // Unmark current object
+        m_moved_obj->set_marked(false);
+    }
+
+    m_moved_obj = object;
+    mp_moved_obj_orig_pos = QPointF(0, 0);
+
+    if (object) {
+        mp_moved_obj_orig_pos = object->get_pos();
+        object->set_marked(true);
+    }
 }
 
-void PlayGround::addObstacle (Obstacle* obstacle) {
-    mp_obstacle_vec.push_back(obstacle);
+void PlayGround::addObject (MoveableObject* object) {
+    mp_objs_vec.push_back(object);
+
+    if (object->get_type() == QString("Robot")) {
+        // Cast it to the Robot class
+        Robot* robot = dynamic_cast<Robot*>(object);
+        if (robot) {
+            // Add robot + its arrow
+            mp_scene->addItem(robot->m_arrow);
+            mp_scene->addItem(robot);
+        }
+    }
+    else {
+        // Cast it to the Robot class
+        Obstacle* obstacle = dynamic_cast<Obstacle*>(object);
+        if (obstacle) {
+            // Add obstacle
+            mp_scene->addItem(obstacle);
+        }
+    }
 }
 
 void PlayGround::keyPressEvent (QKeyEvent* event) {
-    // Distribute the key press event to all robots in the playground
-    std::vector<Robot*>::iterator iter;
+    std::vector<MoveableObject*>::iterator iter;
 
-    for (iter = mp_robot_vec.begin(); iter < mp_robot_vec.end(); ++iter) {
-        (*iter)->keyPressEvent(event);
+    for (iter = mp_objs_vec.begin(); iter < mp_objs_vec.end(); ++iter) {
+        // Distribute the key press event to all robots in the playground
+        if ((*iter)->get_type() == QString("Robot")) {
+            (*iter)->keyPressEvent(event);
+        }
+    }
+}
+
+void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
+    // There is an object to be moved with
+    if (m_moved_obj) {
+        QPointF orig_pos = m_moved_obj->get_pos();
+
+        // Set its position to be same as mouse's
+        m_moved_obj->set_obj_pos(event->pos());
+
+        // Check if still fits to the window
+        if (!mp_scene->sceneRect().contains(m_moved_obj->get_pos())) {
+            // If not, revert to previous pos
+            m_moved_obj->set_obj_pos(orig_pos);
+        }
+    }
+}
+
+void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
+    if (m_moved_obj) {
+        if (event->button() == Qt::MouseButton::RightButton) {
+            // Pressing right mouse key means to reset moving object pos
+            m_moved_obj->set_obj_pos(mp_moved_obj_orig_pos);
+        }
+
+        if (m_moved_obj->get_pos() != mp_moved_obj_orig_pos) {
+            set_moved_obj(nullptr);
+        }
     }
 }

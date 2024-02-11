@@ -4,7 +4,9 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsItem>
 #include <QKeyEvent>
+#include <QMouseEvent>
 #include <QGraphicsScene>
+#include <QGraphicsView>
 
 #include <vector>
 #include <iterator>
@@ -16,28 +18,36 @@ class PlayGround : public QGraphicsRectItem {
     private:
         qreal mp_width;
         qreal mp_height;
-        qreal mp_coord_x;
-        qreal mp_coord_y;
 
         // Vector for storing instancies of Robots and Obstacles
-        std::vector<Robot*>    mp_robot_vec;
-        std::vector<Obstacle*> mp_obstacle_vec;
+        std::vector<MoveableObject*> mp_objs_vec;
+
+        QPointF mp_moved_obj_orig_pos;
+
+        QGraphicsScene* mp_scene;
 
         void constructor_actions ();
 
     public:
         PlayGround (const qreal width,
                     const qreal height,
-                    const qreal axis_x,
-                    const qreal axis_y);
+                    QGraphicsScene* scene);
         ~PlayGround ();
 
         // Adding objects to the playground
-        void addRobot    (Robot* robot);
-        void addObstacle (Obstacle* obstacle);
+        void addObject (MoveableObject* object);
 
-        // Handling key press
+        // Events:
+        // -> Handling key press
         void keyPressEvent (QKeyEvent* event);
+        // -> Handling mouse move event
+        void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
+        // -> Handling mouse press event
+        void mousePressEvent (QGraphicsSceneMouseEvent* event);
+
+        void set_moved_obj (MoveableObject* object);
+
+        MoveableObject* m_moved_obj;
 };
 
 #endif // PLAYGROUND_H
