@@ -82,11 +82,11 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     switch (event->key()) {
         case Qt::Key_Left:
             // Rotate counter-clockwise
-            do_rotation(-10);
+            do_rotation(-6);
             break;
         case Qt::Key_Right:
             // Rotate clockwise
-            do_rotation(10);
+            do_rotation(6);
             break;
         case Qt::Key_Up:
             // Move forward
@@ -107,7 +107,7 @@ void Robot::do_rotation (const size_t angle) {
 
 void Robot::move_forward () {
     // Covert current rotation (in degrees) to radians [required by qCos and qSin methods]
-    qreal rads = qDegreesToRadians((double)(mp_rotation + 90));
+    qreal rads = qDegreesToRadians((double)(-mp_rotation + 90));
 
     // Calculate changes for both axis and multiply by 10 to make the movement visible
     qreal dx = 10 * qCos(rads);
@@ -128,14 +128,5 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 }
 
 void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    QPointF orig_pos = this->get_pos();
-
-    // Set its position to be same as mouse's
-    this->set_obj_pos(event->pos());
-
-    // Check if still fits to the window
-    if (!scene()->sceneRect().contains(this->get_pos())) {
-        // If not, revert to previous pos
-        this->set_obj_pos(orig_pos);
-    }
+    mp_playground->mouseMoveEvent(event);
 }

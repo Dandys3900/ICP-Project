@@ -84,9 +84,18 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
 }
 
 void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    // There is an object to be moved with
     if (m_moved_obj) {
-        m_moved_obj->mouseMoveEvent(event);
+        // There is an object to be moved with
+        QPointF orig_pos = m_moved_obj->get_pos();
+
+        // Set its position to be same as mouse's
+        m_moved_obj->set_obj_pos(event->pos());
+
+        // Check if still fits to the window
+        if (!mp_scene->sceneRect().contains(m_moved_obj->get_pos())) {
+            // If not, revert to previous pos
+            m_moved_obj->set_obj_pos(orig_pos);
+        }
     }
 }
 

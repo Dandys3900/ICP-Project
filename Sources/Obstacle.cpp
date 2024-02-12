@@ -31,7 +31,13 @@ QPointF Obstacle::get_pos () {
 }
 
 void Obstacle::set_obj_pos (QPointF pos) {
-    this->setPos(pos);
+    if (scene()->sceneRect().contains(pos.x(), pos.y())) {
+        // If new position is inside current scene, update robot coords
+        mp_coord_x = pos.x();
+        mp_coord_y = pos.y();
+
+        this->setRect(mp_coord_x, mp_coord_y, mp_width, mp_height);
+    }
 }
 
 void Obstacle::set_marked (bool marked) {
@@ -55,14 +61,5 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
 }
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    QPointF orig_pos = this->get_pos();
-
-    // Set its position to be same as mouse's
-    this->set_obj_pos(event->pos());
-
-    // Check if still fits to the window
-    if (!scene()->sceneRect().contains(this->get_pos())) {
-        // If not, revert to previous pos
-        this->set_obj_pos(orig_pos);
-    }
+    mp_playground->mouseMoveEvent(event);
 }
