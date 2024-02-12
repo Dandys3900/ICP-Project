@@ -76,8 +76,11 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
     std::vector<MoveableObject*>::iterator iter;
 
     for (iter = mp_objs_vec.begin(); iter < mp_objs_vec.end(); ++iter) {
-        // Distribute the key press event to all robots in the playground
-        if ((*iter)->get_type() == QString("Robot")) {
+        if (m_moved_obj) {
+            m_moved_obj->keyPressEvent(event);
+        }
+        else if ((*iter)->get_type() == QString("Robot")) {
+            // Distribute the key press event to all robots in the playground
             (*iter)->keyPressEvent(event);
         }
     }

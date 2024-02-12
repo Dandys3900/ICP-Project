@@ -5,6 +5,7 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal axis_x, c
       mp_height     (height),
       mp_coord_x    (axis_x),
       mp_coord_y    (axis_y),
+      mp_rotation   (ZERO_VAL),
       mp_type       ("Obstacle"),
       mp_playground (playground)
 {
@@ -12,6 +13,9 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal axis_x, c
 
     // Make Obstacle moveable (able to receive mouse events)
     this->setFlag(QGraphicsItem::ItemIsMovable);
+
+    // Set rotation origin
+    this->setTransformOriginPoint(QPointF(mp_coord_x + (mp_width / 2), mp_coord_y + (mp_height / 2)));
 }
 
 Obstacle::~Obstacle ()
@@ -37,6 +41,9 @@ void Obstacle::set_obj_pos (QPointF pos) {
         mp_coord_y = pos.y();
 
         this->setRect(mp_coord_x, mp_coord_y, mp_width, mp_height);
+
+        // Update rotation origin
+        this->setTransformOriginPoint(QPointF(mp_coord_x + (mp_width / 2), mp_coord_y + (mp_height / 2)));
     }
 }
 
@@ -57,7 +64,24 @@ void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 }
 
 void Obstacle::keyPressEvent (QKeyEvent* event) {
-    // Ignore key presses
+    switch (event->key()) {
+        case Qt::Key_Left:
+            // Rotate counter-clockwise
+            do_rotation(-6);
+            break;
+        case Qt::Key_Right:
+            // Rotate clockwise
+            do_rotation(6);
+            break;
+        default:
+            break;
+    }
+}
+
+void Obstacle::do_rotation (const size_t angle) {
+    mp_rotation += angle;
+    // Rotate obstacle (invoked from PLayground if currently moving object)
+    this->setRotation((mp_rotation % 360));
 }
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
