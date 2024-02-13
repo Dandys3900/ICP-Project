@@ -82,11 +82,11 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     switch (event->key()) {
         case Qt::Key_Left:
             // Rotate counter-clockwise
-            do_rotation(-6);
+            do_rotation(qreal(-6));
             break;
         case Qt::Key_Right:
             // Rotate clockwise
-            do_rotation(6);
+            do_rotation(qreal(6));
             break;
         case Qt::Key_Up:
             // Move forward
@@ -99,10 +99,10 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     }
 }
 
-void Robot::do_rotation (const size_t angle) {
+void Robot::do_rotation (const qreal angle) {
     mp_rotation += angle;
     // Rotation of the arrow
-    m_arrow->setRotation((mp_rotation % 360));
+    m_arrow->setRotation(mp_rotation);
 }
 
 void Robot::move_forward () {

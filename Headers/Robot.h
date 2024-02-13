@@ -18,13 +18,13 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
         qreal mp_coord_x;
         qreal mp_coord_y;
 
-        size_t mp_rotation;
+        qreal mp_rotation;
 
         QString mp_type;
 
         class PlayGround* mp_playground;
 
-        void do_rotation (const size_t angle);
+        void do_rotation (const qreal angle);
         void move_forward ();
 
     public:

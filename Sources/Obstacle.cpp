@@ -67,21 +67,21 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
     switch (event->key()) {
         case Qt::Key_Left:
             // Rotate counter-clockwise
-            do_rotation(-6);
+            do_rotation(qreal(-6));
             break;
         case Qt::Key_Right:
             // Rotate clockwise
-            do_rotation(6);
+            do_rotation(qreal(6));
             break;
         default:
             break;
     }
 }
 
-void Obstacle::do_rotation (const size_t angle) {
+void Obstacle::do_rotation (const qreal angle) {
     mp_rotation += angle;
     // Rotate obstacle (invoked from PLayground if currently moving object)
-    this->setRotation((mp_rotation % 360));
+    this->setRotation(mp_rotation);
 }
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
