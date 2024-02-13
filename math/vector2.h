@@ -16,6 +16,9 @@ public: // methods
     void normalize();
     Vector2 normalized() const;
 
+    void rotate(qreal angle);
+    Vector2 rotated(qreal angle) const;
+
     qreal length() const;
     qreal length_squared() const;
     qreal angle() const;
