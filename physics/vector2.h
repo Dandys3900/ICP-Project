@@ -5,7 +5,7 @@
 #include <QPointF>
 
 
-class Vector2 : QPointF {
+class Vector2 : public QPointF {
 
 public: // methods
     Vector2();
@@ -15,6 +15,9 @@ public: // methods
 
     void normalize();
     Vector2 normalized() const;
+
+    void rotate(qreal angle);
+    Vector2 rotated(qreal angle) const;
 
     qreal length() const;
     qreal length_squared() const;

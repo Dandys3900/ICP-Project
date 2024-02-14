@@ -14,10 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    math/vector2.cpp
+    physics/vector2.cpp \
+    physics/collision_shape.cpp \
 
 HEADERS  += mainwindow.h \
-    math/fancy_math.h \
-    math/vector2.h
-
-FORMS    += mainwindow.ui
+    physics/vector2.h \
+    physics/collision_shape.h \
+FORMS    += mainwindow.ui \
+    physics/world_state.h

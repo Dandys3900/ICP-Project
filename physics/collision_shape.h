@@ -2,40 +2,54 @@
 #define COLLISION_SHAPE_H
 
 
-#include "../math/vector2.h"
+#include "vector2.h"
+
+
+class CollisionCircleShape;
+class CollisionRectangleShape;
 
 
 class CollisionShape {
 public: // methods
-	virtual float udf(const Vector2& point);
-	virtual float sdf(const Vector2& point);
+	virtual bool is_colliding_with_circle(const CollisionCircleShape& circ) const {
+		return false;
+	}
+	virtual bool is_colliding_with_rectangle(const CollisionRectangleShape& rect) const {
+		return false;
+	}
 };
 
 
 class CollisionCircleShape : CollisionShape {
-private: // fields
-	Vector2 origin;
-	float radius;
+public: // fields
+	Vector2 origin; // top-left corner of the circles bounding box (Why, Qt why?)
+	qreal radius;
 
 public: // methods
 	CollisionCircleShape();
-	CollisionCircleShape(const Vector2& origin, float radius);
-	virtual float udf(const Vector2& point);
-	virtual float sdf(const Vector2& point);
+	CollisionCircleShape(const Vector2& origin, qreal radius);
+
+	// virtual ~CollisionCircleShape();
+
+	bool is_colliding_with_circle(const CollisionCircleShape& circ) const override;
+	bool is_colliding_with_rectangle(const CollisionRectangleShape& rect) const override;
 };
 
 
 class CollisionRectangleShape : CollisionShape {
-private: // fields
-	Vector2 origin;
+public: // fields
+	Vector2 origin; // top-left corner
 	Vector2 size;
-	float angle;
+	qreal angle;
 
 public:
 	CollisionRectangleShape();
-	CollisionRectangleShape(const Vector2& origin, const Vector2& size, float angle);
-	virtual float udf(const Vector2& point);
-	virtual float sdf(const Vector2& point);
+	CollisionRectangleShape(const Vector2& origin, const Vector2& size, qreal angle);
+
+	// virtual ~CollisionRectangleShape();
+
+	bool is_colliding_with_circle(const CollisionCircleShape& circ) const override;
+	bool is_colliding_with_rectangle(const CollisionRectangleShape& rect) const override;
 };
 
 

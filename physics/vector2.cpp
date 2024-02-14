@@ -25,6 +25,19 @@ Vector2 Vector2::normalized() const {
 	return v;
 }
 
+void Vector2::rotate(qreal angle) {
+	qreal angle_sin = sin(angle);
+	qreal angle_cos = cos(angle);
+	setX(this->x() * angle_cos - this->y() * angle_sin);
+	setY(this->x() * angle_sin + this->y() * angle_cos);
+}
+
+Vector2 Vector2::rotated(qreal angle) const {
+	Vector2 v = Vector2(*this);
+	v.rotate(angle);
+	return v;
+}
+
 qreal Vector2::length() const {
 	return sqrt(this->x() * this->x() + this->y() * this->y());
 }

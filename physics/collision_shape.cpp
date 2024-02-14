@@ -1,10 +1,8 @@
 #include "collision_shape.h"
 
-#include "../math/fancy_math.h"
-
 
 CollisionCircleShape::CollisionCircleShape() {
-	this->origin = Vector2(0.0f, 0.0f);
+	this->origin = Vector2();
 	this->radius = 0.0f;
 }
 
@@ -14,20 +12,42 @@ CollisionCircleShape::CollisionCircleShape(const Vector2& origin, qreal radius) 
 	this->radius = radius;
 }
 
+// CollisionCircleShape::~CollisionCircleShape() {}
 
-qreal CollisionCircleShape::udf(const Vector2& point) {
-	return maxf(0, point.distance_to(this->origin) - this->radius);
+
+// super advanced patented collision algorithm
+bool CollisionCircleShape::is_colliding_with_circle(const CollisionCircleShape& circ) const {
+	return Vector2(this->origin + QPointF(this->radius, this->radius)).length_to(circ.origin + QPointF(circ.radius, circ.radius)) <= (this->radius + circ.radius);
 }
 
 
-qreal CollisionCircleShape::sdf(const Vector2& point) {
-	return point.distance_to(this->origin) - this->radius;
+bool CollisionCircleShape::is_colliding_with_rectangle(const CollisionRectangleShape& rect) const {
+	// Rotate circles origin into rectangle local coordinates
+	Vector2 local_circle_origin = this->origin.rotated(-rect.angle) - rect.origin.rotated(-rect.angle);
+	// Closest point in the rectangle to the center of circle rotated backwards(unrotated)
+	Vector2 closest_point = Vector2(local_circle_origin);
+	
+	// Find the closest local X coordinate on the rect to the circle origin
+	if (local_circle_origin.x() < rect.origin.x()) {
+		closest_point.setX(rect.origin.x());
+	} else if (local_circle_origin.x() > rect.origin.x() + rect.size.x()) {
+		closest_point.setX(rect.origin.x() + rect.size.x());
+	}
+	// Find the closest local Y coordinate on the rect to the circle origin
+	if (local_circle_origin.y() < rect.origin.y()) {
+		closest_point.setY(rect.origin.y());
+	} else if (local_circle_origin.y() > rect.origin.y() + rect.size.y()) {
+		closest_point.setY(rect.origin.y() + rect.size.y());
+	}
+
+	// Check if the circle center is closer to the closest point than circle radius
+	return local_circle_origin.length_to(closest_point) < this->radius;
 }
 
 
 CollisionRectangleShape::CollisionRectangleShape() {
-	this->origin = Vector2(0.0f, 0.0f);
-	this->size = Vector2(0.0f, 0.0f);
+	this->origin = Vector2();
+	this->size = Vector2();
 	this->angle = 0.0f;
 }
 
@@ -39,25 +59,14 @@ CollisionRectangleShape::CollisionRectangleShape(const Vector2& origin, const Ve
 }
 
 
-qreal CollisionRectangleShape::udf(const Vector2& point) {
-	// translate the point to the rectangle local space
-	Vector2 local_point;// = point.rotated(-angle) - center.rotated(-angle);
-	
-	qreal dx = maxf(abs(local_point.x) - size.x / 2.0f, 0.0f);
-	qreal dy = maxf(abs(local_point.y) - size.y / 2.0f, 0.0f);
-	
-	return Vector2(dx, dy).length();
+// CollisionRectangleShape::~CollisionRectangleShape() {}
+
+
+bool CollisionRectangleShape::is_colliding_with_circle(const CollisionCircleShape& circ) const {
+	return false;
 }
 
 
-qreal CollisionRectangleShape::sdf(const Vector2& point) {
-	// translate the point to the rectangle local space
-	Vector2 local_point;// = point.rotated(-angle) - this->origin.rotated(-angle);
-	
-	qreal dx = abs(local_point.x) - this->size.x / 2.0f;
-	qreal dy = abs(local_point.y) - this->size.y / 2.0f;
-	qreal dx_max = maxf(0, dx);
-	qreal dy_max = maxf(0, dy);
-
-	return minf(maxf(dx, dy), 0.0) + Vector2(dx_max, dy_max).length();
+bool CollisionRectangleShape::is_colliding_with_rectangle(const CollisionRectangleShape& rect) const {
+	return false;
 }
