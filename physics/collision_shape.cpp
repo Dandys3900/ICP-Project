@@ -12,8 +12,6 @@ CollisionCircleShape::CollisionCircleShape(const Vector2& origin, qreal radius) 
 	this->radius = radius;
 }
 
-// CollisionCircleShape::~CollisionCircleShape() {}
-
 
 // super advanced patented collision algorithm
 bool CollisionCircleShape::is_colliding_with_circle(const CollisionCircleShape& circ) const {
@@ -57,9 +55,6 @@ CollisionRectangleShape::CollisionRectangleShape(const Vector2& origin, const Ve
 	this->size = Vector2(size);
 	this->angle = angle;
 }
-
-
-// CollisionRectangleShape::~CollisionRectangleShape() {}
 
 
 bool CollisionRectangleShape::is_colliding_with_circle(const CollisionCircleShape& circ) const {
