@@ -15,12 +15,16 @@ TEMPLATE = app
 SOURCES += Sources/main.cpp \
            Sources/Obstacle.cpp \
            Sources/PlayGround.cpp \
-           Sources/Robot.cpp
+           Sources/Robot.cpp \
+           Sources/mainwindow.cpp \
+           math/vector2.cpp
 
 HEADERS += Headers/Obstacle.h \
            Headers/PlayGround.h \
            Headers/Robot.h \
            Headers/MoveableObject.h \
-           Headers/LibsFile.h
+           Headers/LibsFile.h \
+           Headers/mainwindow.h \
+           math/vector2.h
 
-FORMS   += Forms\mainwindow.ui
+FORMS   += Forms/mainwindow.ui
