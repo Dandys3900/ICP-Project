@@ -20,8 +20,6 @@ class PlayGround : public QGraphicsRectItem {
 
         enum Action mp_cur_action;
 
-        void constructor_actions ();
-
     public:
         PlayGround (const qreal width,
                     const qreal height,

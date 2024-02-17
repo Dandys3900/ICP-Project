@@ -19,20 +19,16 @@ PlayGround::PlayGround (const qreal width, const qreal height, QGraphicsScene* s
     // Add pen to border to make it bolder
     this->setPen(pen);
 
-    constructor_actions();
-}
-
-PlayGround::~PlayGround ()
-{
-}
-
-void PlayGround::constructor_actions () {
     // Make PlayGround focusable
     this->setFlag(QGraphicsItem::ItemIsFocusable);
     this->setFocus();
 
     // Add PlayGround to the scene
     mp_scene->addItem(this);
+}
+
+PlayGround::~PlayGround ()
+{
 }
 
 void PlayGround::set_active_obj (MoveableObject* object, Action action) {
