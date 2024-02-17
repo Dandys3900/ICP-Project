@@ -14,8 +14,8 @@ void Vector2::normalize() {
 	qreal length = this->x() * this->x() + this->y() * this->y();
 	if (length != 0) {
 		length = sqrt(length);
-		this->setX(x() / length);
-		this->setY(y() / length);
+		this->setX(this->x() / length);
+		this->setY(this->y() / length);
 	}
 }
 
@@ -39,7 +39,7 @@ Vector2 Vector2::rotated(qreal angle) const {
 }
 
 qreal Vector2::length() const {
-	return sqrt(this->x() * this->x() + this->y() * this->y());
+	return sqrt(this->length_squared());
 }
 
 qreal Vector2::length_squared() const {
@@ -51,7 +51,7 @@ qreal Vector2::angle() const {
 }
 
 qreal Vector2::length_to(const QPointF& qp) const {
-	return sqrt(length_squared_to(qp));
+	return sqrt(this->length_squared_to(qp));
 }
 
 qreal Vector2::length_squared_to(const QPointF& qp) const {

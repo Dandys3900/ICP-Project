@@ -20,5 +20,10 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     physics/vector2.h \
     physics/collision_shape.h \
-FORMS    += mainwindow.ui \
     physics/world_state.h
+
+HEADERS  += mainwindow.h \
+    math/vector2.h
+
+FORMS    += mainwindow.ui
+
