@@ -13,7 +13,7 @@ Vector2::Vector2(const QPointF& qp) : QPointF(qp) {}
 void Vector2::normalize() {
 	qreal length = this->x() * this->x() + this->y() * this->y();
 	if (length != 0) {
-		length = sqrt(length);
+		length = qSqrt(length);
 		this->setX(this->x() / length);
 		this->setY(this->y() / length);
 	}
@@ -26,8 +26,8 @@ Vector2 Vector2::normalized() const {
 }
 
 void Vector2::rotate(qreal angle) {
-	qreal angle_sin = sin(angle);
-	qreal angle_cos = cos(angle);
+	qreal angle_sin = qSin(angle);
+	qreal angle_cos = qCos(angle);
 	setX(this->x() * angle_cos - this->y() * angle_sin);
 	setY(this->x() * angle_sin + this->y() * angle_cos);
 }
@@ -39,7 +39,7 @@ Vector2 Vector2::rotated(qreal angle) const {
 }
 
 qreal Vector2::length() const {
-	return sqrt(this->length_squared());
+	return qSqrt(this->length_squared());
 }
 
 qreal Vector2::length_squared() const {
@@ -47,11 +47,11 @@ qreal Vector2::length_squared() const {
 }
 
 qreal Vector2::angle() const {
-	return atan2(this->y(), this->x());
+	return qAtan2(this->y(), this->x());
 }
 
 qreal Vector2::length_to(const QPointF& qp) const {
-	return sqrt(this->length_squared_to(qp));
+	return qSqrt(this->length_squared_to(qp));
 }
 
 qreal Vector2::length_squared_to(const QPointF& qp) const {
@@ -59,7 +59,7 @@ qreal Vector2::length_squared_to(const QPointF& qp) const {
 }
 
 qreal Vector2::angle_to(const QPointF& qp) const {
-	return atan2(crossProduct(*this, qp), dotProduct(*this, qp));
+	return qAtan2(crossProduct(*this, qp), dotProduct(*this, qp));
 }
 
 qreal Vector2::crossProduct(const QPointF& qp1, const QPointF& qp2) {
