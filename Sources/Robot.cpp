@@ -7,7 +7,7 @@ Robot::Robot (const qreal size, const qreal axis_x, const qreal axis_y, PlayGrou
       mp_rotation   (ZERO_VAL),
       mp_type       ("Robot"),
       mp_playground (playground),
-      m_arrow       (nullptr)
+      mp_arrow      (nullptr)
 {
     // Set ellipsis properties
     this->setRect(mp_coord_x, mp_coord_y, mp_diameter, mp_diameter);
@@ -30,17 +30,17 @@ Robot::Robot (const qreal size, const qreal axis_x, const qreal axis_y, PlayGrou
     points_arr.append(QPointF(5, 5));
 
     // Create arrow showing current rotation
-    m_arrow = new QGraphicsPolygonItem(QPolygonF(points_arr));
-    m_arrow->setPos(mp_coord_x + (mp_diameter / 2), mp_coord_y + (mp_diameter / 2) - ARROW_SHIFT);
-    m_arrow->setRotation(mp_rotation); // mp_rotation == 0
+    mp_arrow = new QGraphicsPolygonItem(QPolygonF(points_arr));
+    mp_arrow->setPos(mp_coord_x + (mp_diameter / 2), mp_coord_y + (mp_diameter / 2) - ARROW_SHIFT);
+    mp_arrow->setRotation(mp_rotation); // mp_rotation == 0
 
     // Set correct rotation origin
-    m_arrow->setTransformOriginPoint(QPointF(0, ARROW_SHIFT));
+    mp_arrow->setTransformOriginPoint(QPointF(0, ARROW_SHIFT));
 }
 
 Robot::~Robot ()
 {
-    delete m_arrow;
+    delete mp_arrow;
 }
 
 QString Robot::get_type () {
@@ -55,13 +55,17 @@ QPointF Robot::get_pos () {
     return QPointF(mp_coord_x, mp_coord_y);
 }
 
+QGraphicsPolygonItem* Robot::get_robot_arrow () {
+    return mp_arrow;
+}
+
 void Robot::set_marked (bool marked) {
     // Change robot + arrow color when selected or not
     QPen pen((marked) ? Qt::red : Qt::black);
 
     // Apply new color
     this->setPen(pen);
-    this->m_arrow->setPen(pen);
+    this->mp_arrow->setPen(pen);
 }
 
 void Robot::set_obj_pos (const QPointF pos) {
@@ -74,7 +78,7 @@ void Robot::set_obj_pos (const QPointF pos) {
         this->setRect(mp_coord_x, mp_coord_y, mp_diameter, mp_diameter);
 
         // Re-center arrow after robot moved
-        m_arrow->setPos(mp_coord_x + (mp_diameter / 2), mp_coord_y + (mp_diameter / 2) - ARROW_SHIFT);
+        mp_arrow->setPos(mp_coord_x + (mp_diameter / 2), mp_coord_y + (mp_diameter / 2) - ARROW_SHIFT);
     }
 }
 
@@ -114,7 +118,7 @@ void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
 void Robot::do_rotation (const qreal angle) {
     mp_rotation += angle;
     // Rotation of the arrow
-    m_arrow->setRotation(mp_rotation);
+    mp_arrow->setRotation(mp_rotation);
 }
 
 void Robot::move_forward () {

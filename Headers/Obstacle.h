@@ -28,18 +28,18 @@ class Obstacle : public MoveableObject, public QGraphicsRectItem {
                   PlayGround* playground);
         ~Obstacle ();
 
-        // Implementations of virtual base class methdos
+        // Implementations of virtual base class methods
         QString get_type () override;
         void* get_object () override;
-        // Handling key press
-        void keyPressEvent (QKeyEvent* event) override;
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
         void set_marked (bool marked) override;
-        void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
 
     protected:
+        // Events - handling
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
+        void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
+        void keyPressEvent (QKeyEvent* event) override;
 };
 
 #endif // OBSTACLE_H

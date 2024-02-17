@@ -15,6 +15,7 @@ class PlayGround : public QGraphicsRectItem {
         QPointF mp_moved_obj_orig_pos;
 
         QGraphicsScene* mp_scene;
+        MoveableObject* m_moved_obj;
 
         void constructor_actions ();
 
@@ -27,17 +28,12 @@ class PlayGround : public QGraphicsRectItem {
         // Adding objects to the playground
         void addObject (MoveableObject* object);
 
-        // Events:
-        // -> Handling key press
-        void keyPressEvent (QKeyEvent* event);
-// -> Handling mouse move event
-        void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
-        // -> Handling mouse press event
-        void mousePressEvent (QGraphicsSceneMouseEvent* event);
-
         void set_moved_obj (MoveableObject* object);
 
-        MoveableObject* m_moved_obj;
+        // Events - handling
+        void keyPressEvent (QKeyEvent* event) override;
+        void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
+        void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
 };
 
 #endif // PLAYGROUND_H

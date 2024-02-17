@@ -58,7 +58,7 @@ void PlayGround::addObject (MoveableObject* object) {
         Robot* robot = (Robot*)object->get_object();
         if (robot) {
             // Add robot + its arrow
-            mp_scene->addItem(robot->m_arrow);
+            mp_scene->addItem(robot->get_robot_arrow());
             mp_scene->addItem(robot);
         }
     }
