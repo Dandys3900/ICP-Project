@@ -32,6 +32,8 @@ class PlayGround : public QGraphicsRectItem {
 
         // Adding objects to the playground
         void addObject (MoveableObject* object);
+        // Removing objects from the playground
+        void removeObject (MoveableObject* object);
 
         void set_active_obj (MoveableObject* object, Action action);
 

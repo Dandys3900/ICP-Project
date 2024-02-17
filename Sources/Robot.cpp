@@ -4,7 +4,7 @@ Robot::Robot (const qreal size, const qreal axis_x, const qreal axis_y, PlayGrou
     : mp_diameter   (size),
       mp_coord_x    (axis_x),
       mp_coord_y    (axis_y),
-      mp_rotation   (ZERO_VAL),
+      mp_rotation   (0),
       mp_type       ("Robot"),
       mp_pen_colour (Qt::black),
       mp_playground (playground),
@@ -42,6 +42,7 @@ Robot::Robot (const qreal size, const qreal axis_x, const qreal axis_y, PlayGrou
 Robot::~Robot ()
 {
     delete mp_arrow;
+    delete mp_playground;
 }
 
 QString Robot::get_type () {

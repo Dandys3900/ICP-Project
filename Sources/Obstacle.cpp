@@ -5,7 +5,7 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal axis_x, c
       mp_height     (height),
       mp_coord_x    (axis_x),
       mp_coord_y    (axis_y),
-      mp_rotation   (ZERO_VAL),
+      mp_rotation   (0),
       mp_type       ("Obstacle"),
       mp_pen_colour (Qt::black),
       mp_playground (playground)
@@ -21,6 +21,7 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal axis_x, c
 
 Obstacle::~Obstacle ()
 {
+    delete mp_playground;
 }
 
 QString Obstacle::get_type () {
@@ -108,6 +109,21 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
     mp_playground->mouseMoveEvent(event);
+}
+
+void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
+    // Insert new Obstacle
+    if (event->button() == Qt::MouseButton::LeftButton) {
+        // Clone this obstacle and insert it to Playground
+        Obstacle* newObstacle = new Obstacle(mp_width, mp_height, mp_coord_x, mp_coord_y, mp_playground);
+        // Add obstacle to the playground thus to the scene
+        mp_playground->addObject(newObstacle);
+    }
+
+    // Remove Obstacle
+    if (event->button() == Qt::MouseButton::RightButton) {
+        mp_playground->removeObject(this);
+    }
 }
 
 void Obstacle::do_rotation (const qreal angle) {

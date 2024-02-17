@@ -10,7 +10,7 @@ PlayGround::PlayGround (const qreal width, const qreal height, QGraphicsScene* s
       mp_resized_obj           (nullptr),
       mp_cur_action            (NO_ACTION)
 {
-    this->setRect(ZERO_VAL, ZERO_VAL, scene->sceneRect().width(), scene->sceneRect().height());
+    this->setRect(0, 0, scene->sceneRect().width(), scene->sceneRect().height());
 
     // Create black pen
     QPen pen(Qt::black);
@@ -90,12 +90,26 @@ void PlayGround::addObject (MoveableObject* object) {
         }
     }
     else {
-        // Cast it to the Robot class
+        // Cast it to the Obstacle class
         Obstacle* obstacle = (Obstacle*)object->get_object();
         if (obstacle) {
             // Add obstacle
             mp_scene->addItem(obstacle);
         }
+    }
+}
+
+void PlayGround::removeObject (MoveableObject* object) {
+    // Try to find object to be deleted in objects vector
+    std::vector<MoveableObject*>::iterator iter =
+        std::find_if(mp_objs_vec.begin(), mp_objs_vec.end(), [object](MoveableObject* curObj) { return object == curObj; });
+
+    // Found - delete it
+    if (iter != mp_objs_vec.end()) {
+        // Remove from scene
+        mp_scene->removeItem(((Obstacle*)object->get_object()));
+        // Remove from vector
+        mp_objs_vec.erase(iter);
     }
 }
 

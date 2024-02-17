@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     // Create scene
     QGraphicsScene* scene = new QGraphicsScene();
     // Set its initial size
-    scene->setSceneRect(ZERO_VAL, ZERO_VAL, WINDOW_WIDTH, WINDOW_HEIGHT);
+    scene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Create playground
     PlayGround* playground = new PlayGround(WINDOW_WIDTH, WINDOW_HEIGHT, scene);
@@ -27,10 +27,10 @@ int main(int argc, char *argv[])
     // Create obstacle
     Obstacle* obstacle = new Obstacle(50, 20, 10, 15, playground);
 
-    // Add robot to the playground thus to the scene
+    // Add robot to the playground
     playground->addObject(robot);
 
-    // Add obstacle to the playground thus to the scene
+    // Add obstacle to the playground
     playground->addObject(obstacle);
 
     // Create view
