@@ -13,11 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+    mainwindow.cpp \
     math/vector2.cpp
 
 HEADERS  += mainwindow.h \
-    math/fancy_math.h \
     math/vector2.h
 
 FORMS    += mainwindow.ui
