@@ -1,12 +1,14 @@
 #include "Headers/PlayGround.h"
 
 PlayGround::PlayGround (const qreal width, const qreal height, QGraphicsScene* scene)
-    : mp_width              (width),
-      mp_height             (height),
-      mp_objs_vec           (),
-      mp_moved_obj_orig_pos (),
-      mp_scene              (scene),
-      m_moved_obj           (nullptr)
+    : mp_width                 (width),
+      mp_height                (height),
+      mp_objs_vec              (),
+      mp_moved_obj_orig_pos    (),
+      mp_scene                 (scene),
+      mp_moved_obj             (nullptr),
+      mp_resized_obj           (nullptr),
+      mp_cur_action            (NO_ACTION)
 {
     this->setRect(ZERO_VAL, ZERO_VAL, scene->sceneRect().width(), scene->sceneRect().height());
 
@@ -33,20 +35,45 @@ void PlayGround::constructor_actions () {
     mp_scene->addItem(this);
 }
 
-void PlayGround::set_moved_obj (MoveableObject* object) {
-    if (m_moved_obj) {
-        if (m_moved_obj != object) {
+MoveableObject*& PlayGround::get_action_obj (Action action) {
+    if (action == RESIZE_ACTION) {
+        return mp_resized_obj;
+    }
+    return mp_moved_obj;
+}
+
+void PlayGround::set_orig_pos_var (const QPointF pos, Action action) {
+    if (action == MOVE_ACTION) {
+        mp_moved_obj_orig_pos = pos;
+    }
+}
+
+void PlayGround::set_active_obj (MoveableObject* object, Action action) {
+    mp_cur_action = action;
+
+    MoveableObject*& obj = ((mp_cur_action == RESIZE_ACTION) ? mp_moved_obj : mp_resized_obj);
+    if (obj) {
+        // Unmark object of current action when the action changes
+        obj->set_marked(false, mp_cur_action);
+        obj = nullptr;
+    }
+
+    // Get obj for moving or resizing
+    MoveableObject*& action_obj = get_action_obj(mp_cur_action);
+
+    if (action_obj) {
+        if (action_obj != object) {
             // Unmark current object as it differs from newly selected one
-            m_moved_obj->set_marked(false);
+            action_obj->set_marked(false, mp_cur_action);
         }
     }
 
-    m_moved_obj = object;
-    mp_moved_obj_orig_pos = QPointF(0, 0);
+    action_obj = object;
+    set_orig_pos_var(QPointF(0, 0), mp_cur_action);
 
-    if (object) {
-        mp_moved_obj_orig_pos = object->get_pos();
-        object->set_marked(true);
+    if (action_obj) {
+        set_orig_pos_var(action_obj->get_pos(), mp_cur_action);
+        action_obj->set_marked(true, mp_cur_action);
     }
 }
 
@@ -76,10 +103,13 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
     std::vector<MoveableObject*>::iterator iter;
 
     for (iter = mp_objs_vec.begin(); iter < mp_objs_vec.end(); ++iter) {
-        if (m_moved_obj) {
-            m_moved_obj->keyPressEvent(event);
+        // Only moving Obstacle should receive keyPresses to rotate
+        if (mp_moved_obj && mp_moved_obj->get_type() == QString("Obstacle")) {
+            mp_moved_obj->keyPressEvent(event);
         }
-        else if ((*iter)->get_type() == QString("Robot")) {
+
+        // If any object selected for action, Robot should receive keyPresses
+        if ((*iter)->get_type() == QString("Robot") && !mp_resized_obj && !mp_moved_obj) {
             // Distribute the key press event to all robots in the playground
             (*iter)->keyPressEvent(event);
         }
@@ -87,33 +117,43 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
 }
 
 void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    if (m_moved_obj) {
-        // There is an object to be moved with
-        QPointF orig_pos = m_moved_obj->get_pos();
-
+    if (mp_moved_obj) {
         // Set its position to be same as mouse's
-        m_moved_obj->set_obj_pos(event->pos());
+        mp_moved_obj->set_obj_pos(event->pos());
+    }
 
-        // Check if still fits to the window
-        if (!mp_scene->sceneRect().contains(m_moved_obj->get_pos())) {
-            // If not, revert to previous pos
-            m_moved_obj->set_obj_pos(orig_pos);
-        }
+    if (mp_resized_obj) {
+        Obstacle* curObst = (Obstacle*)mp_resized_obj->get_object();
+        QPointF curPos = curObst->get_pos();
+
+        // Calculate change
+        QPointF posChange;
+        posChange.setX(qFabs(event->pos().x() - curPos.x()));
+        posChange.setY(qFabs(event->pos().y() - curPos.y()));
+
+        // Update obstacle size
+        curObst->set_rect(curPos, posChange.x(), posChange.y());
     }
 }
 
 void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    if (m_moved_obj) {
-        if (event->button() == Qt::MouseButton::RightButton) {
+    if (event->button() == Qt::MouseButton::RightButton) {
+        if (mp_moved_obj) {
             // Pressing right mouse key means to reset moving object pos
-            m_moved_obj->set_obj_pos(mp_moved_obj_orig_pos);
-            m_moved_obj->set_marked(false);
+            mp_moved_obj->set_obj_pos(mp_moved_obj_orig_pos);
+            set_active_obj(nullptr, MOVE_ACTION);
         }
 
+        if (mp_resized_obj) {
+            // Stop resizing and unmark
+            set_active_obj(nullptr, RESIZE_ACTION);
+        }
+    }
+
+    if (event->button() == Qt::MouseButton::LeftButton) {
         // Left key pressed outside moving object -> stop moving and unmark
-        if (event->button() == Qt::MouseButton::LeftButton) {
-            m_moved_obj->set_marked(false);
-            set_moved_obj(nullptr);
+        if (mp_moved_obj) {
+            set_active_obj(nullptr, MOVE_ACTION);
         }
     }
 }

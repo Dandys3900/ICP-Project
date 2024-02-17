@@ -28,4 +28,11 @@
 #include <QGraphicsRectItem>
 #include <QMouseEvent>
 
+/***** OTHERS *****/
+enum Action {
+    NO_ACTION = 0,
+    MOVE_ACTION,
+    RESIZE_ACTION
+};
+
 #endif // INCLUDEFILE_H

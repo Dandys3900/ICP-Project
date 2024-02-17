@@ -15,6 +15,8 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
 
         QString mp_type;
 
+        Qt::GlobalColor mp_pen_colour;
+
         class PlayGround* mp_playground;
 
         QGraphicsPolygonItem* mp_arrow;
@@ -34,7 +36,7 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
         void* get_object () override;
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
-        void set_marked (bool marked) override;
+        void set_marked (bool marked, Action action) override;
         QGraphicsPolygonItem* get_robot_arrow ();
 
     protected:

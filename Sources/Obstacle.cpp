@@ -7,6 +7,7 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal axis_x, c
       mp_coord_y    (axis_y),
       mp_rotation   (ZERO_VAL),
       mp_type       ("Obstacle"),
+      mp_pen_colour (Qt::black),
       mp_playground (playground)
 {
     this->setRect(mp_coord_x, mp_coord_y, mp_width, mp_height);
@@ -35,7 +36,7 @@ QPointF Obstacle::get_pos () {
 }
 
 void Obstacle::set_obj_pos (const QPointF pos) {
-    if (scene()->sceneRect().contains(pos.x(), pos.y())) {
+    if (scene()->sceneRect().contains(QRectF(pos.x(), pos.y(), mp_width, mp_height))) {
         // If new position is inside current scene, update robot coords
         mp_coord_x = pos.x();
         mp_coord_y = pos.y();
@@ -47,19 +48,46 @@ void Obstacle::set_obj_pos (const QPointF pos) {
     }
 }
 
-void Obstacle::set_marked (bool marked) {
-    // Change obstacle color when selected or not
-    QPen pen((marked) ? Qt::red : Qt::black);
+void Obstacle::set_marked (bool marked, Action action) {
+    mp_pen_colour = Qt::black;
+    if (marked) {
+        if (action == RESIZE_ACTION)
+            // Marked and resizing
+            mp_pen_colour = Qt::GlobalColor::blue;
+        else
+            // Marked and just selected
+            mp_pen_colour = Qt::GlobalColor::red;
+    }
 
+    QPen pen(mp_pen_colour);
     // Apply new color
     this->setPen(pen);
 }
 
+void Obstacle::set_rect (const QPointF pos, const qreal width, const qreal height) {
+    mp_width  = width;
+    mp_height = height;
+    set_obj_pos(pos);
+}
+
 void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    // Allow using only the left mouse key for placing objects
+    Action action;
+    // Left mouse key for placing objects
     if (event->button() == Qt::MouseButton::LeftButton) {
-        // Mouse click on the Obstacle, notify PlayGround we have an object to move with
-        mp_playground->set_moved_obj(this);
+        action = MOVE_ACTION;
+    }
+    // Right mouse key for resizing obstacle
+    else if (event->button() == Qt::MouseButton::RightButton) {
+        action = RESIZE_ACTION;
+    }
+
+    // Start action
+    if (mp_pen_colour == Qt::black) {
+        mp_playground->set_active_obj(this, action);
+    }
+    else {
+        // Stop action and unmark
+        mp_playground->mousePressEvent(event);
     }
 }
 
@@ -84,6 +112,6 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
 
 void Obstacle::do_rotation (const qreal angle) {
     mp_rotation += angle;
-    // Rotate obstacle (invoked from PLayground if currently moving object)
+    // Rotate obstacle
     this->setRotation(mp_rotation);
 }

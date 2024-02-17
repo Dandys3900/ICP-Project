@@ -6,6 +6,7 @@ Robot::Robot (const qreal size, const qreal axis_x, const qreal axis_y, PlayGrou
       mp_coord_y    (axis_y),
       mp_rotation   (ZERO_VAL),
       mp_type       ("Robot"),
+      mp_pen_colour (Qt::black),
       mp_playground (playground),
       mp_arrow      (nullptr)
 {
@@ -59,17 +60,22 @@ QGraphicsPolygonItem* Robot::get_robot_arrow () {
     return mp_arrow;
 }
 
-void Robot::set_marked (bool marked) {
-    // Change robot + arrow color when selected or not
-    QPen pen((marked) ? Qt::red : Qt::black);
+void Robot::set_marked (bool marked, Action action /*not used*/) {
+    mp_pen_colour = Qt::black;
 
+    // Change robot + arrow color when selected or not
+    if (marked) {
+        mp_pen_colour = Qt::red;
+    }
+
+    QPen pen(mp_pen_colour);
     // Apply new color
     this->setPen(pen);
     this->mp_arrow->setPen(pen);
 }
 
 void Robot::set_obj_pos (const QPointF pos) {
-    if (scene()->sceneRect().contains(pos.x(), pos.y())) {
+    if (scene()->sceneRect().contains(QRectF(pos.x(), pos.y(), mp_diameter, mp_diameter))) {
         // If new position is inside current scene, update robot coords
         mp_coord_x = pos.x();
         mp_coord_y = pos.y();
@@ -104,10 +110,21 @@ void Robot::keyPressEvent (QKeyEvent* event) {
 }
 
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    // Allow using only the left mouse key for placing objects
+    // Mark this object for moving
     if (event->button() == Qt::MouseButton::LeftButton) {
-        // Mouse click on the Robot, notify PlayGround we have an object to move with
-        mp_playground->set_moved_obj(this);
+        // Robot unused, begin moving of it
+        if (mp_pen_colour == Qt::black) {
+            // Mouse click on the Robot, notify PlayGround we have an object to move with
+            mp_playground->set_active_obj(this, MOVE_ACTION);
+        }
+        else {
+            // Robot already used, so stop moving and unmark
+            mp_playground->mousePressEvent(event);
+        }
+    }
+    // Unmark this object from moving
+    if (event->button() == Qt::MouseButton::RightButton) {
+        mp_playground->mousePressEvent(event);
     }
 }
 
@@ -129,8 +146,5 @@ void Robot::move_forward () {
     qreal dx = 10 * qCos(rads);
     qreal dy = 10 * qSin(rads);
 
-    mp_coord_x += dx;
-    mp_coord_y -= dy;
-
-    set_obj_pos(QPointF(mp_coord_x, mp_coord_y));
+    set_obj_pos(QPointF((get_pos().x() + dx), (get_pos().y() - dy)));
 }

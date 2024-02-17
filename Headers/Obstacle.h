@@ -11,10 +11,11 @@ class Obstacle : public MoveableObject, public QGraphicsRectItem {
         qreal mp_height;
         qreal mp_coord_x;
         qreal mp_coord_y;
-
         qreal mp_rotation;
 
         QString mp_type;
+
+        Qt::GlobalColor mp_pen_colour;
 
         class PlayGround* mp_playground;
 
@@ -28,12 +29,14 @@ class Obstacle : public MoveableObject, public QGraphicsRectItem {
                   PlayGround* playground);
         ~Obstacle ();
 
+        void set_rect (const QPointF pos, const qreal width, const qreal height);
+
         // Implementations of virtual base class methods
         QString get_type () override;
         void* get_object () override;
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
-        void set_marked (bool marked) override;
+        void set_marked (bool marked, Action action) override;
 
     protected:
         // Events - handling
