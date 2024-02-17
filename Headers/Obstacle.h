@@ -1,10 +1,9 @@
 #ifndef OBSTACLE_H
 #define OBSTACLE_H
 
-#include <QGraphicsRectItem>
-
-#include "Headers/MoveableObject.h"
-#include "Headers/PlayGround.h"
+#include "LibsFile.h"
+#include "MoveableObject.h"
+#include "PlayGround.h"
 
 class Obstacle : public MoveableObject, public QGraphicsRectItem {
     private:
@@ -31,11 +30,11 @@ class Obstacle : public MoveableObject, public QGraphicsRectItem {
 
         // Implementations of virtual base class methdos
         QString get_type () override;
-        MoveableObject* get_object () override;
+        void* get_object () override;
         // Handling key press
         void keyPressEvent (QKeyEvent* event) override;
         QPointF get_pos () override;
-        void set_obj_pos (QPointF pos) override;
+        void set_obj_pos (const QPointF pos) override;
         void set_marked (bool marked) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
 

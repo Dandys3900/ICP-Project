@@ -21,6 +21,6 @@ HEADERS += Headers/Obstacle.h \
            Headers/PlayGround.h \
            Headers/Robot.h \
            Headers/MoveableObject.h \
-           Headers/Consts.h
+           Headers/LibsFile.h
 
 FORMS   += Forms\mainwindow.ui

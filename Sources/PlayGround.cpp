@@ -55,7 +55,7 @@ void PlayGround::addObject (MoveableObject* object) {
 
     if (object->get_type() == QString("Robot")) {
         // Cast it to the Robot class
-        Robot* robot = dynamic_cast<Robot*>(object);
+        Robot* robot = (Robot*)object->get_object();
         if (robot) {
             // Add robot + its arrow
             mp_scene->addItem(robot->m_arrow);
@@ -64,7 +64,7 @@ void PlayGround::addObject (MoveableObject* object) {
     }
     else {
         // Cast it to the Robot class
-        Obstacle* obstacle = dynamic_cast<Obstacle*>(object);
+        Obstacle* obstacle = (Obstacle*)object->get_object();
         if (obstacle) {
             // Add obstacle
             mp_scene->addItem(obstacle);

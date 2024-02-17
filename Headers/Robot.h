@@ -1,16 +1,9 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include <QGraphicsEllipseItem>
-#include <QGraphicsPolygonItem>
-#include <QGraphicsScene>
-#include <QKeyEvent>
-#include <QtMath>
-#include <QTimer>
-
-#include "Headers/Consts.h"
-#include "Headers/MoveableObject.h"
-#include "Headers/PlayGround.h"
+#include "LibsFile.h"
+#include "MoveableObject.h"
+#include "PlayGround.h"
 
 class Robot : public MoveableObject, public QGraphicsEllipseItem {
     private:
@@ -36,11 +29,11 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
 
         // Implementations of virtual base class methdos
         QString get_type () override;
-        MoveableObject* get_object () override;
+        void* get_object () override;
         // Handling key press
         void keyPressEvent (QKeyEvent* event) override;
         QPointF get_pos () override;
-        void set_obj_pos (QPointF pos) override;
+        void set_obj_pos (const QPointF pos) override;
         void set_marked (bool marked) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
 

@@ -47,7 +47,7 @@ QString Robot::get_type () {
     return mp_type;
 }
 
-MoveableObject* Robot::get_object () {
+void* Robot::get_object () {
     return this;
 }
 
@@ -64,7 +64,7 @@ void Robot::set_marked (bool marked) {
     this->m_arrow->setPen(pen);
 }
 
-void Robot::set_obj_pos (QPointF pos) {
+void Robot::set_obj_pos (const QPointF pos) {
     if (scene()->sceneRect().contains(pos.x(), pos.y())) {
         // If new position is inside current scene, update robot coords
         mp_coord_x = pos.x();
@@ -99,6 +99,18 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     }
 }
 
+void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
+    // Allow using only the left mouse key for placing objects
+    if (event->button() == Qt::MouseButton::LeftButton) {
+        // Mouse click on the Robot, notify PlayGround we have an object to move with
+        mp_playground->set_moved_obj(this);
+    }
+}
+
+void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
+    mp_playground->mouseMoveEvent(event);
+}
+
 void Robot::do_rotation (const qreal angle) {
     mp_rotation += angle;
     // Rotation of the arrow
@@ -117,16 +129,4 @@ void Robot::move_forward () {
     mp_coord_y -= dy;
 
     set_obj_pos(QPointF(mp_coord_x, mp_coord_y));
-}
-
-void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    // Allow using only the left mouse key for placing objects
-    if (event->button() == Qt::MouseButton::LeftButton) {
-        // Mouse click on the Robot, notify PlayGround we have an object to move with
-        mp_playground->set_moved_obj(this);
-    }
-}
-
-void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    mp_playground->mouseMoveEvent(event);
 }

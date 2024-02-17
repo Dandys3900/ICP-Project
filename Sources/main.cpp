@@ -1,10 +1,7 @@
-#include <QApplication>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-
+#include "Headers/LibsFile.h"
+#include "Headers/Robot.h"
 #include "Headers/Obstacle.h"
 #include "Headers/PlayGround.h"
-#include "Headers/Robot.h"
 
 /**
  * @brief Main file for starting the simulator by creating

@@ -1,18 +1,8 @@
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
-#include <QGraphicsRectItem>
-#include <QGraphicsItem>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-
-#include <vector>
-#include <iterator>
-
-#include "Obstacle.h"
 #include "Robot.h"
+#include "Obstacle.h"
 
 class PlayGround : public QGraphicsRectItem {
     private:

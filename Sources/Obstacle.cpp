@@ -26,7 +26,7 @@ QString Obstacle::get_type () {
     return mp_type;
 }
 
-MoveableObject* Obstacle::get_object () {
+void* Obstacle::get_object () {
     return this;
 }
 
@@ -34,7 +34,7 @@ QPointF Obstacle::get_pos () {
     return QPointF(mp_coord_x, mp_coord_y);
 }
 
-void Obstacle::set_obj_pos (QPointF pos) {
+void Obstacle::set_obj_pos (const QPointF pos) {
     if (scene()->sceneRect().contains(pos.x(), pos.y())) {
         // If new position is inside current scene, update robot coords
         mp_coord_x = pos.x();
@@ -78,12 +78,12 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
     }
 }
 
+void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
+    mp_playground->mouseMoveEvent(event);
+}
+
 void Obstacle::do_rotation (const qreal angle) {
     mp_rotation += angle;
     // Rotate obstacle (invoked from PLayground if currently moving object)
     this->setRotation(mp_rotation);
-}
-
-void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    mp_playground->mouseMoveEvent(event);
 }
