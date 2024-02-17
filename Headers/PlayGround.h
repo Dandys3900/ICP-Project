@@ -21,8 +21,6 @@ class PlayGround : public QGraphicsRectItem {
         enum Action mp_cur_action;
 
         void constructor_actions ();
-        MoveableObject*& get_action_obj (Action action);
-        void set_orig_pos_var (const QPointF pos, Action action);
 
     public:
         PlayGround (const qreal width,

@@ -96,11 +96,11 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
     switch (event->key()) {
         case Qt::Key_Left:
             // Rotate counter-clockwise
-            do_rotation(qreal(-6));
+            do_rotation(qreal(-5));
             break;
         case Qt::Key_Right:
             // Rotate clockwise
-            do_rotation(qreal(6));
+            do_rotation(qreal(5));
             break;
         default:
             break;

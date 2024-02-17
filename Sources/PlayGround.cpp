@@ -35,19 +35,6 @@ void PlayGround::constructor_actions () {
     mp_scene->addItem(this);
 }
 
-MoveableObject*& PlayGround::get_action_obj (Action action) {
-    if (action == RESIZE_ACTION) {
-        return mp_resized_obj;
-    }
-    return mp_moved_obj;
-}
-
-void PlayGround::set_orig_pos_var (const QPointF pos, Action action) {
-    if (action == MOVE_ACTION) {
-        mp_moved_obj_orig_pos = pos;
-    }
-}
-
 void PlayGround::set_active_obj (MoveableObject* object, Action action) {
     mp_cur_action = action;
 
@@ -59,7 +46,7 @@ void PlayGround::set_active_obj (MoveableObject* object, Action action) {
     }
 
     // Get obj for moving or resizing
-    MoveableObject*& action_obj = get_action_obj(mp_cur_action);
+    MoveableObject*& action_obj = ((mp_cur_action == RESIZE_ACTION) ? mp_resized_obj : mp_moved_obj);
 
     if (action_obj) {
         if (action_obj != object) {
@@ -69,10 +56,13 @@ void PlayGround::set_active_obj (MoveableObject* object, Action action) {
     }
 
     action_obj = object;
-    set_orig_pos_var(QPointF(0, 0), mp_cur_action);
+    mp_moved_obj_orig_pos = QPointF(0, 0);
 
     if (action_obj) {
-        set_orig_pos_var(action_obj->get_pos(), mp_cur_action);
+        if (action == MOVE_ACTION) {
+            mp_moved_obj_orig_pos = action_obj->get_pos();
+        }
+
         action_obj->set_marked(true, mp_cur_action);
     }
 }
@@ -122,7 +112,7 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
             mp_moved_obj->keyPressEvent(event);
         }
 
-        // If any object selected for action, Robot should receive keyPresses
+        // If none object selected for action, Robot should receive keyPresses
         if ((*iter)->get_type() == QString("Robot") && !mp_resized_obj && !mp_moved_obj) {
             // Distribute the key press event to all robots in the playground
             (*iter)->keyPressEvent(event);
