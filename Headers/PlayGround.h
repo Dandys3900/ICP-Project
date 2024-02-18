@@ -33,6 +33,8 @@ class PlayGround : public QGraphicsRectItem {
 
         void set_active_obj (MoveableObject* object, Action action);
 
+        std::vector<MoveableObject*>& get_objs_vec ();
+
         // Events - handling
         void keyPressEvent (QKeyEvent* event) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;

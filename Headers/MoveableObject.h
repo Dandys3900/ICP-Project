@@ -16,6 +16,8 @@ class MoveableObject {
         virtual void mousePressEvent (QGraphicsSceneMouseEvent* event) = 0;
         virtual void keyPressEvent (QKeyEvent* event) = 0;
         virtual void mouseMoveEvent (QGraphicsSceneMouseEvent *event) = 0;
+
+        virtual QString exportObjData () = 0;
 };
 
 #endif // MOVEABLEOBJECT_H

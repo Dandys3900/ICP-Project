@@ -31,6 +31,10 @@ PlayGround::~PlayGround ()
 {
 }
 
+std::vector<MoveableObject*>& PlayGround::get_objs_vec () {
+    return mp_objs_vec;
+}
+
 void PlayGround::set_active_obj (MoveableObject* object, Action action) {
     mp_cur_action = action;
 

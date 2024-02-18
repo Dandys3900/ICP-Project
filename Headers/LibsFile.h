@@ -7,6 +7,8 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define BORDER_WIDTH 10
+#define RAND_MAX 10000
+#define CONF_FILE "config_file.conf"
 
 /***** LIBS *****/
 #include <QApplication>
@@ -25,6 +27,9 @@
 #include <iterator>
 #include <QGraphicsRectItem>
 #include <QMouseEvent>
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
 
 /***** OTHERS *****/
 enum Action {

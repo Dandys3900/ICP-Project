@@ -8,7 +8,8 @@ Robot::Robot (const qreal size, const qreal axis_x, const qreal axis_y, PlayGrou
       mp_type       ("Robot"),
       mp_pen_colour (Qt::black),
       mp_playground (playground),
-      mp_arrow      (nullptr)
+      mp_arrow      (nullptr),
+      mp_id         (ConfigManager::generate_id())
 {
     // Set ellipsis properties
     this->setRect(mp_coord_x, mp_coord_y, mp_diameter, mp_diameter);
@@ -148,4 +149,19 @@ void Robot::move_forward () {
     qreal dy = 10 * qSin(rads);
 
     set_obj_pos(QPointF((get_pos().x() + dx), (get_pos().y() - dy)));
+}
+
+QString Robot::exportObjData () {
+    QString objData = "<class>\n";
+    objData += "<type>"     + mp_type                        + "</type>\n";
+    objData += "<id>"       + QString::number(mp_id)         + "</id>\n";
+    objData += "<height>"   + QString::number(mp_diameter)   + "</height>\n";
+    objData += "<width>"    + QString::number(mp_diameter)   + "</width>\n";
+    objData += "<coordx>"   + QString::number(mp_coord_x)    + "</coordx>\n";
+    objData += "<coordy>"   + QString::number(mp_coord_y)    + "</coordy>\n";
+    objData += "<rotation>" + QString::number(mp_rotation)   + "</rotation>\n";
+    objData += "<color>"    + QString::number(mp_pen_colour) + "</color>\n";
+    objData += "</class>\n";
+
+    return objData;
 }

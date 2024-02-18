@@ -8,7 +8,8 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal axis_x, c
       mp_rotation   (0),
       mp_type       ("Obstacle"),
       mp_pen_colour (Qt::black),
-      mp_playground (playground)
+      mp_playground (playground),
+      mp_id         (ConfigManager::generate_id())
 {
     this->setRect(mp_coord_x, mp_coord_y, mp_width, mp_height);
 
@@ -130,4 +131,19 @@ void Obstacle::do_rotation (const qreal angle) {
     mp_rotation += angle;
     // Rotate obstacle
     this->setRotation(mp_rotation);
+}
+
+QString Obstacle::exportObjData () {
+    QString objData = "<class>\n";
+    objData += "<type>"     + mp_type                        + "</type>\n";
+    objData += "<id>"       + QString::number(mp_id)         + "</id>\n";
+    objData += "<height>"   + QString::number(mp_height)     + "</height>\n";
+    objData += "<width>"    + QString::number(mp_width)      + "</width>\n";
+    objData += "<coordx>"   + QString::number(mp_coord_x)    + "</coordx>\n";
+    objData += "<coordy>"   + QString::number(mp_coord_y)    + "</coordy>\n";
+    objData += "<rotation>" + QString::number(mp_rotation)   + "</rotation>\n";
+    objData += "<color>"    + QString::number(mp_pen_colour) + "</color>\n";
+    objData += "</class>\n";
+
+    return objData;
 }

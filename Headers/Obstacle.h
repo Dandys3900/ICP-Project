@@ -4,6 +4,7 @@
 #include "LibsFile.h"
 #include "MoveableObject.h"
 #include "PlayGround.h"
+#include "ConfigManager.h"
 
 class Obstacle : public MoveableObject, public QGraphicsRectItem {
     private:
@@ -18,6 +19,8 @@ class Obstacle : public MoveableObject, public QGraphicsRectItem {
         Qt::GlobalColor mp_pen_colour;
 
         class PlayGround* mp_playground;
+
+        const size_t mp_id;
 
         void do_rotation (const qreal angle);
 
@@ -37,6 +40,7 @@ class Obstacle : public MoveableObject, public QGraphicsRectItem {
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
         void set_marked (bool marked, Action action) override;
+        QString exportObjData () override;
 
     protected:
         // Events - handling

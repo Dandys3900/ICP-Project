@@ -4,6 +4,7 @@
 #include "LibsFile.h"
 #include "MoveableObject.h"
 #include "PlayGround.h"
+#include "ConfigManager.h"
 
 class Robot : public MoveableObject, public QGraphicsEllipseItem {
     private:
@@ -21,6 +22,8 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
 
         QGraphicsPolygonItem* mp_arrow;
 
+        const size_t mp_id;
+
         void do_rotation (const qreal angle);
         void move_forward ();
 
@@ -37,6 +40,8 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
         void set_marked (bool marked, Action action) override;
+        QString exportObjData () override;
+
         QGraphicsPolygonItem* get_robot_arrow ();
 
     protected:
