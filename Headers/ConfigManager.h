@@ -18,8 +18,8 @@ class ConfigManager {
         static void load_config ();
 
     private:
-        void insert_item (TItem item);
-        void read_item ();
+        static void read_obj (const std::string obj);
+        static std::string do_regex_search (const std::regex rule, const std::string fileLine);
         static size_t get_rand_num ();
 };
 

@@ -11,6 +11,7 @@
 #define CONF_FILE "config_file.conf"
 
 /***** LIBS *****/
+// QT Libs
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -23,13 +24,18 @@
 #include <QGraphicsPolygonItem>
 #include <QtMath>
 #include <QTimer>
-#include <vector>
-#include <iterator>
 #include <QGraphicsRectItem>
 #include <QMouseEvent>
+
+// C++ Libs
+#include <vector>
+#include <iterator>
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <filesystem>
+#include <regex>
+#include <map>
 
 /***** OTHERS *****/
 enum Action {
