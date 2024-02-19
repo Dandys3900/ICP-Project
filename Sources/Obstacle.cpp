@@ -7,7 +7,7 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, 
       mp_type       ("Obstacle"),
       mp_obj_action (NO_ACTION),
       mp_playground (playground),
-      mp_has_focus  (false)
+      mp_is_active  (false)
 {
     this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
@@ -48,12 +48,12 @@ void Obstacle::set_obj_pos (const QPointF pos) {
     }
 }
 
-void Obstacle::set_focus (bool focus, Action action) {
+void Obstacle::set_active (bool active, Action action) {
     Qt::GlobalColor color = Qt::black;
     mp_obj_action         = action;
-    mp_has_focus          = focus;
+    mp_is_active          = active;
 
-    if (focus) {
+    if (active) {
         if (action == RESIZE_ACTION)
             // Focused and resizing -> blue
             color = Qt::blue;
@@ -69,7 +69,7 @@ void Obstacle::set_focus (bool focus, Action action) {
 
 void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
-        if (!mp_has_focus) {
+        if (!mp_is_active) {
             // Notify PlayGround and get focus
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
@@ -80,7 +80,7 @@ void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     }
 
     if (event->button() == Qt::MouseButton::RightButton) {
-        if (!mp_has_focus) {
+        if (!mp_is_active) {
             // Notify PlayGround and get focus
             mp_playground->set_active_obj(this, RESIZE_ACTION);
         }
@@ -109,7 +109,7 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
     // React to mouse move only if focused
-    if (mp_has_focus) {
+    if (mp_is_active) {
         if (mp_obj_action == RESIZE_ACTION) {
             // Resize current obstacle
             // Calculate change
@@ -121,8 +121,8 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
             this->mp_size.setX(posChange.x());
             this->mp_size.setY(posChange.y());
 
-            // redraw rectangle
-            this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
+            // Update rectangle and rotation origin
+            this->set_obj_pos(mp_coords);
         }
         else { // MOVE_ACTION
             this->set_obj_pos(event->pos());

@@ -8,7 +8,7 @@ Robot::Robot (const qreal size, const qreal coords_x, const qreal coords_y, Play
       mp_obj_action (NO_ACTION),
       mp_playground (playground),
       mp_arrow      (nullptr),
-      mp_has_focus  (false)
+      mp_is_active  (false)
 {
     // Set ellipsis properties
     this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
@@ -61,12 +61,12 @@ QGraphicsPolygonItem* Robot::get_robot_arrow () {
     return mp_arrow;
 }
 
-void Robot::set_focus (bool focus, Action action) {
+void Robot::set_active (bool active, Action action) {
     Qt::GlobalColor color = Qt::black;
-    mp_has_focus          = focus;
+    mp_is_active          = active;
     mp_obj_action         = action;
 
-    if (focus) {
+    if (active) {
         if (action == MOVE_ACTION)
             // Focused and moving -> red
             color = Qt::red;
@@ -115,7 +115,7 @@ void Robot::keyPressEvent (QKeyEvent* event) {
 
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
-        if (!mp_has_focus) {
+        if (!mp_is_active) {
             // Notify PlayGround and get focus
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
@@ -126,7 +126,7 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     }
 
     if (event->button() == Qt::MouseButton::RightButton) {
-        if (mp_has_focus) {
+        if (mp_is_active) {
             // Lose focus and return to previous pos
             this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
             mp_playground->disable_focus();
@@ -136,7 +136,7 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 
 void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
     // Move robot, if focused
-    if (mp_has_focus) {
+    if (mp_is_active) {
         this->set_obj_pos(event->pos());
     }
 }

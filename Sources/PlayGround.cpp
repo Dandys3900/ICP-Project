@@ -43,7 +43,7 @@ void PlayGround::disable_focus () {
 
     // Active item change, lose focus on current active
     if (mp_active_obj) {
-        mp_active_obj->set_focus(false, NO_ACTION);
+        mp_active_obj->set_active(false, NO_ACTION);
         mp_active_obj = nullptr;
     }
 }
@@ -59,7 +59,7 @@ void PlayGround::set_active_obj (SceneObject* object, Action action) {
 
     if (mp_active_obj) {
         mp_active_obj_orig_pos = mp_active_obj->get_pos();
-        mp_active_obj->set_focus(true, mp_cur_action);
+        mp_active_obj->set_active(true, mp_cur_action);
     }
 }
 
@@ -103,6 +103,11 @@ void PlayGround::remove_scene_obj (SceneObject* object) {
         }
         // Remove from vector as well
         mp_scene_objs_vec.erase(iter);
+
+        // In case deleted object is active
+        if (object == mp_active_obj) {
+            mp_active_obj = nullptr;
+        }
     }
 }
 

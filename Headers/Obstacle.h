@@ -20,7 +20,7 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
 
         class PlayGround* mp_playground;
 
-        bool mp_has_focus;
+        bool mp_is_active;
 
         void do_rotation (const qreal angle);
 
@@ -41,7 +41,7 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         QString get_type () override;
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
-        void set_focus (bool focus, Action action) override;
+        void set_active (bool active, Action action) override;
 
     protected:
         // Events - handling

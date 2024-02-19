@@ -19,7 +19,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         class PlayGround*           mp_playground;
         class QGraphicsPolygonItem* mp_arrow;
 
-        bool mp_has_focus;
+        bool mp_is_active;
 
         void do_rotation (const qreal angle);
         void move_forward ();
@@ -40,7 +40,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         QString get_type () override;
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
-        void set_focus (bool focus, Action action) override;
+        void set_active (bool active, Action action) override;
         QGraphicsPolygonItem* get_robot_arrow ();
 
     protected:
