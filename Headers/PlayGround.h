@@ -11,13 +11,12 @@ class PlayGround : public QGraphicsRectItem {
         Vector2 mp_size;
 
         // Vector for storing instancies of Robots and Obstacles
-        std::vector<MoveableObject*> mp_objs_vec;
+        std::vector<SceneObject*> mp_scene_objs_vec;
 
-        QPointF mp_moved_obj_orig_pos;
+        QPointF mp_active_obj_orig_pos;
 
-        QGraphicsScene*       mp_scene;
-        class MoveableObject* mp_moved_obj;
-        class MoveableObject* mp_resized_obj;
+        class QGraphicsScene* mp_scene;
+        class SceneObject*    mp_active_obj;
 
         enum Action mp_cur_action;
 
@@ -32,11 +31,15 @@ class PlayGround : public QGraphicsRectItem {
         ~PlayGround ();
 
         // Adding objects to the playground
-        void addObject (MoveableObject* object);
+        void add_scene_obj (SceneObject* object);
         // Removing objects from the playground
-        void removeObject (MoveableObject* object);
+        void remove_scene_obj (SceneObject* object);
+        // Set scene object as currently active
+        void set_active_obj (SceneObject* object, Action action);
+        // Active object will lose focus
+        void disable_focus ();
 
-        void set_active_obj (MoveableObject* object, Action action);
+        QPointF get_active_obj_orig_pos ();
 
         // Events - handling
         void keyPressEvent (QKeyEvent* event) override;

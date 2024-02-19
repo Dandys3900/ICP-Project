@@ -29,10 +29,10 @@ int main(int argc, char *argv[])
     Obstacle* obstacle = new Obstacle(50, 20, 10, 15, playground);
 
     // Add robot to the playground
-    playground->addObject(robot);
+    playground->add_scene_obj(robot);
 
     // Add obstacle to the playground
-    playground->addObject(obstacle);
+    playground->add_scene_obj(obstacle);
 
     // Create view
     QGraphicsView* view = new QGraphicsView();

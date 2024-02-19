@@ -2,10 +2,10 @@
 #define ROBOT_H
 
 #include "LibsFile.h"
-#include "MoveableObject.h"
+#include "SceneObject.h"
 #include "PlayGround.h"
 
-class Robot : public MoveableObject, public QGraphicsEllipseItem {
+class Robot : public SceneObject, public QGraphicsEllipseItem {
     private:
         Vector2 mp_coords;
 
@@ -14,11 +14,12 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
 
         QString mp_type;
 
-        Qt::GlobalColor mp_pen_colour;
+        Action mp_obj_action;
 
-        class PlayGround* mp_playground;
+        class PlayGround*           mp_playground;
+        class QGraphicsPolygonItem* mp_arrow;
 
-        QGraphicsPolygonItem* mp_arrow;
+        bool mp_has_focus;
 
         void do_rotation (const qreal angle);
         void move_forward ();
@@ -39,7 +40,7 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
         QString get_type () override;
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
-        void set_marked (bool marked, Action action) override;
+        void set_focus (bool focus, Action action) override;
         QGraphicsPolygonItem* get_robot_arrow ();
 
     protected:

@@ -1,13 +1,12 @@
 #include "Headers/PlayGround.h"
 
 PlayGround::PlayGround (const qreal width, const qreal height, QGraphicsScene* scene)
-    : mp_size               (width, height),
-      mp_objs_vec           (),
-      mp_moved_obj_orig_pos (),
-      mp_scene              (scene),
-      mp_moved_obj          (nullptr),
-      mp_resized_obj        (nullptr),
-      mp_cur_action         (NO_ACTION)
+    : mp_size                (width, height),
+      mp_scene_objs_vec      (),
+      mp_active_obj_orig_pos (),
+      mp_scene               (scene),
+      mp_active_obj          (nullptr),
+      mp_cur_action          (NO_ACTION)
 {
     this->setRect(0, 0, mp_size.x(), mp_size.y());
 
@@ -34,40 +33,38 @@ PlayGround::PlayGround (const Vector2& size, QGraphicsScene* scene)
 PlayGround::~PlayGround () {
 }
 
-void PlayGround::set_active_obj (MoveableObject* object, Action action) {
-    mp_cur_action = action;
+QPointF PlayGround::get_active_obj_orig_pos () {
+    return mp_active_obj_orig_pos;
+}
 
-    MoveableObject*& obj = ((mp_cur_action == RESIZE_ACTION) ? mp_moved_obj : mp_resized_obj);
-    if (obj) {
-        // Unmark object of current action when the action changes
-        obj->set_marked(false, mp_cur_action);
-        obj = nullptr;
-    }
+void PlayGround::disable_focus () {
+    // Reset original position of active object
+    mp_active_obj_orig_pos = QPointF(0, 0);
 
-    // Get obj for moving or resizing
-    MoveableObject*& action_obj = ((mp_cur_action == RESIZE_ACTION) ? mp_resized_obj : mp_moved_obj);
-
-    if (action_obj) {
-        if (action_obj != object) {
-            // Unmark current object as it differs from newly selected one
-            action_obj->set_marked(false, mp_cur_action);
-        }
-    }
-
-    action_obj = object;
-    mp_moved_obj_orig_pos = QPointF(0, 0);
-
-    if (action_obj) {
-        if (action == MOVE_ACTION) {
-            mp_moved_obj_orig_pos = action_obj->get_pos();
-        }
-
-        action_obj->set_marked(true, mp_cur_action);
+    // Active item change, lose focus on current active
+    if (mp_active_obj) {
+        mp_active_obj->set_focus(false, NO_ACTION);
+        mp_active_obj = nullptr;
     }
 }
 
-void PlayGround::addObject (MoveableObject* object) {
-    mp_objs_vec.push_back(object);
+void PlayGround::set_active_obj (SceneObject* object, Action action) {
+    mp_cur_action = action;
+
+    // Un-focus current active object, if any
+    disable_focus();
+
+    // Set new active object
+    mp_active_obj = object;
+
+    if (mp_active_obj) {
+        mp_active_obj_orig_pos = mp_active_obj->get_pos();
+        mp_active_obj->set_focus(true, mp_cur_action);
+    }
+}
+
+void PlayGround::add_scene_obj (SceneObject* object) {
+    mp_scene_objs_vec.push_back(object);
 
     if (object->get_type() == QString("Robot")) {
         // Cast it to the Robot class
@@ -88,78 +85,54 @@ void PlayGround::addObject (MoveableObject* object) {
     }
 }
 
-void PlayGround::removeObject (MoveableObject* object) {
+void PlayGround::remove_scene_obj (SceneObject* object) {
+    std::vector<SceneObject*>::iterator iter;
+
     // Try to find object to be deleted in objects vector
-    std::vector<MoveableObject*>::iterator iter =
-        std::find_if(mp_objs_vec.begin(), mp_objs_vec.end(), [object](MoveableObject* curObj) { return object == curObj; });
+    iter = std::find_if(mp_scene_objs_vec.begin(), mp_scene_objs_vec.end(),
+                        [object](SceneObject* curObj) {
+                            return object == curObj;
+                        });
 
     // Found - delete it
-    if (iter != mp_objs_vec.end()) {
+    if (iter != mp_scene_objs_vec.end()) {
         // Remove from scene
         Obstacle* obstacle = dynamic_cast<Obstacle*>(object);
         if (obstacle) {
             mp_scene->removeItem(obstacle);
         }
-        // Remove from vector
-        mp_objs_vec.erase(iter);
+        // Remove from vector as well
+        mp_scene_objs_vec.erase(iter);
     }
 }
 
 void PlayGround::keyPressEvent (QKeyEvent* event) {
-    std::vector<MoveableObject*>::iterator iter;
+    std::vector<SceneObject*>::iterator iter;
 
-    for (iter = mp_objs_vec.begin(); iter < mp_objs_vec.end(); ++iter) {
-        // Only moving Obstacle should receive keyPresses to rotate
-        if (mp_moved_obj && mp_moved_obj->get_type() == QString("Obstacle")) {
-            mp_moved_obj->keyPressEvent(event);
-        }
-
-        // If none object selected for action, Robot should receive keyPresses
-        if ((*iter)->get_type() == QString("Robot") && !mp_resized_obj && !mp_moved_obj) {
-            // Distribute the key press event to all robots in the playground
-            (*iter)->keyPressEvent(event);
+    // If we have active object, deliver this exclusively to it
+    if (mp_active_obj) {
+        mp_active_obj->keyPressEvent(event);
+    }
+    else {
+        // Robots should receive key presses to move
+        for (iter = mp_scene_objs_vec.begin(); iter < mp_scene_objs_vec.end(); ++iter) {
+            if ((*iter)->get_type() == QString("Robot")) {
+                (*iter)->keyPressEvent(event);
+            }
         }
     }
 }
 
 void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    if (mp_moved_obj) {
-        // Set its position to be same as mouse's
-        mp_moved_obj->set_obj_pos(event->pos());
-    }
-
-    if (mp_resized_obj) {
-        Obstacle* curObst = dynamic_cast<Obstacle*>(mp_resized_obj);
-        QPointF curPos = curObst->get_pos();
-
-        // Calculate change
-        QPointF posChange;
-        posChange.setX(qFabs(event->pos().x() - curPos.x()));
-        posChange.setY(qFabs(event->pos().y() - curPos.y()));
-
-        // Update obstacle size
-        curObst->set_rect(curPos, posChange.x(), posChange.y());
+    if (mp_active_obj) {
+        // Distribute mouse move event to focused (active) object
+        mp_active_obj->mouseMoveEvent(event);
     }
 }
 
 void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    if (event->button() == Qt::MouseButton::RightButton) {
-        if (mp_moved_obj) {
-            // Pressing right mouse key means to reset moving object pos
-            mp_moved_obj->set_obj_pos(mp_moved_obj_orig_pos);
-            set_active_obj(nullptr, MOVE_ACTION);
-        }
-
-        if (mp_resized_obj) {
-            // Stop resizing and unmark
-            set_active_obj(nullptr, RESIZE_ACTION);
-        }
-    }
-
-    if (event->button() == Qt::MouseButton::LeftButton) {
-        // Left key pressed outside moving object -> stop moving and unmark
-        if (mp_moved_obj) {
-            set_active_obj(nullptr, MOVE_ACTION);
-        }
+    if (mp_active_obj) {
+        // Distribute mouse move event to focused (active) object
+        mp_active_obj->mousePressEvent(event);
     }
 }

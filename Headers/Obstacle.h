@@ -2,10 +2,10 @@
 #define OBSTACLE_H
 
 #include "LibsFile.h"
-#include "MoveableObject.h"
+#include "SceneObject.h"
 #include "PlayGround.h"
 
-class Obstacle : public MoveableObject, public QGraphicsRectItem {
+class Obstacle : public SceneObject, public QGraphicsRectItem {
     private:
         /* mp_size.x() ... width
            mp_size.y() ... height */
@@ -16,9 +16,11 @@ class Obstacle : public MoveableObject, public QGraphicsRectItem {
 
         QString mp_type;
 
-        Qt::GlobalColor mp_pen_colour;
+        Action mp_obj_action;
 
         class PlayGround* mp_playground;
+
+        bool mp_has_focus;
 
         void do_rotation (const qreal angle);
 
@@ -35,13 +37,11 @@ class Obstacle : public MoveableObject, public QGraphicsRectItem {
 
         ~Obstacle ();
 
-        void set_rect (const QPointF pos, const qreal width, const qreal height);
-
         // Implementations of virtual base class methods
         QString get_type () override;
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
-        void set_marked (bool marked, Action action) override;
+        void set_focus (bool focus, Action action) override;
 
     protected:
         // Events - handling

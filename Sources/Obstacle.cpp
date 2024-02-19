@@ -5,8 +5,9 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, 
       mp_coords     (coord_x, coord_y),
       mp_rotation   (0),
       mp_type       ("Obstacle"),
-      mp_pen_colour (Qt::black),
-      mp_playground (playground)
+      mp_obj_action (NO_ACTION),
+      mp_playground (playground),
+      mp_has_focus  (false)
 {
     this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
@@ -47,46 +48,47 @@ void Obstacle::set_obj_pos (const QPointF pos) {
     }
 }
 
-void Obstacle::set_marked (bool marked, Action action) {
-    mp_pen_colour = Qt::black;
-    if (marked) {
+void Obstacle::set_focus (bool focus, Action action) {
+    Qt::GlobalColor color = Qt::black;
+    mp_obj_action         = action;
+    mp_has_focus          = focus;
+
+    if (focus) {
         if (action == RESIZE_ACTION)
-            // Marked and resizing
-            mp_pen_colour = Qt::GlobalColor::blue;
+            // Focused and resizing -> blue
+            color = Qt::blue;
         else
-            // Marked and just selected
-            mp_pen_colour = Qt::GlobalColor::red;
+            // Focused and moving -> red
+            color = Qt::red;
     }
 
-    QPen pen(mp_pen_colour);
+    QPen pen(color);
     // Apply new color
     this->setPen(pen);
 }
 
-void Obstacle::set_rect (const QPointF pos, const qreal width, const qreal height) {
-    mp_size.setX(width);
-    mp_size.setY(height);
-    set_obj_pos(pos);
-}
-
 void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    Action action;
-    // Left mouse key for placing objects
     if (event->button() == Qt::MouseButton::LeftButton) {
-        action = MOVE_ACTION;
-    }
-    // Right mouse key for resizing obstacle
-    else if (event->button() == Qt::MouseButton::RightButton) {
-        action = RESIZE_ACTION;
+        if (!mp_has_focus) {
+            // Notify PlayGround and get focus
+            mp_playground->set_active_obj(this, MOVE_ACTION);
+        }
+        else {
+            // Lose focus
+            mp_playground->disable_focus();
+        }
     }
 
-    // Start action
-    if (mp_pen_colour == Qt::black) {
-        mp_playground->set_active_obj(this, action);
-    }
-    else {
-        // Stop action and unmark
-        mp_playground->mousePressEvent(event);
+    if (event->button() == Qt::MouseButton::RightButton) {
+        if (!mp_has_focus) {
+            // Notify PlayGround and get focus
+            mp_playground->set_active_obj(this, RESIZE_ACTION);
+        }
+        else {
+            // Lose focus and return to previous pos
+            this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
+            mp_playground->disable_focus();
+        }
     }
 }
 
@@ -106,7 +108,26 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
 }
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    mp_playground->mouseMoveEvent(event);
+    // React to mouse move only if focused
+    if (mp_has_focus) {
+        if (mp_obj_action == RESIZE_ACTION) {
+            // Resize current obstacle
+            // Calculate change
+            QPointF posChange;
+            posChange.setX(qFabs(event->pos().x() - this->get_pos().x()));
+            posChange.setY(qFabs(event->pos().y() - this->get_pos().y()));
+
+            // Update obstacle size
+            this->mp_size.setX(posChange.x());
+            this->mp_size.setY(posChange.y());
+
+            // redraw rectangle
+            this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
+        }
+        else { // MOVE_ACTION
+            this->set_obj_pos(event->pos());
+        }
+    }
 }
 
 void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
@@ -114,13 +135,14 @@ void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
         // Clone this obstacle and insert it to Playground
         Obstacle* newObstacle = new Obstacle(mp_size.x(), mp_size.y(), mp_coords.x(), mp_coords.y(), mp_playground);
-        // Add obstacle to the playground thus to the scene
-        mp_playground->addObject(newObstacle);
+
+        // Add obstacle to the PlayGround
+        mp_playground->add_scene_obj(newObstacle);
     }
 
     // Remove Obstacle
     if (event->button() == Qt::MouseButton::RightButton) {
-        mp_playground->removeObject(this);
+        mp_playground->remove_scene_obj(this);
     }
 }
 

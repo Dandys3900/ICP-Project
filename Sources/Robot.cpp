@@ -5,9 +5,10 @@ Robot::Robot (const qreal size, const qreal coords_x, const qreal coords_y, Play
       mp_diameter   (size),
       mp_rotation   (0),
       mp_type       ("Robot"),
-      mp_pen_colour (Qt::black),
+      mp_obj_action (NO_ACTION),
       mp_playground (playground),
-      mp_arrow      (nullptr)
+      mp_arrow      (nullptr),
+      mp_has_focus  (false)
 {
     // Set ellipsis properties
     this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
@@ -60,15 +61,18 @@ QGraphicsPolygonItem* Robot::get_robot_arrow () {
     return mp_arrow;
 }
 
-void Robot::set_marked (bool marked, Action action /*not used*/) {
-    mp_pen_colour = Qt::black;
+void Robot::set_focus (bool focus, Action action) {
+    Qt::GlobalColor color = Qt::black;
+    mp_has_focus          = focus;
+    mp_obj_action         = action;
 
-    // Change robot + arrow color when selected or not
-    if (marked) {
-        mp_pen_colour = Qt::red;
+    if (focus) {
+        if (action == MOVE_ACTION)
+            // Focused and moving -> red
+            color = Qt::red;
     }
 
-    QPen pen(mp_pen_colour);
+    QPen pen(color);
     // Apply new color
     this->setPen(pen);
     this->mp_arrow->setPen(pen);
@@ -110,26 +114,31 @@ void Robot::keyPressEvent (QKeyEvent* event) {
 }
 
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    // Mark this object for moving
     if (event->button() == Qt::MouseButton::LeftButton) {
-        // Robot unused, begin moving of it
-        if (mp_pen_colour == Qt::black) {
-            // Mouse click on the Robot, notify PlayGround we have an object to move with
+        if (!mp_has_focus) {
+            // Notify PlayGround and get focus
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
         else {
-            // Robot already used, so stop moving and unmark
-            mp_playground->mousePressEvent(event);
+            // Lose focus
+            mp_playground->disable_focus();
         }
     }
-    // Unmark this object from moving
+
     if (event->button() == Qt::MouseButton::RightButton) {
-        mp_playground->mousePressEvent(event);
+        if (mp_has_focus) {
+            // Lose focus and return to previous pos
+            this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
+            mp_playground->disable_focus();
+        }
     }
 }
 
 void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    mp_playground->mouseMoveEvent(event);
+    // Move robot, if focused
+    if (mp_has_focus) {
+        this->set_obj_pos(event->pos());
+    }
 }
 
 void Robot::do_rotation (const qreal angle) {

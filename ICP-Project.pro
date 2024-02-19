@@ -22,7 +22,7 @@ SOURCES += Sources/main.cpp \
 HEADERS += Headers/Obstacle.h \
            Headers/PlayGround.h \
            Headers/Robot.h \
-           Headers/MoveableObject.h \
+           Headers/SceneObject.h \
            Headers/LibsFile.h \
            Headers/mainwindow.h \
            math/vector2.h
