@@ -6,7 +6,6 @@
 
 
 class Vector2 : public QPointF {
-
 public: // methods
     Vector2();
     Vector2(qreal x, qreal y);
