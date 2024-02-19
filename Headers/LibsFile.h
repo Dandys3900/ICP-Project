@@ -2,8 +2,7 @@
 #define INCLUDEFILE_H
 
 /***** CONSTS *****/
-#define ARROW_SHIFT 75
-#define ROBOT_SIZE 100
+#define ARROW_LENGTH 75
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define BORDER_WIDTH 10
@@ -25,6 +24,8 @@
 #include <iterator>
 #include <QGraphicsRectItem>
 #include <QMouseEvent>
+
+#include "math/vector2.h"
 
 /***** OTHERS *****/
 enum Action {

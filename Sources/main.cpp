@@ -22,7 +22,8 @@ int main(int argc, char *argv[])
     PlayGround* playground = new PlayGround(WINDOW_WIDTH, WINDOW_HEIGHT, scene);
 
     // Create robot
-    Robot* robot = new Robot(ROBOT_SIZE, (WINDOW_WIDTH / 2) - (ROBOT_SIZE / 2), (WINDOW_HEIGHT / 2) - (ROBOT_SIZE / 2), playground);
+    qreal robot_size = 100;
+    Robot* robot = new Robot(robot_size, (WINDOW_WIDTH / 2) - (robot_size / 2), (WINDOW_HEIGHT / 2) - (robot_size / 2), playground);
 
     // Create obstacle
     Obstacle* obstacle = new Obstacle(50, 20, 10, 15, playground);

@@ -7,10 +7,9 @@
 
 class Robot : public MoveableObject, public QGraphicsEllipseItem {
     private:
-        qreal mp_diameter;
-        qreal mp_coord_x;
-        qreal mp_coord_y;
+        Vector2 mp_coords;
 
+        qreal mp_diameter;
         qreal mp_rotation;
 
         QString mp_type;
@@ -26,14 +25,18 @@ class Robot : public MoveableObject, public QGraphicsEllipseItem {
 
     public:
         Robot (const qreal size,
-               const qreal axis_x,
-               const qreal axis_y,
+               const qreal coords_x,
+               const qreal coords_y,
                PlayGround* playground);
+
+        Robot (const qreal size,
+               const Vector2& coords,
+               PlayGround* playground);
+
         ~Robot ();
 
         // Implementations of virtual base class methods
         QString get_type () override;
-        void* get_object () override;
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
         void set_marked (bool marked, Action action) override;

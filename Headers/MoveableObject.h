@@ -6,7 +6,6 @@
 class MoveableObject {
     public:
         virtual QString get_type () = 0;
-        virtual void* get_object () = 0;
 
         virtual QPointF get_pos () = 0;
         virtual void set_obj_pos (QPointF pos) = 0;

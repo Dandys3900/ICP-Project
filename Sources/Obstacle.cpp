@@ -1,26 +1,28 @@
 #include "Headers/Obstacle.h"
 
-Obstacle::Obstacle (const qreal width, const qreal height, const qreal axis_x, const qreal axis_y, PlayGround* playground)
-    : mp_width      (width),
-      mp_height     (height),
-      mp_coord_x    (axis_x),
-      mp_coord_y    (axis_y),
+Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, const qreal coord_y, PlayGround* playground)
+    : mp_size       (width, height),
+      mp_coords     (coord_x, coord_y),
       mp_rotation   (0),
       mp_type       ("Obstacle"),
       mp_pen_colour (Qt::black),
       mp_playground (playground)
 {
-    this->setRect(mp_coord_x, mp_coord_y, mp_width, mp_height);
+    this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
     // Make Obstacle moveable (able to receive mouse events)
     this->setFlag(QGraphicsItem::ItemIsMovable);
 
     // Set rotation origin
-    this->setTransformOriginPoint(QPointF(mp_coord_x + (mp_width / 2), mp_coord_y + (mp_height / 2)));
+    this->setTransformOriginPoint(QPointF(mp_coords.x() + (mp_size.x() / 2), mp_coords.y() + (mp_size.y() / 2)));
 }
 
-Obstacle::~Obstacle ()
+Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* playground)
+    : Obstacle(size.x(), size.y(), coords.x(), coords.y(), playground)
 {
+}
+
+Obstacle::~Obstacle () {
     delete mp_playground;
 }
 
@@ -28,24 +30,20 @@ QString Obstacle::get_type () {
     return mp_type;
 }
 
-void* Obstacle::get_object () {
-    return this;
-}
-
 QPointF Obstacle::get_pos () {
-    return QPointF(mp_coord_x, mp_coord_y);
+    return QPointF(mp_coords.x(), mp_coords.y());
 }
 
 void Obstacle::set_obj_pos (const QPointF pos) {
-    if (scene()->sceneRect().contains(QRectF(pos.x(), pos.y(), mp_width, mp_height))) {
+    if (scene()->sceneRect().contains(QRectF(pos.x(), pos.y(), mp_size.x(), mp_size.y()))) {
         // If new position is inside current scene, update robot coords
-        mp_coord_x = pos.x();
-        mp_coord_y = pos.y();
+        mp_coords.setX(pos.x());
+        mp_coords.setY(pos.y());
 
-        this->setRect(mp_coord_x, mp_coord_y, mp_width, mp_height);
+        this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
         // Update rotation origin
-        this->setTransformOriginPoint(QPointF(mp_coord_x + (mp_width / 2), mp_coord_y + (mp_height / 2)));
+        this->setTransformOriginPoint(QPointF(mp_coords.x() + (mp_size.x() / 2), mp_coords.y() + (mp_size.y() / 2)));
     }
 }
 
@@ -66,8 +64,8 @@ void Obstacle::set_marked (bool marked, Action action) {
 }
 
 void Obstacle::set_rect (const QPointF pos, const qreal width, const qreal height) {
-    mp_width  = width;
-    mp_height = height;
+    mp_size.setX(width);
+    mp_size.setY(height);
     set_obj_pos(pos);
 }
 
@@ -115,7 +113,7 @@ void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
     // Insert new Obstacle
     if (event->button() == Qt::MouseButton::LeftButton) {
         // Clone this obstacle and insert it to Playground
-        Obstacle* newObstacle = new Obstacle(mp_width, mp_height, mp_coord_x, mp_coord_y, mp_playground);
+        Obstacle* newObstacle = new Obstacle(mp_size.x(), mp_size.y(), mp_coords.x(), mp_coords.y(), mp_playground);
         // Add obstacle to the playground thus to the scene
         mp_playground->addObject(newObstacle);
     }

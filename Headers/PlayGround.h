@@ -6,8 +6,9 @@
 
 class PlayGround : public QGraphicsRectItem {
     private:
-        qreal mp_width;
-        qreal mp_height;
+        /* mp_size.x() ... width
+           mp_size.y() ... height */
+        Vector2 mp_size;
 
         // Vector for storing instancies of Robots and Obstacles
         std::vector<MoveableObject*> mp_objs_vec;
@@ -24,6 +25,10 @@ class PlayGround : public QGraphicsRectItem {
         PlayGround (const qreal width,
                     const qreal height,
                     QGraphicsScene* scene);
+
+        PlayGround (const Vector2& size,
+                    QGraphicsScene* scene);
+
         ~PlayGround ();
 
         // Adding objects to the playground

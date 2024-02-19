@@ -1,16 +1,15 @@
 #include "Headers/PlayGround.h"
 
 PlayGround::PlayGround (const qreal width, const qreal height, QGraphicsScene* scene)
-    : mp_width                 (width),
-      mp_height                (height),
-      mp_objs_vec              (),
-      mp_moved_obj_orig_pos    (),
-      mp_scene                 (scene),
-      mp_moved_obj             (nullptr),
-      mp_resized_obj           (nullptr),
-      mp_cur_action            (NO_ACTION)
+    : mp_size               (width, height),
+      mp_objs_vec           (),
+      mp_moved_obj_orig_pos (),
+      mp_scene              (scene),
+      mp_moved_obj          (nullptr),
+      mp_resized_obj        (nullptr),
+      mp_cur_action         (NO_ACTION)
 {
-    this->setRect(0, 0, scene->sceneRect().width(), scene->sceneRect().height());
+    this->setRect(0, 0, mp_size.x(), mp_size.y());
 
     // Create black pen
     QPen pen(Qt::black);
@@ -27,8 +26,12 @@ PlayGround::PlayGround (const qreal width, const qreal height, QGraphicsScene* s
     mp_scene->addItem(this);
 }
 
-PlayGround::~PlayGround ()
+PlayGround::PlayGround (const Vector2& size, QGraphicsScene* scene)
+    : PlayGround(size.x(), size.y(), scene)
 {
+}
+
+PlayGround::~PlayGround () {
 }
 
 void PlayGround::set_active_obj (MoveableObject* object, Action action) {
@@ -68,7 +71,7 @@ void PlayGround::addObject (MoveableObject* object) {
 
     if (object->get_type() == QString("Robot")) {
         // Cast it to the Robot class
-        Robot* robot = (Robot*)object->get_object();
+        Robot* robot = dynamic_cast<Robot*>(object);
         if (robot) {
             // Add robot + its arrow
             mp_scene->addItem(robot->get_robot_arrow());
@@ -77,7 +80,7 @@ void PlayGround::addObject (MoveableObject* object) {
     }
     else {
         // Cast it to the Obstacle class
-        Obstacle* obstacle = (Obstacle*)object->get_object();
+        Obstacle* obstacle = dynamic_cast<Obstacle*>(object);
         if (obstacle) {
             // Add obstacle
             mp_scene->addItem(obstacle);
@@ -93,7 +96,10 @@ void PlayGround::removeObject (MoveableObject* object) {
     // Found - delete it
     if (iter != mp_objs_vec.end()) {
         // Remove from scene
-        mp_scene->removeItem(((Obstacle*)object->get_object()));
+        Obstacle* obstacle = dynamic_cast<Obstacle*>(object);
+        if (obstacle) {
+            mp_scene->removeItem(obstacle);
+        }
         // Remove from vector
         mp_objs_vec.erase(iter);
     }
@@ -123,7 +129,7 @@ void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
     }
 
     if (mp_resized_obj) {
-        Obstacle* curObst = (Obstacle*)mp_resized_obj->get_object();
+        Obstacle* curObst = dynamic_cast<Obstacle*>(mp_resized_obj);
         QPointF curPos = curObst->get_pos();
 
         // Calculate change
