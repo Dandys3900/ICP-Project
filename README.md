@@ -3,6 +3,8 @@ Repository for FIT VUT ICP project.
 
 *******************************************************************************
 
+- Note: README.txt is for submission
+
 ## Coding style rules:
 
     1. Indentation:                     4 spaces
@@ -24,6 +26,7 @@ Repository for FIT VUT ICP project.
     8. For, while, if:                 spaces before the bracket
         f.e. for (...)
     9. Spaces after a comma, semicolon, bracket
+    10. File names:                     snake_case.filetype
 
 ### Push strategy:                       requests
 
@@ -39,13 +42,14 @@ Repository for FIT VUT ICP project.
   #### 3) Find suitable IDE to code, in my case: VsCode for code editing and Git operations + QT Creator for compiling
 
 ## Axis:
-       Y        
-       ^    
+       Y
+       ^
        |
-       |    
-       |    
+       |
+       |
     [0, 0] - - - > X
 
 ## Rotation:
-#### -> ANTI-Clockwise
+#### -> COUNTER-Clockwise
+    Internally all the angles are represented in radians.
 -------------------------------------------------------------------------------
