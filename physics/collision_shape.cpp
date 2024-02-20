@@ -8,8 +8,8 @@ SAT collision detection (Separating Axis Theorem)
 // bool CollisionShape::is_colliding(const CollisionShape& other_shape) const {}
 
 
-std::vector<Vector2> CollisionShape::get_normals(const std::vector<Vector2>& verticies) {
-	std::vector<Vector2> normals;
+QVector<Vector2> CollisionShape::get_normals(const QVector<Vector2>& verticies) {
+	QVector<Vector2> normals;
 
 	// calculate normals for every edge
 	for (quint8 i = 0; i < verticies.size(); i++) {
@@ -23,7 +23,7 @@ std::vector<Vector2> CollisionShape::get_normals(const std::vector<Vector2>& ver
 // TODO
 // get closest point to the circle origin and use vector between the two as a normal
 // https://www.youtube.com/watch?v=59BTXB-kFNs
-Vector2 CollisionShape::get_circle_normal(const Vector2& circle_center, const std::vector<Vector2>& other_shape_verticies) {
+Vector2 CollisionShape::get_circle_normal(const Vector2& circle_center, const QVector<Vector2>& other_shape_verticies) {
 	quint8 closest_vertex_index = 0;
 	// we just need the closest distance and not the exact one
 	qreal closest_vertex_distance_squared = circle_center.length_squared_to(other_shape_verticies[closest_vertex_index]);
@@ -43,7 +43,7 @@ Vector2 CollisionShape::get_circle_normal(const Vector2& circle_center, const st
 }
 
 
-void CollisionShape::project_verticies_to_axis(const std::vector<Vector2>& verticies, const Vector2& axis, qreal* min, qreal* max) {
+void CollisionShape::project_verticies_to_axis(const QVector<Vector2>& verticies, const Vector2& axis, qreal* min, qreal* max) {
 	qreal vertex_projection = Vector2::dotProduct(verticies[0], axis);
 	*min = vertex_projection;
 	*max = vertex_projection;
@@ -129,8 +129,8 @@ void CollisionShape::project_verticies_to_axis(const std::vector<Vector2>& verti
 
 
 // bool CollisionRectangleShape::is_colliding_with_rectangle(const CollisionRectangleShape& rect) const {
-// 	std::vector<QLineF> axes = rect.get_axes();
-// 	std::vector<Vector2> corners = this->get_corners();
+// 	QVector<QLineF> axes = rect.get_axes();
+// 	QVector<Vector2> corners = this->get_corners();
 
 	
 
@@ -146,25 +146,25 @@ void CollisionShape::project_verticies_to_axis(const std::vector<Vector2>& verti
 // }
 
 
-// std::vector<QLineF> CollisionRectangleShape::get_axes() {
+// QVector<QLineF> CollisionRectangleShape::get_axes() {
 // 	Vector2 center = Vector2(this->origin + (this->size / 2)).rotated(this->angle);
 // 	Vector2 x_direction = Vector2(1.0, 0.0).rotated(this->angle);
 // 	Vector2 y_direction = Vector2(0.0, 1.0).rotated(this->angle);
 	
-// 	return std::vector<QLineF> {
+// 	return QVector<QLineF> {
 // 		QLineF(center, center + x_direction), // x asix
 // 		QLineF(center, center + y_direction) // y axis
 // 	};
 // }
 
 
-// std::vector<Vector2> CollisionRectangleShape::get_corners() {
-// 	std::vector<QLineF> axes = this->get_axes();
+// QVector<Vector2> CollisionRectangleShape::get_corners() {
+// 	QVector<QLineF> axes = this->get_axes();
 // 	Vector2 center = this->get_center();
 // 	Vector2 x_from_center = Vector2(axes[0].p2() - axes[0].p1()).normalized() * (this->size.x() / 2);
 // 	Vector2 y_from_center = Vector2(axes[1].p2() - axes[0].p1()).normalized() * (this->size.y() / 2);
 
-// 	return std::vector<Vector2> {
+// 	return QVector<Vector2> {
 // 		center + x_from_center + y_from_center,
 // 		center + x_from_center - y_from_center,
 // 		center - x_from_center + y_from_center,

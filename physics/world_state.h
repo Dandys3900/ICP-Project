@@ -4,7 +4,7 @@
 #include <vector>
 
 
-// std::vector<>
+// QVector<>
 
 
 #endif

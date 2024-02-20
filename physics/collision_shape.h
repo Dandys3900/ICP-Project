@@ -2,9 +2,7 @@
 #define COLLISION_SHAPE_H
 
 
-#include <vector>
-#include <QLineF>
-#include "vector2.h"
+// #include "vector2.h"
 
 
 // forward declarations
@@ -31,13 +29,13 @@ class CollisionShape {
 
 
 	// protected:
-		// std::vector<Vector2> verticies; // clockwise vecticies in global coordinates (max 256 verticies)
+		// QVector<Vector2> verticies; // clockwise vecticies in global coordinates (max 256 verticies)
 	
 	protected:
-		static std::vector<Vector2> get_normals(const std::vector<Vector2>& verticies);
-		static Vector2 get_circle_normal(const Vector2& circle_center, const std::vector<Vector2>& other_shape_verticies);
+		static QVector<Vector2> get_normals(const QVector<Vector2>& verticies);
+		static Vector2 get_circle_normal(const Vector2& circle_center, const QVector<Vector2>& other_shape_verticies);
 
-		static void project_verticies_to_axis(const std::vector<Vector2>& verticies, const Vector2& axis, qreal* min, qreal* max);
+		static void project_verticies_to_axis(const QVector<Vector2>& verticies, const Vector2& axis, qreal* min, qreal* max);
 };
 
 
@@ -70,8 +68,8 @@ class CollisionShape {
 
 // 	private: // methods
 // 		Vector2 get_center();
-// 		std::vector<QLineF> get_axes();
-// 		std::vector<Vector2> get_corners();
+// 		QVector<QLineF> get_axes();
+// 		QVector<Vector2> get_corners();
 // };
 
 
