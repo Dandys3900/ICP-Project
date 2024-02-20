@@ -9,6 +9,9 @@ Vector2::Vector2(const Vector2& v) : QPointF(v) {}
 
 Vector2::Vector2(const QPointF& qp) : QPointF(qp) {}
 
+Vector2 Vector2::normal() const {
+	return Vector2(-this->y(), this->x());
+}
 
 void Vector2::normalize() {
 	qreal length = this->x() * this->x() + this->y() * this->y();
