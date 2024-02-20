@@ -86,7 +86,7 @@ void PlayGround::add_scene_obj (SceneObject* object) {
 }
 
 void PlayGround::remove_scene_obj (SceneObject* object) {
-    std::vector<SceneObject*>::iterator iter;
+    QVector<SceneObject*>::iterator iter;
 
     // Try to find object to be deleted in objects vector
     iter = std::find_if(mp_scene_objs_vec.begin(), mp_scene_objs_vec.end(),
@@ -112,7 +112,7 @@ void PlayGround::remove_scene_obj (SceneObject* object) {
 }
 
 void PlayGround::keyPressEvent (QKeyEvent* event) {
-    std::vector<SceneObject*>::iterator iter;
+    QVector<SceneObject*>::iterator iter;
 
     // If we have active object, deliver this exclusively to it
     if (mp_active_obj) {

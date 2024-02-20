@@ -11,7 +11,7 @@ class PlayGround : public QGraphicsRectItem {
         Vector2 mp_size;
 
         // Vector for storing instancies of Robots and Obstacles
-        std::vector<SceneObject*> mp_scene_objs_vec;
+        QVector<SceneObject*> mp_scene_objs_vec;
 
         QPointF mp_active_obj_orig_pos;
 
