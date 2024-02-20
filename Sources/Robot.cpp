@@ -46,7 +46,6 @@ Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
 
 Robot::~Robot () {
     delete mp_arrow;
-    delete mp_playground;
 }
 
 QString Robot::get_type () {

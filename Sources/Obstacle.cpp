@@ -24,7 +24,6 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* play
 }
 
 Obstacle::~Obstacle () {
-    delete mp_playground;
 }
 
 QString Obstacle::get_type () {
