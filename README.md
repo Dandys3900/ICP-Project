@@ -39,14 +39,14 @@ Repository for FIT VUT ICP project.
   #### 3) Find suitable IDE to code, in my case: VsCode for code editing and Git operations + QT Creator for compiling
 
 ## Axis:
-       Y        
-       ^    
+       Y
+       ^
        |
-       |    
-       |    
+       |
+       |
     [0, 0] - - - > X
 
 ## Rotation:
-#### -> ANTI-Clockwise
+#### -> COUNTER-Clockwise
     Internally all the angles are represented in radians.
 -------------------------------------------------------------------------------

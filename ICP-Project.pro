@@ -12,11 +12,19 @@ TARGET = ICP-Project
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-    mainwindow.cpp \
-    math/vector2.cpp
+SOURCES += Sources/main.cpp \
+           Sources/Obstacle.cpp \
+           Sources/PlayGround.cpp \
+           Sources/Robot.cpp \
+           Sources/mainwindow.cpp \
+           math/vector2.cpp
 
-HEADERS  += mainwindow.h \
-    math/vector2.h
+HEADERS += Headers/Obstacle.h \
+           Headers/PlayGround.h \
+           Headers/Robot.h \
+           Headers/SceneObject.h \
+           Headers/LibsFile.h \
+           Headers/mainwindow.h \
+           math/vector2.h
 
-FORMS    += mainwindow.ui
+FORMS   += Forms/mainwindow.ui
