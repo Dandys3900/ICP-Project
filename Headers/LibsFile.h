@@ -20,10 +20,10 @@
 #include <QGraphicsPolygonItem>
 #include <QtMath>
 #include <QTimer>
-#include <vector>
-#include <iterator>
 #include <QGraphicsRectItem>
 #include <QMouseEvent>
+
+#include <iterator>
 
 #include "math/vector2.h"
 
