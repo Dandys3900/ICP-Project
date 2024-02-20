@@ -1,7 +1,7 @@
 #ifndef SCENEOBJECT_H
 #define SCENEOBJECT_H
 
-#include "LibsFile.h"
+#include "includes/libs_file.h"
 
 class SceneObject {
     public:
