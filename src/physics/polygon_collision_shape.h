@@ -20,7 +20,7 @@ class PolygonCollisionShape : public CollisionShape {
 
 		void rotate(qreal angle) override;	
 
-		void rotate_around(qreal angle, const Vector2& pivot) override;
+		void rotate_around(const Vector2& pivot, qreal angle) override;
 
 		void project_to_axis(const Vector2& axis, qreal* min, qreal* max) const override;
 

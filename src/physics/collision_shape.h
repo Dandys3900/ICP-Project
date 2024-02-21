@@ -26,7 +26,7 @@ class CollisionShape {
 		/*!
 		 *
 		 */		
-		virtual void rotate_around(qreal angle, const Vector2& pivot) = 0;
+		virtual void rotate_around(const Vector2& pivot, qreal angle) = 0;
 
 		/*!
 		 * Checks if this shape is colliding with @param other_shape. This method accepts any other CollisionShape regardless of it's implementation.
@@ -55,40 +55,6 @@ class CollisionShape {
 		virtual const QVector<Vector2>& get_sat_collision_verticies() const = 0;
 
 };
-
-
-// class CollisionCircleShape : CollisionShape {
-// 	public: // fields
-// 		Vector2 origin; // top-left corner of the circle's bounding box (Why, Qt why?)
-// 		qreal radius;
-
-// 	public: // methods
-// 		CollisionCircleShape();
-// 		CollisionCircleShape(const Vector2& origin, qreal radius);
-
-// 		bool is_colliding_with_circle(const CollisionCircleShape& circ) const override;
-// 		bool is_colliding_with_rectangle(const CollisionRectangleShape& rect) const override;
-// };
-
-
-// class CollisionRectangleShape : CollisionShape {
-// 	public: // fields
-// 		Vector2 origin; // top-left corner
-// 		Vector2 size;
-// 		qreal angle;
-
-// 	public: // methods
-// 		CollisionRectangleShape();
-// 		CollisionRectangleShape(const Vector2& origin, const Vector2& size, qreal angle);
-
-// 		bool is_colliding_with_circle(const CollisionCircleShape& circ) const override;
-// 		bool is_colliding_with_rectangle(const CollisionRectangleShape& rect) const override;
-
-// 	private: // methods
-// 		Vector2 get_center();
-// 		QVector<QLineF> get_axes();
-// 		QVector<Vector2> get_corners();
-// };
 
 
 #endif

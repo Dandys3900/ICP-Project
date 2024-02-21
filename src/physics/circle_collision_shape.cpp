@@ -11,8 +11,8 @@ void CircleCollisionShape::rotate(qreal angle) {
 }
 
 
-void CircleCollisionShape::rotate_around(qreal angle, const Vector2& pivot) {
-	
+void CircleCollisionShape::rotate_around(const Vector2& pivot, qreal angle) {
+	this->center.rotate_around(pivot, angle);
 }
 
 

@@ -14,7 +14,7 @@ void PolygonCollisionShape::rotate(qreal angle) {
 }
 
 
-void PolygonCollisionShape::rotate_around(qreal angle, const Vector2& pivot) {
+void PolygonCollisionShape::rotate_around(const Vector2& pivot, qreal angle) {
 	// TODO
 }
 
