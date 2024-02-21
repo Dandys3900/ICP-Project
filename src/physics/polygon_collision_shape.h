@@ -18,9 +18,7 @@ class PolygonCollisionShape : public CollisionShape {
 	public: // methods
 		void translate(const Vector2& translation_vector) override;
 
-		void rotate(qreal angle) override;	
-
-		void rotate_around(const Vector2& pivot, qreal angle) override;
+		void rotate_around(const QPointF& pivot, qreal angle) override;
 
 		void project_to_axis(const Vector2& axis, qreal* min, qreal* max) const override;
 

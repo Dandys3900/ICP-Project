@@ -6,12 +6,7 @@ void CircleCollisionShape::translate(const Vector2& translation_vector) {
 }
 
 
-void CircleCollisionShape::rotate(qreal angle) {
-	// Good luck rotatin a circle around it's center and trying to spot a difference
-}
-
-
-void CircleCollisionShape::rotate_around(const Vector2& pivot, qreal angle) {
+void CircleCollisionShape::rotate_around(const QPointF& pivot, qreal angle) {
 	this->center.rotate_around(pivot, angle);
 }
 

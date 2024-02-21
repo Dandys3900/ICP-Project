@@ -19,23 +19,21 @@ class CollisionShape {
 		virtual void translate(const Vector2& translation_vector) = 0;
 
 		/*!
-		 *
+		 * Translates the polygon's verticies to the @param translation_vector.
+		 * This DOES NOT take rotation into account and will translate the verticies as they are in global coordinates.
+		 * @note each subclass has to implement this method to it's own specific needs.
 		 */
-		virtual void rotate(qreal angle) = 0;
+		virtual void translate_to(const Vector2& translation_vector) = 0;
 
 		/*!
-		 *
+		 * Rotates the shape around the @param pivot by and @param angle.
+		 * @note each subclass has to implement this method to it's own specific needs.
 		 */		
-		virtual void rotate_around(const Vector2& pivot, qreal angle) = 0;
-
-		/*!
-		 * Checks if this shape is colliding with @param other_shape. This method accepts any other CollisionShape regardless of it's implementation.
-		 */
-		bool is_colliding_with(const CollisionShape& other_shape);
+		virtual void rotate_around(const QPointF& pivot, qreal angle) = 0;
 
 		/*!
 		 * Projects a CollisionShape to given @param axis and returns it's "shadow" by @param min and @param max on the @param axis.
-		 * @note if used on an invalid (empty) polygon, min will be set to infinity and max to -infinity.
+		 * @note if used on an invalid shape, min will be set to infinity and max to -infinity.
 		 * @note each subclass has to implement this method to it's own specific needs.
 		 */
 		virtual void project_to_axis(const Vector2& axis, qreal* min, qreal* max) const = 0;
@@ -54,6 +52,10 @@ class CollisionShape {
 		 */
 		virtual const QVector<Vector2>& get_sat_collision_verticies() const = 0;
 
+		/*!
+		 * Checks if this shape is colliding with @param other_shape. This method accepts any other CollisionShape regardless of it's implementation.
+		 */
+		bool is_colliding_with(const CollisionShape& other_shape);
 };
 
 

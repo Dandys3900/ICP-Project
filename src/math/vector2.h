@@ -22,8 +22,8 @@ class Vector2 : public QPointF {
         void rotate(qreal angle);
         Vector2 rotated(qreal angle) const;
 
-        void rotate_around(const Vector2& point, qreal angle);
-        Vector2 rotated_around(const Vector2& point, qreal angle) const;
+        void rotate_around(const QPointF& point, qreal angle);
+        Vector2 rotated_around(const QPointF& point, qreal angle) const;
 
         qreal length() const;
         qreal length_squared() const;

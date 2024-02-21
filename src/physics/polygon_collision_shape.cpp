@@ -9,12 +9,7 @@ void PolygonCollisionShape::translate(const Vector2& translate_vector) {
 }
 
 
-void PolygonCollisionShape::rotate(qreal angle) {
-	// TODO
-}
-
-
-void PolygonCollisionShape::rotate_around(const Vector2& pivot, qreal angle) {
+void PolygonCollisionShape::rotate_around(const QPointF& pivot, qreal angle) {
 	// TODO
 }
 

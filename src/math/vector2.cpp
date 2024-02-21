@@ -57,14 +57,14 @@ Vector2 Vector2::rotated(qreal angle) const {
 }
 
 
-void Vector2::rotate_around(const Vector2& point, qreal angle) {
+void Vector2::rotate_around(const QPointF& point, qreal angle) {
 	QPointF rotated = point + Vector2(*this - point).rotated(angle);
 	this->setX(rotated.x());
 	this->setY(rotated.y());
 }
 
 
-Vector2 Vector2::rotated_around(const Vector2& point, qreal angle) const {
+Vector2 Vector2::rotated_around(const QPointF& point, qreal angle) const {
 	Vector2 v = Vector2(*this);
 	v.rotate_around(point, angle);
 	return v;
