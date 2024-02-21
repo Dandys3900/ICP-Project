@@ -8,55 +8,64 @@ SAT collision detection (Separating Axis Theorem)
 // bool CollisionShape::is_colliding(const CollisionShape& other_shape) const {}
 
 
-QVector<Vector2> CollisionShape::get_normals(const QVector<Vector2>& verticies) {
-	QVector<Vector2> normals;
+// QVector<Vector2> CollisionShape::get_normals(const QVector<Vector2>& verticies) {
+// 	QVector<Vector2> normals;
 
-	// calculate normals for every edge
-	for (quint8 i = 0; i < verticies.size(); i++) {
-		normals.push_back(Vector2(verticies[(i + 1) % verticies.size()] - verticies[i]).normal());
-	}
+// 	// calculate normals for every edge
+// 	for (quint8 i = 0; i < verticies.size(); i++) {
+// 		normals.push_back(Vector2(verticies[(i + 1) % verticies.size()] - verticies[i]).normal().normalized());
+// 	}
 	
-	return normals;
-}
+// 	return normals;
+// }
 
 
 // TODO
 // get closest point to the circle origin and use vector between the two as a normal
 // https://www.youtube.com/watch?v=59BTXB-kFNs
-Vector2 CollisionShape::get_circle_normal(const Vector2& circle_center, const QVector<Vector2>& other_shape_verticies) {
-	quint8 closest_vertex_index = 0;
-	// we just need the closest distance and not the exact one
-	qreal closest_vertex_distance_squared = circle_center.length_squared_to(other_shape_verticies[closest_vertex_index]);
+// Vector2 CollisionShape::get_circle_normal(const Vector2& circle_center, const QVector<Vector2>& other_shape_verticies) {
+// 	quint8 closest_vertex_index = 0;
+// 	// we just need the closest distance and not the exact one
+// 	qreal closest_vertex_distance_squared = circle_center.length_squared_to(other_shape_verticies[closest_vertex_index]);
 
-	// got trough all the verticies and find the closest one
-	for (quint8 i = 1; i < other_shape_verticies.size(); i++) {
-		qreal vertex_distance_squared = circle_center.length_squared_to(other_shape_verticies[i]);
+// 	// got trough all the verticies and find the closest one
+// 	for (quint8 i = 1; i < other_shape_verticies.size(); i++) {
+// 		qreal vertex_distance_squared = circle_center.length_squared_to(other_shape_verticies[i]);
 
-		if (vertex_distance_squared > closest_vertex_distance_squared) {
-			closest_vertex_distance_squared = vertex_distance_squared;
-			closest_vertex_index = i;
-		}
-	}
+// 		if (vertex_distance_squared > closest_vertex_distance_squared) {
+// 			closest_vertex_distance_squared = vertex_distance_squared;
+// 			closest_vertex_index = i;
+// 		}
+// 	}
 
-	// use the vector between the circle center and the closest vertex as the circles sole normal
-	return Vector2(other_shape_verticies[closest_vertex_index] - circle_center);
-}
+// 	// use the vector between the circle center and the closest vertex as the circles sole normal
+// 	return Vector2(other_shape_verticies[closest_vertex_index] - circle_center);
+// }
 
 
-void CollisionShape::project_verticies_to_axis(const QVector<Vector2>& verticies, const Vector2& axis, qreal* min, qreal* max) {
-	qreal vertex_projection = Vector2::dotProduct(verticies[0], axis);
-	*min = vertex_projection;
-	*max = vertex_projection;
+// void CollisionShape::project_verticies_to_axis(const QVector<Vector2>& verticies, const Vector2& axis, qreal* min, qreal* max) {
+// 	qreal vertex_projection = Vector2::dotProduct(verticies[0], axis);
+// 	*min = vertex_projection;
+// 	*max = vertex_projection;
 
-	for (quint8 i = 1; i < verticies.size(); i++) {
-		vertex_projection = Vector2::dotProduct(verticies[i], axis);
-		if (vertex_projection < *min) {
-			*min = vertex_projection;
-		}
-		if (vertex_projection > *max) {
-			*max = vertex_projection;
-		}
-	}
+// 	for (quint8 i = 1; i < verticies.size(); i++) {
+// 		vertex_projection = Vector2::dotProduct(verticies[i], axis);
+// 		if (vertex_projection < *min) {
+// 			*min = vertex_projection;
+// 		}
+// 		if (vertex_projection > *max) {
+// 			*max = vertex_projection;
+// 		}
+// 	}
+// }
+
+
+
+
+
+
+bool is_colliding_with(const CollisionShape& other_shape) {
+	
 }
 
 

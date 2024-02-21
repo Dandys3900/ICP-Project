@@ -12,6 +12,8 @@ class Vector2 : public QPointF {
         Vector2(const Vector2& v);
         Vector2(const QPointF& qp);
 
+        Vector2 normal() const;
+
         void normalize();
         Vector2 normalized() const;
 
