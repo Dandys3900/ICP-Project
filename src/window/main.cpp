@@ -1,8 +1,8 @@
-#include "includes/libs_file.h"
+#include "src/includes/libs_file.h"
 
-#include "scene/robot.h"
-#include "scene/obstacle.h"
-#include "scene/playground.h"
+#include "src/scene/robot.h"
+#include "src/scene/obstacle.h"
+#include "src/scene/playground.h"
 
 /**
  * @brief Main file for starting the simulator by creating
@@ -39,8 +39,6 @@ int main(int argc, char *argv[])
     QGraphicsView* view = new QGraphicsView();
     // Set title
     view->setWindowTitle("ICP 2023/2024 Project");
-    // Set fixed size for view
-    view->setFixedSize(WINDOW_WIDTH + BORDER_WIDTH * 2, WINDOW_HEIGHT + BORDER_WIDTH * 2);
     // Add scene to the view
     view->setScene(scene);
     // Set view visible

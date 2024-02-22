@@ -7,8 +7,7 @@
                 "C:/Qt/6.6.1/mingw_64/include**",
                 "C:/Qt/6.6.1/mingw_64/include/QtWidgets",
                 "C:/Qt/6.6.1/mingw_64/include/QtCore",
-                "C:/Qt/6.6.1/mingw_64/include/QtGui",
-                "${workspaceFolder}/Headers"
+                "C:/Qt/6.6.1/mingw_64/include/QtGui"
             ],
             "defines": [
                 "_DEBUG",

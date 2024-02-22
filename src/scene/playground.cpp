@@ -1,4 +1,4 @@
-#include "scene/playground.h"
+#include "playground.h"
 
 PlayGround::PlayGround (const qreal width, const qreal height, QGraphicsScene* scene)
     : mp_size                (width, height),
@@ -140,4 +140,24 @@ void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
         // Distribute mouse move event to focused (active) object
         mp_active_obj->mousePressEvent(event);
     }
+}
+
+void PlayGround::store_scene () {
+    // Open config file
+    QFile conf_file(CONFIG_FILE);
+    if (!conf_file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to open configuration file for writing:" << conf_file.errorString();
+        return;
+    }
+
+    // Array of JSON objects from each scene obj
+    QJsonArray objs_data_arr;
+    for (size_t pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
+        objs_data_arr.append(mp_scene_objs_vec.at(pos)->get_obj_data());
+    }
+
+    // Store to file
+    QJsonDocument doc(objs_data_arr);
+    conf_file.write(doc.toJson());
+    conf_file.close();
 }

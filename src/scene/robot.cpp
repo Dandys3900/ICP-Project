@@ -1,20 +1,39 @@
-#include "scene/robot.h"
+#include "robot.h"
 
-Robot::Robot (const qreal size, const qreal coords_x, const qreal coords_y, PlayGround* playground)
-    : mp_coords     (coords_x, coords_y),
-      mp_diameter   (size),
-      mp_rotation   (0),
+Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGround* playground)
+    : SceneObject(Vector2(coord_x, coord_y)),
       mp_type       ("Robot"),
-      mp_obj_action (NO_ACTION),
+      mp_diameter   (size),
+      mp_id         (ConfigManager::generate_id()),
       mp_playground (playground),
-      mp_arrow      (nullptr),
-      mp_is_active  (false)
+      mp_arrow      (nullptr)
 {
+    constructor_actions();
+}
+
+Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
+    : Robot(size, coords.x(), coords.y(), playground)
+{
+}
+
+Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, Action action, bool active, Qt::GlobalColor color, PlayGround* playground)
+    : SceneObject(coords, rotation, action, active, color),
+      mp_type       ("Robot"),
+      mp_diameter   (size),
+      mp_id         (ConfigManager::generate_id()),
+      mp_playground (playground),
+      mp_arrow      (nullptr)
+{
+    constructor_actions();
+}
+
+void Robot::constructor_actions() {
     // Set ellipsis properties
     this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
 
     // Make Robot moveable (able to receive mouse events)
-    this->setFlag(QGraphicsItem::ItemIsSelectable);
+    //this->setFlag(QGraphicsItem::ItemIsSelectable);
+    this->setFlag(QGraphicsItem::ItemIsMovable);
 
     // Prepare vector of points from which polygon will be created
     QVector<QPointF> points_arr;
@@ -33,15 +52,10 @@ Robot::Robot (const qreal size, const qreal coords_x, const qreal coords_y, Play
     // Create arrow showing current rotation
     mp_arrow = new QGraphicsPolygonItem(QPolygonF(points_arr));
     mp_arrow->setPos(mp_coords.x() + (mp_diameter / 2), mp_coords.y() + (mp_diameter / 2) - ARROW_LENGTH);
-    mp_arrow->setRotation(mp_rotation); // mp_rotation == 0
+    mp_arrow->setRotation(mp_rotation);
 
     // Set correct rotation origin
     mp_arrow->setTransformOriginPoint(QPointF(0, ARROW_LENGTH));
-}
-
-Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
-    : Robot(size, coords.x(), coords.y(), playground)
-{
 }
 
 Robot::~Robot () {
@@ -61,17 +75,17 @@ QGraphicsPolygonItem* Robot::get_robot_arrow () {
 }
 
 void Robot::set_active (bool active, Action action) {
-    Qt::GlobalColor color = Qt::black;
-    mp_is_active          = active;
-    mp_obj_action         = action;
+    mp_color      = Qt::black;
+    mp_is_active  = active;
+    mp_obj_action = action;
 
     if (active) {
         if (action == MOVE_ACTION)
             // Focused and moving -> red
-            color = Qt::red;
+            mp_color = Qt::red;
     }
 
-    QPen pen(color);
+    QPen pen(mp_color);
     // Apply new color
     this->setPen(pen);
     this->mp_arrow->setPen(pen);
@@ -155,4 +169,11 @@ void Robot::move_forward () {
     qreal dy = 10 * qSin(rads);
 
     set_obj_pos(QPointF((get_pos().x() + dx), (get_pos().y() - dy)));
+}
+
+QJsonObject Robot::get_obj_data () {
+    QJsonObject conf_data = SceneObject::get_obj_data();
+    conf_data["obj_type"] = mp_type;
+    conf_data["diameter"] = mp_diameter;
+    return conf_data;
 }

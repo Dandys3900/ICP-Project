@@ -1,14 +1,31 @@
-#include "scene/obstacle.h"
+#include "obstacle.h"
 
 Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, const qreal coord_y, PlayGround* playground)
-    : mp_size       (width, height),
-      mp_coords     (coord_x, coord_y),
-      mp_rotation   (0),
+    : SceneObject(Vector2(coord_x, coord_y)),
       mp_type       ("Obstacle"),
-      mp_obj_action (NO_ACTION),
-      mp_playground (playground),
-      mp_is_active  (false)
+      mp_size       (width, height),
+      mp_id         (ConfigManager::generate_id()),
+      mp_playground (playground)
 {
+    constructor_actions();
+}
+
+Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* playground)
+    : Obstacle(size.x(), size.y(), coords.x(), coords.y(), playground)
+{
+}
+
+Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, Action action, bool active, Qt::GlobalColor color, PlayGround* playground)
+    : SceneObject(coords, rotation, action, active, color),
+      mp_type       ("Obstacle"),
+      mp_size       (size),
+      mp_id         (ConfigManager::generate_id()),
+      mp_playground (playground)
+{
+    constructor_actions();
+}
+
+void Obstacle::constructor_actions () {
     this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
     // Make Obstacle moveable (able to receive mouse events)
@@ -16,11 +33,6 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, 
 
     // Set rotation origin
     this->setTransformOriginPoint(QPointF(mp_coords.x() + (mp_size.x() / 2), mp_coords.y() + (mp_size.y() / 2)));
-}
-
-Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* playground)
-    : Obstacle(size.x(), size.y(), coords.x(), coords.y(), playground)
-{
 }
 
 Obstacle::~Obstacle () {
@@ -48,20 +60,20 @@ void Obstacle::set_obj_pos (const QPointF pos) {
 }
 
 void Obstacle::set_active (bool active, Action action) {
-    Qt::GlobalColor color = Qt::black;
-    mp_obj_action         = action;
-    mp_is_active          = active;
+    mp_color      = Qt::black;
+    mp_obj_action = action;
+    mp_is_active  = active;
 
     if (active) {
         if (action == RESIZE_ACTION)
             // Focused and resizing -> blue
-            color = Qt::blue;
+            mp_color = Qt::blue;
         else
             // Focused and moving -> red
-            color = Qt::red;
+            mp_color = Qt::red;
     }
 
-    QPen pen(color);
+    QPen pen(mp_color);
     // Apply new color
     this->setPen(pen);
 }
@@ -149,4 +161,13 @@ void Obstacle::do_rotation (const qreal angle) {
     mp_rotation += angle;
     // Rotate obstacle
     this->setRotation(mp_rotation);
+}
+
+QJsonObject Obstacle::get_obj_data () {
+    QJsonObject conf_data = SceneObject::get_obj_data();
+    conf_data["obj_type"] = mp_type;
+    conf_data["obj_id"] = (int)mp_id;
+    conf_data["size_x"] = mp_size.x();
+    conf_data["size_y"] = mp_size.y();
+    return conf_data;
 }

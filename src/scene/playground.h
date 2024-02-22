@@ -1,14 +1,14 @@
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
-#include "scene/robot.h"
-#include "scene/obstacle.h"
+#include "robot.h"
+#include "obstacle.h"
 
 class PlayGround : public QGraphicsRectItem {
     private:
         /* mp_size.x() ... width
            mp_size.y() ... height */
-        Vector2 mp_size;
+        class Vector2 mp_size;
 
         // Vector for storing instancies of Robots and Obstacles
         QVector<SceneObject*> mp_scene_objs_vec;
@@ -18,7 +18,7 @@ class PlayGround : public QGraphicsRectItem {
         class QGraphicsScene* mp_scene;
         class SceneObject*    mp_active_obj;
 
-        enum Action mp_cur_action;
+        Action mp_cur_action;
 
     public:
         PlayGround (const qreal width,
@@ -40,6 +40,8 @@ class PlayGround : public QGraphicsRectItem {
         void disable_focus ();
 
         QPointF get_active_obj_orig_pos ();
+
+        void store_scene ();
 
         // Events - handling
         void keyPressEvent (QKeyEvent* event) override;
