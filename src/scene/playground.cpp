@@ -143,7 +143,7 @@ void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 }
 
 void PlayGround::store_scene () {
-    // Open config file
+    // Open configman file
     QFile conf_file(CONFIG_FILE);
     if (!conf_file.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open configuration file for writing:" << conf_file.errorString();

@@ -32,8 +32,7 @@ void Robot::constructor_actions() {
     this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
 
     // Make Robot moveable (able to receive mouse events)
-    //this->setFlag(QGraphicsItem::ItemIsSelectable);
-    this->setFlag(QGraphicsItem::ItemIsMovable);
+    this->setFlag(QGraphicsItem::ItemIsSelectable);
 
     // Prepare vector of points from which polygon will be created
     QVector<QPointF> points_arr;

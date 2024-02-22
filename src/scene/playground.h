@@ -8,17 +8,17 @@ class PlayGround : public QGraphicsRectItem {
     private:
         /* mp_size.x() ... width
            mp_size.y() ... height */
-        class Vector2 mp_size;
+        Vector2 mp_size;
 
         // Vector for storing instancies of Robots and Obstacles
         QVector<SceneObject*> mp_scene_objs_vec;
 
         QPointF mp_active_obj_orig_pos;
 
-        class QGraphicsScene* mp_scene;
+        QGraphicsScene* mp_scene;
         class SceneObject*    mp_active_obj;
 
-        Action mp_cur_action;
+        enum Action mp_cur_action;
 
     public:
         PlayGround (const qreal width,

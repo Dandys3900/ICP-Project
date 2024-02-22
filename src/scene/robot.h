@@ -12,7 +12,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         const size_t mp_id;
 
         class PlayGround*           mp_playground;
-        class QGraphicsPolygonItem* mp_arrow;
+        QGraphicsPolygonItem* mp_arrow;
 
         void constructor_actions ();
         void do_rotation (const qreal angle);

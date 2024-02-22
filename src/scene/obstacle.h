@@ -11,7 +11,7 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
 
         /* mp_size.x() ... width
            mp_size.y() ... height */
-        class Vector2 mp_size;
+        Vector2 mp_size;
         const size_t mp_id;
 
         Action mp_obj_action;

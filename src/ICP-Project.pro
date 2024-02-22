@@ -18,7 +18,7 @@ SOURCES += window/main.cpp \
            scene/obstacle.cpp \
            scene/robot.cpp \
            math/vector2.cpp \
-           config/config_manager.cpp
+           configman/config_manager.cpp
 
 HEADERS += window/main_window.h \
            includes/libs_file.h \
@@ -27,6 +27,6 @@ HEADERS += window/main_window.h \
            scene/obstacle.h \
            scene/robot.h \
            math/vector2.h \
-           config/config_manager.h
+           configman/config_manager.h
 
 FORMS   += forms/main_window.ui
