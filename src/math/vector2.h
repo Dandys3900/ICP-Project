@@ -2,7 +2,7 @@
 #define VECTOR2_H
 
 
-#include "src/includes/libs_file.h"
+#include "includes/libs_file.h"
 
 
 class Vector2 : public QPointF {

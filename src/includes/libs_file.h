@@ -32,8 +32,8 @@
 
 #include <iterator>
 
-#include "src/math/vector2.h"
-#include "src/config/config_manager.h"
+#include "math/vector2.h"
+#include "config/config_manager.h"
 
 /***** OTHERS *****/
 enum Action : int {

@@ -1,9 +1,9 @@
 #ifndef OBSTACLE_H
 #define OBSTACLE_H
 
-#include "src/includes/libs_file.h"
-#include "scene_object.h"
-#include "playground.h"
+#include "includes/libs_file.h"
+#include "scene/scene_object.h"
+#include "scene/playground.h"
 
 class Obstacle : public SceneObject, public QGraphicsRectItem {
     private:

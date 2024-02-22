@@ -1,8 +1,8 @@
 #ifndef CONFIG_MANAGER_H
 #define CONFIG_MANAGER_H
 
-#include "src/includes/libs_file.h"
-#include "src/scene/playground.h"
+#include "includes/libs_file.h"
+#include "scene/playground.h"
 
 class ConfigManager {
     public:

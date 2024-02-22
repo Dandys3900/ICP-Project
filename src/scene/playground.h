@@ -1,8 +1,8 @@
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
-#include "robot.h"
-#include "obstacle.h"
+#include "scene/robot.h"
+#include "scene/obstacle.h"
 
 class PlayGround : public QGraphicsRectItem {
     private:

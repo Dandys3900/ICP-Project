@@ -1,11 +1,11 @@
 #ifndef SCENEOBJECT_H
 #define SCENEOBJECT_H
 
-#include "src/includes/libs_file.h"
+#include "includes/libs_file.h"
 
 class SceneObject {
     public:
-        SceneObject (const class Vector2& coords) :
+        SceneObject (const Vector2& coords) :
             mp_coords     (coords),
             mp_rotation   (0),
             mp_obj_action (NO_ACTION),
@@ -34,12 +34,12 @@ class SceneObject {
         // Fill this generic values
         virtual QJsonObject get_obj_data () {
             QJsonObject conf_data;
-            conf_data["coord_x"] = this->mp_coords.x();
-            conf_data["coord_y"] = this->mp_coords.y();
-            conf_data["rotation"] = this->mp_rotation;
-            conf_data["action"] = this->mp_obj_action;
-            conf_data["active"] = ((this->mp_is_active) ? "true" : "false");
-            conf_data["color"] = this->mp_color;
+            conf_data["coord_x"] = mp_coords.x();
+            conf_data["coord_y"] = mp_coords.y();
+            conf_data["rotation"] = mp_rotation;
+            conf_data["action"] = mp_obj_action;
+            conf_data["active"] = ((mp_is_active) ? "true" : "false");
+            conf_data["color"] = mp_color;
 
             return conf_data;
         }
@@ -49,7 +49,7 @@ class SceneObject {
         virtual void mouseMoveEvent (QGraphicsSceneMouseEvent *event)  = 0;
 
     protected:
-        Vector2 mp_coords;
+        class Vector2 mp_coords;
         qreal mp_rotation;
         Action mp_obj_action;
         bool mp_is_active;

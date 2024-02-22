@@ -1,8 +1,8 @@
-#include "src/includes/libs_file.h"
+#include "includes/libs_file.h"
 
-#include "src/scene/robot.h"
-#include "src/scene/obstacle.h"
-#include "src/scene/playground.h"
+#include "scene/robot.h"
+#include "scene/obstacle.h"
+#include "scene/playground.h"
 
 /**
  * @brief Main file for starting the simulator by creating
