@@ -55,6 +55,8 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
         void keyPressEvent (QKeyEvent* event) override;
         void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
+        void hoverEnterEvent (QGraphicsSceneHoverEvent *event) override;
+        void hoverLeaveEvent (QGraphicsSceneHoverEvent *event) override;
 };
 
 #endif // OBSTACLE_H

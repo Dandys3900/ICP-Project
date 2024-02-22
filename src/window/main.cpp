@@ -1,8 +1,7 @@
-#include "includes/libs_file.h"
-
 #include "scene/robot.h"
 #include "scene/obstacle.h"
 #include "scene/playground.h"
+#include "custom_view.h"
 
 /**
  * @brief Main file for starting the simulator by creating

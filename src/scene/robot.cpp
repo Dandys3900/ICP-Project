@@ -52,6 +52,14 @@ void Robot::constructor_actions() {
 
     // Set correct rotation origin
     mp_arrow->setTransformOriginPoint(QPointF(0, ARROW_LENGTH));
+
+    // Allow hover events
+    this->setAcceptHoverEvents(true);
+
+    // White background
+    setBrush(QBrush(Qt::white));
+
+    set_active(this->mp_is_active, this->mp_obj_action);
 }
 
 Robot::~Robot () {
@@ -148,6 +156,16 @@ void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
     if (mp_is_active) {
         this->set_obj_pos(event->pos());
     }
+}
+
+void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent *event) {
+    setBrush(QBrush(QColor(245, 245, 245)));
+}
+
+void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent *event) {
+    setBrush(QBrush(Qt::white));
+    if (mp_obj_action == NO_ACTION)
+        this->mp_arrow->setPen(QPen(Qt::black));
 }
 
 void Robot::do_rotation (const qreal angle) {

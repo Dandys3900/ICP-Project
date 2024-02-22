@@ -30,6 +30,11 @@ void Obstacle::constructor_actions () {
 
     // Set rotation origin
     this->setTransformOriginPoint(QPointF(mp_coords.x() + (mp_size.x() / 2), mp_coords.y() + (mp_size.y() / 2)));
+
+    // Allow hover events
+    this->setAcceptHoverEvents(true);
+
+    set_active(this->mp_is_active, this->mp_obj_action);
 }
 
 Obstacle::~Obstacle () {
@@ -152,6 +157,14 @@ void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
     if (event->button() == Qt::MouseButton::RightButton) {
         mp_playground->remove_scene_obj(this);
     }
+}
+
+void Obstacle::hoverEnterEvent (QGraphicsSceneHoverEvent *event) {
+    setBrush(QBrush(QColor(245, 245, 245)));
+}
+
+void Obstacle::hoverLeaveEvent (QGraphicsSceneHoverEvent *event) {
+    setBrush(QBrush(Qt::white));
 }
 
 void Obstacle::do_rotation (const qreal angle) {

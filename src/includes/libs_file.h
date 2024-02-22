@@ -16,6 +16,8 @@
 #include <QString>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneResizeEvent>
+#include <QGraphicsSceneHoverEvent>
 #include <QKeyEvent>
 #include <QPointF>
 #include <QGraphicsEllipseItem>
@@ -29,6 +31,7 @@
 #include <QJsonArray>
 #include <QFile>
 #include <QDebug>
+#include <QBrush>
 
 #include <iterator>
 
