@@ -5,7 +5,7 @@
 #define ARROW_LENGTH 75
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
-#define BORDER_WIDTH 104
+#define BORDER_WIDTH 10
 #define RAND_MAX_VAL 10000
 #define CONFIG_FILE "config_file"
 
@@ -33,7 +33,6 @@
 #include <iterator>
 
 #include "math/vector2.h"
-#include "config/config_manager.h"
 
 /***** OTHERS *****/
 enum Action : int {

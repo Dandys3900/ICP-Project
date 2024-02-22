@@ -4,7 +4,7 @@ Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGr
     : SceneObject(Vector2(coord_x, coord_y)),
       mp_type       ("Robot"),
       mp_diameter   (size),
-      mp_id         (ConfigManager::generate_id()),
+      mp_id         (playground->generate_id()),
       mp_playground (playground),
       mp_arrow      (nullptr)
 {
@@ -20,7 +20,7 @@ Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, Action ac
     : SceneObject(coords, rotation, action, active, color),
       mp_type       ("Robot"),
       mp_diameter   (size),
-      mp_id         (ConfigManager::generate_id()),
+      mp_id         (playground->generate_id()),
       mp_playground (playground),
       mp_arrow      (nullptr)
 {
@@ -30,9 +30,6 @@ Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, Action ac
 void Robot::constructor_actions() {
     // Set ellipsis properties
     this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
-
-    // Make Robot moveable (able to receive mouse events)
-    this->setFlag(QGraphicsItem::ItemIsSelectable);
 
     // Prepare vector of points from which polygon will be created
     QVector<QPointF> points_arr;

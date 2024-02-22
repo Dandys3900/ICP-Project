@@ -4,7 +4,7 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, 
     : SceneObject(Vector2(coord_x, coord_y)),
       mp_type       ("Obstacle"),
       mp_size       (width, height),
-      mp_id         (ConfigManager::generate_id()),
+      mp_id         (playground->generate_id()),
       mp_playground (playground)
 {
     constructor_actions();
@@ -19,7 +19,7 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, 
     : SceneObject(coords, rotation, action, active, color),
       mp_type       ("Obstacle"),
       mp_size       (size),
-      mp_id         (ConfigManager::generate_id()),
+      mp_id         (playground->generate_id()),
       mp_playground (playground)
 {
     constructor_actions();
@@ -27,9 +27,6 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, 
 
 void Obstacle::constructor_actions () {
     this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
-
-    // Make Obstacle moveable (able to receive mouse events)
-    this->setFlag(QGraphicsItem::ItemIsMovable);
 
     // Set rotation origin
     this->setTransformOriginPoint(QPointF(mp_coords.x() + (mp_size.x() / 2), mp_coords.y() + (mp_size.y() / 2)));
