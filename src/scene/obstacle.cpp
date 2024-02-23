@@ -49,7 +49,7 @@ QPointF Obstacle::get_pos () {
 }
 
 void Obstacle::set_obj_pos (const QPointF pos) {
-    if (scene()->sceneRect().contains(QRectF(pos.x(), pos.y(), mp_size.x(), mp_size.y()))) {
+    if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_size.x(), mp_size.y()))) {
         // If new position is inside current scene, update robot coords
         mp_coords.setX(pos.x());
         mp_coords.setY(pos.y());
@@ -127,8 +127,8 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
             // Resize current obstacle
             // Calculate change
             QPointF posChange;
-            posChange.setX(qFabs(event->pos().x() - this->get_pos().x()));
-            posChange.setY(qFabs(event->pos().y() - this->get_pos().y()));
+            posChange.setX(qFabs(event->pos().x() - mp_coords.x()));
+            posChange.setY(qFabs(event->pos().y() - mp_coords.y()));
 
             // Update obstacle size
             this->mp_size.setX(posChange.x());

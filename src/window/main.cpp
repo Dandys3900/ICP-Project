@@ -19,7 +19,10 @@ int main(int argc, char *argv[])
     scene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Create playground
-    PlayGround* playground = new PlayGround(WINDOW_WIDTH, WINDOW_HEIGHT, scene);
+    PlayGround* playground = new PlayGround(scene);
+
+    // Create view
+    CustView* view = new CustView(scene, playground);
 
     // Create robot
     qreal robot_size = 100;
@@ -34,8 +37,8 @@ int main(int argc, char *argv[])
     // Add obstacle to the playground
     playground->add_scene_obj(obstacle);
 
-    // Create view
-    QGraphicsView* view = new QGraphicsView();
+    // Set borders
+    view->setStyleSheet("border: 5px solid black;");
     // Set title
     view->setWindowTitle("ICP 2023/2024 Project");
     // Add scene to the view

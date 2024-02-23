@@ -11,7 +11,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         QString mp_type;
         const size_t mp_id;
 
-        class PlayGround*           mp_playground;
+        class PlayGround*     mp_playground;
         QGraphicsPolygonItem* mp_arrow;
 
         void constructor_actions ();

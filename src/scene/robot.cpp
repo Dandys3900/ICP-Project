@@ -96,7 +96,7 @@ void Robot::set_active (bool active, Action action) {
 }
 
 void Robot::set_obj_pos (const QPointF pos) {
-    if (scene()->sceneRect().contains(QRectF(pos.x(), pos.y(), mp_diameter, mp_diameter))) {
+    if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_diameter, mp_diameter))) {
         // If new position is inside current scene, update robot coords
         mp_coords.setX(pos.x());
         mp_coords.setY(pos.y());

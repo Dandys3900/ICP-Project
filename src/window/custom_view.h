@@ -4,22 +4,27 @@
 #include "includes/libs_file.h"
 #include "scene/playground.h"
 
-class CustomView : public QGraphicsScene {
+class CustView : public QGraphicsView {
     public:
-        CustomView () {}
-        ~CustomView () {}
+        CustView (QGraphicsScene* scene, QGraphicsRectItem* playground)
+            : QGraphicsView      (scene),
+              mp_playground_rect (playground)
+        {
+        }
+        ~CustView () {
+        }
 
     protected:
         // Override resize event to resize PlayGround rect representing the border
         void resizeEvent (QResizeEvent *event) {
-            // PlayGround rect is added to the scene as the first one
-            if (this->items().size() > 0) {
-                QGraphicsRectItem *rectItem = dynamic_cast<PlayGround*>(this->items().at(0));
-                if (rectItem) {
-                    rectItem->rect().setSize(event->size());
-                }
+            if (mp_playground_rect) {
+                QRectF new_rect = this->mapToScene(this->viewport()->rect()).boundingRect();
+                mp_playground_rect->setRect(new_rect);
             }
         }
+
+    private:
+        QGraphicsRectItem* mp_playground_rect;
 };
 
 #endif // CUSTOM_VIEW_H

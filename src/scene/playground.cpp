@@ -1,33 +1,18 @@
 #include "playground.h"
 
-PlayGround::PlayGround (const qreal width, const qreal height, QGraphicsScene* scene)
-    : mp_size                (width, height),
-      mp_scene_objs_vec      (),
+PlayGround::PlayGround (QGraphicsScene* scene)
+    : mp_scene_objs_vec      (),
       mp_active_obj_orig_pos (),
       mp_scene               (scene),
       mp_active_obj          (nullptr),
       mp_cur_action          (NO_ACTION)
 {
-    this->setRect(0, 0, mp_size.x(), mp_size.y());
-
-    // Create black pen
-    QPen pen(Qt::black);
-    // Set border width
-    pen.setWidth(BORDER_WIDTH);
-    // Add pen to border to make it bolder
-    this->setPen(pen);
-
     // Make PlayGround focusable
     this->setFlag(QGraphicsItem::ItemIsFocusable);
     this->setFocus();
 
     // Add PlayGround to the scene
     mp_scene->addItem(this);
-}
-
-PlayGround::PlayGround (const Vector2& size, QGraphicsScene* scene)
-    : PlayGround(size.x(), size.y(), scene)
-{
 }
 
 PlayGround::~PlayGround () {
