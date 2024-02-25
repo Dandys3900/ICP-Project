@@ -63,8 +63,7 @@ void PlayGround::add_scene_obj (SceneObject* object) {
     else {
         // Cast it to the Obstacle class
         Obstacle* obstacle = dynamic_cast<Obstacle*>(object);
-        if (obstacle) {
-            // Add obstacle
+        if (obstacle) { // Add obstacle
             mp_scene->addItem(obstacle);
         }
     }
@@ -103,8 +102,7 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
     if (mp_active_obj) {
         mp_active_obj->keyPressEvent(event);
     }
-    else {
-        // Robots should receive key presses to move
+    else { // Robots should receive key presses to move
         for (iter = mp_scene_objs_vec.begin(); iter < mp_scene_objs_vec.end(); ++iter) {
             if ((*iter)->get_type() == QString("Robot")) {
                 (*iter)->keyPressEvent(event);
@@ -114,19 +112,18 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
 }
 
 void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    if (mp_active_obj) {
-        // Distribute mouse move event to focused (active) object
+    if (mp_active_obj) { // Distribute mouse move event to focused (active) object
         mp_active_obj->mouseMoveEvent(event);
     }
 }
 
 void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    if (mp_active_obj) {
-        // Distribute mouse move event to focused (active) object
+    if (mp_active_obj) { // Distribute mouse move event to focused (active) object
         mp_active_obj->mousePressEvent(event);
     }
 }
 
+/************ SCENE OBJS IDs ************/
 size_t PlayGround::get_rand_num () {
     // Seed value
 	srand((unsigned) time(NULL));
@@ -137,14 +134,16 @@ size_t PlayGround::generate_id () {
     size_t randNum = get_rand_num();
 
     while (std::find(m_ids_array.begin(), m_ids_array.end(), randNum) != m_ids_array.end()) {
-        // Generate number not present in vector to ensure its uniqueness
+        // Generate number not already present in vector to ensure its uniqueness
         randNum = get_rand_num();
     }
 
+    // Store new id before return
     m_ids_array.push_back(randNum);
     return randNum;
 }
 
+/************ CONFIG STORE/LOAD METHODS ************/
 void PlayGround::store_config () {
     // Open config file
     QFile conf_file(CONFIG_FILE);
@@ -166,6 +165,7 @@ void PlayGround::store_config () {
 }
 
 void PlayGround::load_config () {
+    // List of all JSON objects in file (=> one JSON object for each scene object)
     QList<QJsonObject> obj_config;
 
     // Open files with configuration
@@ -186,7 +186,7 @@ void PlayGround::load_config () {
     }
 
     QJsonArray obj_array = json_doc.array();
-    for (const QJsonValueRef &array_item : obj_array) {
+    for (const QJsonValueRef& array_item : obj_array) {
         QJsonObject scene_obj = array_item.toObject();
         // Create new scene object and place it to scene
         SceneObject* new_obj;

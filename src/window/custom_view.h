@@ -11,6 +11,7 @@ class CustView : public QGraphicsView {
               mp_playground_rect (playground)
         {
         }
+
         ~CustView () {
         }
 

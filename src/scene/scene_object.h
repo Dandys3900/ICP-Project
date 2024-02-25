@@ -31,15 +31,15 @@ class SceneObject {
         virtual void set_obj_pos (QPointF pos)               = 0;
         virtual void set_active (bool active, Action action) = 0;
 
-        // Fill this generic values
+        // Fill generic values for scene objs
         virtual QJsonObject get_obj_data () {
             QJsonObject conf_data;
-            conf_data["coord_x"] = mp_coords.x();
-            conf_data["coord_y"] = mp_coords.y();
+            conf_data["coord_x"]  = mp_coords.x();
+            conf_data["coord_y"]  = mp_coords.y();
             conf_data["rotation"] = mp_rotation;
-            conf_data["action"] = mp_obj_action;
-            conf_data["active"] = ((mp_is_active) ? "true" : "false");
-            conf_data["color"] = mp_color;
+            conf_data["action"]   = mp_obj_action;
+            conf_data["active"]   = ((mp_is_active) ? "true" : "false");
+            conf_data["color"]    = mp_color;
 
             return conf_data;
         }
@@ -51,7 +51,7 @@ class SceneObject {
         virtual void hoverLeaveEvent (QGraphicsSceneHoverEvent *event) = 0;
 
     protected:
-        class Vector2 mp_coords;
+        Vector2 mp_coords;
         qreal mp_rotation;
         Action mp_obj_action;
         bool mp_is_active;

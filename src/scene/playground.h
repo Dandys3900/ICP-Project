@@ -6,7 +6,7 @@
 
 class PlayGround : public QGraphicsRectItem {
     private:
-        // Vector for storing instancies of Robots and Obstacles
+        // Vector for storing instancies of Robots and Obstacles placed to scene
         QVector<SceneObject*> mp_scene_objs_vec;
 
         // Vector for storing generated objects ids
@@ -17,13 +17,12 @@ class PlayGround : public QGraphicsRectItem {
         QGraphicsScene*    mp_scene;
         class SceneObject* mp_active_obj;
 
-        enum Action mp_cur_action;
+        Action mp_cur_action;
 
         size_t get_rand_num ();
 
     public:
         PlayGround (QGraphicsScene* scene);
-
         ~PlayGround ();
 
         // Adding objects to the playground

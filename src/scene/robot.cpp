@@ -59,7 +59,8 @@ void Robot::constructor_actions() {
     // White background
     setBrush(QBrush(Qt::white));
 
-    set_active(this->mp_is_active, this->mp_obj_action);
+    // Set if active or not + color
+    set_active(mp_is_active, mp_obj_action);
 }
 
 Robot::~Robot () {
@@ -84,9 +85,9 @@ void Robot::set_active (bool active, Action action) {
     mp_obj_action = action;
 
     if (active) {
-        if (action == MOVE_ACTION)
-            // Focused and moving -> red
+        if (action == MOVE_ACTION) { // Focused and moving -> red
             mp_color = Qt::red;
+        }
     }
 
     QPen pen(mp_color);
@@ -132,19 +133,16 @@ void Robot::keyPressEvent (QKeyEvent* event) {
 
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
-        if (!mp_is_active) {
-            // Notify PlayGround and get focus
+        if (!mp_is_active) { // Notify PlayGround and get focus
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
-        else {
-            // Lose focus
+        else { // Lose focus
             mp_playground->disable_focus();
         }
     }
 
     if (event->button() == Qt::MouseButton::RightButton) {
-        if (mp_is_active) {
-            // Lose focus and return to previous pos
+        if (mp_is_active) { // Lose focus and return to previous pos
             this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
             mp_playground->disable_focus();
         }
@@ -152,20 +150,21 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 }
 
 void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    // Move robot, if focused
-    if (mp_is_active) {
+    if (mp_is_active) { // Move robot, if focused
         this->set_obj_pos(event->pos());
     }
 }
 
 void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent *event) {
+    // Light grey color
     setBrush(QBrush(QColor(245, 245, 245)));
 }
 
 void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent *event) {
     setBrush(QBrush(Qt::white));
-    if (mp_obj_action == NO_ACTION)
+    if (mp_obj_action == NO_ACTION) {
         this->mp_arrow->setPen(QPen(Qt::black));
+    }
 }
 
 void Robot::do_rotation (const qreal angle) {
@@ -182,11 +181,13 @@ void Robot::move_forward () {
     qreal dx = 10 * qCos(rads);
     qreal dy = 10 * qSin(rads);
 
+    // Update Robot's position according to calculated change
     set_obj_pos(QPointF((get_pos().x() + dx), (get_pos().y() - dy)));
 }
 
 QJsonObject Robot::get_obj_data () {
     QJsonObject conf_data = SceneObject::get_obj_data();
+    conf_data["obj_id"]   = (int)mp_id;
     conf_data["obj_type"] = mp_type;
     conf_data["diameter"] = mp_diameter;
     return conf_data;

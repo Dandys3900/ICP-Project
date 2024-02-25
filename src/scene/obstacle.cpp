@@ -34,7 +34,11 @@ void Obstacle::constructor_actions () {
     // Allow hover events
     this->setAcceptHoverEvents(true);
 
-    set_active(this->mp_is_active, this->mp_obj_action);
+    // Set if active or not + color
+    set_active(mp_is_active, mp_obj_action);
+
+    // Set rotation
+    this->setRotation(mp_rotation);
 }
 
 Obstacle::~Obstacle () {
@@ -67,12 +71,12 @@ void Obstacle::set_active (bool active, Action action) {
     mp_is_active  = active;
 
     if (active) {
-        if (action == RESIZE_ACTION)
-            // Focused and resizing -> blue
+        if (action == RESIZE_ACTION) { // Focused and resizing -> blue
             mp_color = Qt::blue;
-        else
-            // Focused and moving -> red
+        }
+        else { // Focused and moving -> red
             mp_color = Qt::red;
+        }
     }
 
     QPen pen(mp_color);
@@ -82,23 +86,19 @@ void Obstacle::set_active (bool active, Action action) {
 
 void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
-        if (!mp_is_active) {
-            // Notify PlayGround and get focus
+        if (!mp_is_active) { // Notify PlayGround and get focus
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
-        else {
-            // Lose focus
+        else { // Lose focus
             mp_playground->disable_focus();
         }
     }
 
     if (event->button() == Qt::MouseButton::RightButton) {
-        if (!mp_is_active) {
-            // Notify PlayGround and get focus
+        if (!mp_is_active) { // Notify PlayGround and get focus
             mp_playground->set_active_obj(this, RESIZE_ACTION);
         }
-        else {
-            // Lose focus and return to previous pos
+        else { // Lose focus and return to previous pos
             this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
             mp_playground->disable_focus();
         }
@@ -124,8 +124,7 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
     // React to mouse move only if focused
     if (mp_is_active) {
         if (mp_obj_action == RESIZE_ACTION) {
-            // Resize current obstacle
-            // Calculate change
+            // Calculate resize change
             QPointF posChange;
             posChange.setX(qFabs(event->pos().x() - mp_coords.x()));
             posChange.setY(qFabs(event->pos().y() - mp_coords.y()));
@@ -160,6 +159,7 @@ void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
 }
 
 void Obstacle::hoverEnterEvent (QGraphicsSceneHoverEvent *event) {
+    // Light grey color
     setBrush(QBrush(QColor(245, 245, 245)));
 }
 
@@ -176,8 +176,8 @@ void Obstacle::do_rotation (const qreal angle) {
 QJsonObject Obstacle::get_obj_data () {
     QJsonObject conf_data = SceneObject::get_obj_data();
     conf_data["obj_type"] = mp_type;
-    conf_data["obj_id"] = (int)mp_id;
-    conf_data["size_x"] = mp_size.x();
-    conf_data["size_y"] = mp_size.y();
+    conf_data["obj_id"]   = (int)mp_id;
+    conf_data["size_x"]   = mp_size.x();
+    conf_data["size_y"]   = mp_size.y();
     return conf_data;
 }
