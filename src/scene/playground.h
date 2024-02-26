@@ -4,6 +4,12 @@
 #include "scene/robot.h"
 #include "scene/obstacle.h"
 
+// Enum representing desired config file operation
+enum Operation : int {
+    LOAD = 0,
+    STORE
+};
+
 class PlayGround : public QGraphicsRectItem {
     private:
         // Vector for storing instancies of Robots and Obstacles placed to scene
@@ -37,6 +43,7 @@ class PlayGround : public QGraphicsRectItem {
         QPointF get_active_obj_orig_pos ();
 
         // Methods for load/store scene configuration
+        QString get_selected_file (Operation operation);
         void load_config ();
         void store_config ();
 

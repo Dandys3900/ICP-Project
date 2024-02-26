@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     PlayGround* playground = new PlayGround(scene);
 
     // Create view
-    CustView* view = new CustView(scene, playground);
+    CustomView* view = new CustomView(scene, playground);
 
     // Create robot
     qreal robot_size = 100;

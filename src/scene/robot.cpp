@@ -16,8 +16,8 @@ Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
 {
 }
 
-Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, Action action, bool active, Qt::GlobalColor color, PlayGround* playground)
-    : SceneObject(coords, rotation, action, active, color),
+Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, PlayGround* playground)
+    : SceneObject(coords, rotation),
       mp_type       ("Robot"),
       mp_diameter   (size),
       mp_id         (playground->generate_id()),
@@ -58,9 +58,6 @@ void Robot::constructor_actions() {
 
     // White background
     setBrush(QBrush(Qt::white));
-
-    // Set if active or not + color
-    set_active(mp_is_active, mp_obj_action);
 }
 
 Robot::~Robot () {
@@ -155,12 +152,12 @@ void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
     }
 }
 
-void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent *event) {
+void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
     // Light grey color
     setBrush(QBrush(QColor(245, 245, 245)));
 }
 
-void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent *event) {
+void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
     setBrush(QBrush(Qt::white));
     if (mp_obj_action == NO_ACTION) {
         this->mp_arrow->setPen(QPen(Qt::black));

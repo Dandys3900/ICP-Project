@@ -15,8 +15,8 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* play
 {
 }
 
-Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, Action action, bool active, Qt::GlobalColor color, PlayGround* playground)
-    : SceneObject(coords, rotation, action, active, color),
+Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, PlayGround* playground)
+    : SceneObject(coords, rotation),
       mp_type       ("Obstacle"),
       mp_size       (size),
       mp_id         (playground->generate_id()),
@@ -33,9 +33,6 @@ void Obstacle::constructor_actions () {
 
     // Allow hover events
     this->setAcceptHoverEvents(true);
-
-    // Set if active or not + color
-    set_active(mp_is_active, mp_obj_action);
 
     // Set rotation
     this->setRotation(mp_rotation);
@@ -158,12 +155,12 @@ void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
     }
 }
 
-void Obstacle::hoverEnterEvent (QGraphicsSceneHoverEvent *event) {
+void Obstacle::hoverEnterEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
     // Light grey color
     setBrush(QBrush(QColor(245, 245, 245)));
 }
 
-void Obstacle::hoverLeaveEvent (QGraphicsSceneHoverEvent *event) {
+void Obstacle::hoverLeaveEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
     setBrush(QBrush(Qt::white));
 }
 

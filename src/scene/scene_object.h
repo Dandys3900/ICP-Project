@@ -14,12 +14,12 @@ class SceneObject {
         {
         }
 
-        SceneObject (const Vector2& coords, qreal rotation, Action action, bool active, Qt::GlobalColor color) :
+        SceneObject (const Vector2& coords, qreal rotation) :
             mp_coords     (coords),
             mp_rotation   (rotation),
-            mp_obj_action (action),
-            mp_is_active  (active),
-            mp_color      (color)
+            mp_obj_action (NO_ACTION),
+            mp_is_active  (false),
+            mp_color      (Qt::black)
         {
         }
 
@@ -37,9 +37,6 @@ class SceneObject {
             conf_data["coord_x"]  = mp_coords.x();
             conf_data["coord_y"]  = mp_coords.y();
             conf_data["rotation"] = mp_rotation;
-            conf_data["action"]   = mp_obj_action;
-            conf_data["active"]   = ((mp_is_active) ? "true" : "false");
-            conf_data["color"]    = mp_color;
 
             return conf_data;
         }

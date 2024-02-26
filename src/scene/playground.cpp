@@ -144,9 +144,30 @@ size_t PlayGround::generate_id () {
 }
 
 /************ CONFIG STORE/LOAD METHODS ************/
+QString PlayGround::get_selected_file (Operation operation) {
+    // Allow use to choose/create the config file
+    QFileDialog dialog;
+
+    if (operation == LOAD) { // Allow only existing file being selected
+        dialog.setFileMode(QFileDialog::ExistingFile);
+        dialog.setWindowTitle("Select File To Load Configuration From");
+    }
+    else { // operation == STORE -> let user pick/create the file
+        dialog.setFileMode(QFileDialog::AnyFile);
+        dialog.setWindowTitle("Select Where To Store Configuration");
+    }
+
+    // Show the dialog
+    if (dialog.exec()) { // Return selected file name
+        return dialog.selectedFiles().first();
+    } else { // Dialog was canceled - return empty string leading to halting the load/store process
+        return QString("");
+    }
+}
+
 void PlayGround::store_config () {
     // Open config file
-    QFile conf_file(CONFIG_FILE);
+    QFile conf_file(get_selected_file(STORE));
     if (!conf_file.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open configuration file for writing:" << conf_file.errorString();
         return;
@@ -154,7 +175,7 @@ void PlayGround::store_config () {
 
     // Array of JSON objects from each scene obj
     QJsonArray objs_data_arr;
-    for (size_t pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
+    for (qsizetype pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
         objs_data_arr.append(mp_scene_objs_vec.at(pos)->get_obj_data());
     }
 
@@ -168,8 +189,7 @@ void PlayGround::load_config () {
     // List of all JSON objects in file (=> one JSON object for each scene object)
     QList<QJsonObject> obj_config;
 
-    // Open files with configuration
-    QFile conf_file(CONFIG_FILE);
+    QFile conf_file(get_selected_file(LOAD));
     if (!conf_file.open(QIODevice::ReadOnly)) {
         qWarning() << "Failed to open configuration file for writing:" << conf_file.errorString();
         return;
@@ -191,22 +211,43 @@ void PlayGround::load_config () {
         // Create new scene object and place it to scene
         SceneObject* new_obj;
 
-        if (scene_obj["obj_type"].toString() == QString("Robot")) {
-            new_obj = new Robot(scene_obj["diameter"].toInt(),
-                                Vector2(scene_obj["coord_x"].toInt(), scene_obj["coord_y"].toInt()),
-                                scene_obj["rotation"].toDouble(),
-                                (Action)scene_obj["action"].toInt(),
-                                scene_obj["active"].toBool(),
-                                (Qt::GlobalColor)scene_obj["color"].toInt(),
+        // Store object type
+        QString obj_type;
+        if (scene_obj.contains("obj_type")) {
+            obj_type = scene_obj["obj_type"].toString();
+        }
+        else { // If missing -> output error and exit
+            qWarning() << "Missing mandatory JSON value: object type, can't finish the loading procedure";
+            return;
+        }
+
+        // See if loaded config file contains desired values and if not use default ones
+        Vector2 coords(                                    // config value : default value
+            (scene_obj.contains("coord_x")) ? scene_obj["coord_x"].toInt() : 10,
+            (scene_obj.contains("coord_y")) ? scene_obj["coord_y"].toInt() : 10
+        );
+
+        qreal rotation =
+            (scene_obj.contains("rotation")) ? scene_obj["rotation"].toDouble() : 0;
+
+        if (obj_type == QString("Robot")) {
+            size_t diameter =
+                (scene_obj.contains("diameter")) ? scene_obj["diameter"].toInt() : 20;
+
+            new_obj = new Robot(diameter,
+                                coords,
+                                rotation,
                                 this);
         }
         else { // obj_type == Obstacle
-            new_obj = new Obstacle(Vector2(scene_obj["size_x"].toInt(), scene_obj["size_y"].toInt()),
-                                   Vector2(scene_obj["coord_x"].toInt(), scene_obj["coord_y"].toInt()),
-                                   scene_obj["rotation"].toDouble(),
-                                   (Action)scene_obj["action"].toInt(),
-                                   scene_obj["active"].toBool(),
-                                   (Qt::GlobalColor)scene_obj["color"].toInt(),
+            Vector2 size(
+                (scene_obj.contains("size_x")) ? scene_obj["size_x"].toInt() : 10,
+                (scene_obj.contains("size_y")) ? scene_obj["size_y"].toInt() : 10
+            );
+
+            new_obj = new Obstacle(size,
+                                   coords,
+                                   rotation,
                                    this);
         }
         // Add to scene

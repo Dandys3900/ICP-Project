@@ -4,15 +4,15 @@
 #include "includes/libs_file.h"
 #include "scene/playground.h"
 
-class CustView : public QGraphicsView {
+class CustomView : public QGraphicsView {
     public:
-        CustView (QGraphicsScene* scene, QGraphicsRectItem* playground)
+        CustomView (QGraphicsScene* scene, QGraphicsRectItem* playground)
             : QGraphicsView      (scene),
               mp_playground_rect (playground)
         {
         }
 
-        ~CustView () {
+        ~CustomView () {
         }
 
     protected:

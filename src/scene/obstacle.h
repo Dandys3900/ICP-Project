@@ -35,9 +35,6 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         Obstacle (const Vector2& size,
                   const Vector2& coords,
                   qreal rotation,
-                  Action action,
-                  bool active,
-                  Qt::GlobalColor color,
                   PlayGround* playGround);
 
         ~Obstacle ();

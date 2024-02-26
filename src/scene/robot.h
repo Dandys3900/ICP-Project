@@ -31,9 +31,6 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         Robot (const qreal size,
                const Vector2& coords,
                qreal rotation,
-               Action action,
-               bool active,
-               Qt::GlobalColor color,
                PlayGround* playGround);
 
         ~Robot ();

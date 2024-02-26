@@ -7,8 +7,6 @@
 #define WINDOW_HEIGHT 600
 #define BORDER_WIDTH 10
 #define RAND_MAX_VAL 10000
-// Store file to the root directory of the project (originally would be stored to ./build dir)
-#define CONFIG_FILE "../config_file"
 
 /***** LIBS *****/
 #include <QApplication>
@@ -33,6 +31,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QBrush>
+#include <QFileDialog>
 
 #include <iterator>
 
