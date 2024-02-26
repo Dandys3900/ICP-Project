@@ -14,11 +14,27 @@ class PolygonCollisionShape : public CollisionShape {
 		 * An invalid polygon is represended with not verticies.
 		 */
 		QVector<Vector2> verticies; // Should not be handled ONLY by provided methods
+		
+		/*!
+		 * Polyon's imaginary origin around which is everything scaled and rotated.
+		 * If not set, the first vertex is used as origin.
+		 */
+		Vector2 origin;
 
 	public: // methods
-		void translate(const Vector2& translation_vector) override;
+		virtual void set_origin(Vector2 origin) override;
+		
+		virtual Vector2 get_origin() const override;
 
-		void rotate_around(const QPointF& pivot, qreal angle) override;
+		virtual void set_position(Vector2 position) override;
+
+		virtual Vector2 get_position() const override;
+
+		virtual void set_rotation(qreal angle) override;
+
+		virtual qreal get_rotation() const override;
+
+		virtual void scale(qreal scaling_factor) override;
 
 		void project_to_axis(const Vector2& axis, qreal* min, qreal* max) const override;
 

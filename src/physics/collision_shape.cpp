@@ -2,5 +2,21 @@
 
 
 bool is_colliding_with(const CollisionShape& other_shape) {
-	return false;
+	qreal min_this, min_other;
+	qreal max_this, max_other;
+	// get all the interesting normals of the shapes, that can be separation axis
+	QVector<Vector2> axis = this->get_sat_collision_normals(other_shape) + other_shape.get_sat_collision_normals(*this);
+	// check each possible axis, if it is a separating axis
+	for (quint16 i = 0; i < axis.size(); i++) {
+		// project the shapes on the axis
+		this->project_to_axis(axis[i], &min_this, &max_this);
+		other_shape.project_to_axis(axis[i], &min_other, &max_other);
+		// check if the projections intersect
+		if (min_this >= max_other || max_this <= min_other) {
+			return false; // separation axis found
+		}
+	}
+	
+	// no separating axis found => shapes are colliding
+	return true;
 }

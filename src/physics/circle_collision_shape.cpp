@@ -1,20 +1,52 @@
 #include "physics/circle_collision_shape.h"
 
 
-void CircleCollisionShape::translate(const Vector2& translation_vector) {
-	this->center = Vector2(this->center + translation_vector);
+void CircleCollisionShape::set_origin(Vector2 origin) {
+	// Do nothing - the origin is always center
 }
 
 
-void CircleCollisionShape::rotate_around(const QPointF& pivot, qreal angle) {
-	this->center.rotate_around(pivot, angle);
+Vector2 CircleCollisionShape::get_origin() const {
+	return this->center;
+}
+
+
+void CircleCollisionShape::set_position(Vector2 position) {
+	this->center = position;
+}
+
+
+Vector2 CircleCollisionShape::get_position() const {
+	return this->center;
+}
+
+
+void CircleCollisionShape::set_rotation(qreal angle) {
+	this->angle = angle;
+	// Good luck trying to rotate circle around it's center and trying to spot a difference.
+}
+
+
+void CircleCollisionShape::get_rotation() const {
+	return this->angle;
+}
+
+
+void CircleCollisionShape::scale(qreal scaling_factor) {
+	this->radius = this->radius * scaling_factor;
 }
 
 
 void CircleCollisionShape::project_to_axis(const Vector2& axis, qreal* min, qreal* max) const {
-	qreal center_projection = Vector2::dotProduct(this->center, axis);
-	*min = center_projection - this->radius;
-	*max = center_projection + this->radius;
+	qreal point1_projection = Vector2::dotProduct(this->center + (axis * this->radius), axis);
+	qreal point2_projection = Vector2::dotProduct(this->center - (axis * this->radius), axis);
+	if (point1_projection < point2_projection) {
+		*min = point1_projection;
+		*max = point2_projection;
+	} else {
+		*min = point2_projection;
+		*max = point1_projection;
+	}
 }
 
 
