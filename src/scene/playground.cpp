@@ -123,26 +123,6 @@ void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     }
 }
 
-/************ SCENE OBJS IDs ************/
-size_t PlayGround::get_rand_num () {
-    // Seed value
-	srand((unsigned) time(NULL));
-    return (rand() % RAND_MAX_VAL);
-}
-
-size_t PlayGround::generate_id () {
-    size_t randNum = get_rand_num();
-
-    while (std::find(m_ids_array.begin(), m_ids_array.end(), randNum) != m_ids_array.end()) {
-        // Generate number not already present in vector to ensure its uniqueness
-        randNum = get_rand_num();
-    }
-
-    // Store new id before return
-    m_ids_array.push_back(randNum);
-    return randNum;
-}
-
 /************ CONFIG STORE/LOAD METHODS ************/
 QString PlayGround::get_selected_file (Operation operation) {
     // Allow use to choose/create the config file

@@ -9,7 +9,6 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
     private:
         qreal mp_diameter;
         QString mp_type;
-        const size_t mp_id;
 
         class PlayGround*     mp_playground;
         QGraphicsPolygonItem* mp_arrow;

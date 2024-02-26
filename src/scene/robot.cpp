@@ -4,7 +4,6 @@ Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGr
     : SceneObject(Vector2(coord_x, coord_y)),
       mp_type       ("Robot"),
       mp_diameter   (size),
-      mp_id         (playground->generate_id()),
       mp_playground (playground),
       mp_arrow      (nullptr)
 {
@@ -20,7 +19,6 @@ Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, PlayGroun
     : SceneObject(coords, rotation),
       mp_type       ("Robot"),
       mp_diameter   (size),
-      mp_id         (playground->generate_id()),
       mp_playground (playground),
       mp_arrow      (nullptr)
 {
@@ -184,7 +182,6 @@ void Robot::move_forward () {
 
 QJsonObject Robot::get_obj_data () {
     QJsonObject conf_data = SceneObject::get_obj_data();
-    conf_data["obj_id"]   = (int)mp_id;
     conf_data["obj_type"] = mp_type;
     conf_data["diameter"] = mp_diameter;
     return conf_data;

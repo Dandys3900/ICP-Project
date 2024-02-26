@@ -4,7 +4,6 @@ Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, 
     : SceneObject(Vector2(coord_x, coord_y)),
       mp_type       ("Obstacle"),
       mp_size       (width, height),
-      mp_id         (playground->generate_id()),
       mp_playground (playground)
 {
     constructor_actions();
@@ -19,7 +18,6 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, 
     : SceneObject(coords, rotation),
       mp_type       ("Obstacle"),
       mp_size       (size),
-      mp_id         (playground->generate_id()),
       mp_playground (playground)
 {
     constructor_actions();
@@ -173,7 +171,6 @@ void Obstacle::do_rotation (const qreal angle) {
 QJsonObject Obstacle::get_obj_data () {
     QJsonObject conf_data = SceneObject::get_obj_data();
     conf_data["obj_type"] = mp_type;
-    conf_data["obj_id"]   = (int)mp_id;
     conf_data["size_x"]   = mp_size.x();
     conf_data["size_y"]   = mp_size.y();
     return conf_data;

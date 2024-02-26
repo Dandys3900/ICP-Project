@@ -25,8 +25,6 @@ class PlayGround : public QGraphicsRectItem {
 
         Action mp_cur_action;
 
-        size_t get_rand_num ();
-
     public:
         PlayGround (QGraphicsScene* scene);
         ~PlayGround ();
@@ -46,8 +44,6 @@ class PlayGround : public QGraphicsRectItem {
         QString get_selected_file (Operation operation);
         void load_config ();
         void store_config ();
-
-        size_t generate_id ();
 
         // Events - handling
         void keyPressEvent (QKeyEvent* event) override;

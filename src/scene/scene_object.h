@@ -15,12 +15,9 @@ class SceneObject {
         }
 
         SceneObject (const Vector2& coords, qreal rotation) :
-            mp_coords     (coords),
-            mp_rotation   (rotation),
-            mp_obj_action (NO_ACTION),
-            mp_is_active  (false),
-            mp_color      (Qt::black)
+            SceneObject (coords)
         {
+            mp_rotation = rotation;
         }
 
         virtual ~SceneObject () {}
