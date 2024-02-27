@@ -12,6 +12,11 @@ class CircleCollisionShape : public CollisionShape {
 		qreal radius;
 
 	public: // methods
+		CircleCollisionShape(Vector2 position, qreal radius) {
+			this->center = position;
+			this->radius = radius;
+		}
+
 		virtual void set_origin(Vector2 origin) override;
 		
 		virtual Vector2 get_origin() const override;

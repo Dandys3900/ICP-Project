@@ -42,7 +42,7 @@ class CollisionShape {
 		 * @note The origin is differed for every subclass, so keep the differences in mind.
 		 * @note each subclass has to implement this method to it's own specific needs.
 		 */
-		virtual Vector2 get_position() cosnt = 0;
+		virtual Vector2 get_position() const = 0;
 
 		/*!
 		 * Rotates the shape around the shape's "origin" by @param angle.  Also @see get_rotation()

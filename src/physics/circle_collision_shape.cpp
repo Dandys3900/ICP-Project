@@ -27,7 +27,7 @@ void CircleCollisionShape::set_rotation(qreal angle) {
 }
 
 
-void CircleCollisionShape::get_rotation() const {
+qreal CircleCollisionShape::get_rotation() const {
 	return this->angle;
 }
 

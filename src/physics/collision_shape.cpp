@@ -1,11 +1,12 @@
 #include "collision_shape.h"
 
 
-bool is_colliding_with(const CollisionShape& other_shape) {
+bool CollisionShape::is_colliding_with(const CollisionShape& other_shape) {
 	qreal min_this, min_other;
 	qreal max_this, max_other;
 	// get all the interesting normals of the shapes, that can be separation axis
 	QVector<Vector2> axis = this->get_sat_collision_normals(other_shape) + other_shape.get_sat_collision_normals(*this);
+
 	// check each possible axis, if it is a separating axis
 	for (quint16 i = 0; i < axis.size(); i++) {
 		// project the shapes on the axis
@@ -16,7 +17,7 @@ bool is_colliding_with(const CollisionShape& other_shape) {
 			return false; // separation axis found
 		}
 	}
-	
+
 	// no separating axis found => shapes are colliding
 	return true;
 }

@@ -22,6 +22,27 @@ class PolygonCollisionShape : public CollisionShape {
 		Vector2 origin;
 
 	public: // methods
+		PolygonCollisionShape(QVector<Vector2> verticies) {
+			int size = verticies.size();
+			if (size < 3) {
+				throw std::invalid_argument("'verticies' must include at least 3 elements.");
+			}
+			if (size > 256) {
+				throw std::invalid_argument("'verticies' must include at most 256 elements.");
+			}
+
+			this->verticies = verticies;
+			this->origin = verticies[0];
+		}
+		
+		PolygonCollisionShape(QVector<Vector2> verticies, Vector2 origin) : PolygonCollisionShape(verticies) {
+			this->origin = origin;
+		}
+		
+		PolygonCollisionShape(QVector<Vector2> verticies, Vector2 origin, Vector2 position) : PolygonCollisionShape(verticies, origin) {
+			this->set_position(position);
+		}
+
 		virtual void set_origin(Vector2 origin) override;
 		
 		virtual Vector2 get_origin() const override;
