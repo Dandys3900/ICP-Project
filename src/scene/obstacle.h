@@ -7,21 +7,17 @@
 
 class Obstacle : public SceneObject, public QGraphicsRectItem {
     private:
+        QString mp_type;
+
         /* mp_size.x() ... width
            mp_size.y() ... height */
         Vector2 mp_size;
-        Vector2 mp_coords;
-
-        qreal mp_rotation;
-
-        QString mp_type;
 
         Action mp_obj_action;
 
         class PlayGround* mp_playground;
 
-        bool mp_is_active;
-
+        void constructor_actions ();
         void do_rotation (const qreal angle);
 
     public:
@@ -35,6 +31,11 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
                   const Vector2& coords,
                   PlayGround* playground);
 
+        Obstacle (const Vector2& size,
+                  const Vector2& coords,
+                  qreal rotation,
+                  PlayGround* playGround);
+
         ~Obstacle ();
 
         // Implementations of virtual base class methods
@@ -42,6 +43,7 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         QPointF get_pos () override;
         void set_obj_pos (const QPointF pos) override;
         void set_active (bool active, Action action) override;
+        QJsonObject get_obj_data () override;
 
     protected:
         // Events - handling
@@ -49,6 +51,8 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
         void keyPressEvent (QKeyEvent* event) override;
         void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
+        void hoverEnterEvent (QGraphicsSceneHoverEvent *event) override;
+        void hoverLeaveEvent (QGraphicsSceneHoverEvent *event) override;
 };
 
 #endif // OBSTACLE_H

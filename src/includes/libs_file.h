@@ -6,6 +6,7 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define BORDER_WIDTH 10
+#define RAND_MAX_VAL 10000
 
 /***** LIBS *****/
 #include <QApplication>
@@ -14,6 +15,8 @@
 #include <QString>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneResizeEvent>
+#include <QGraphicsSceneHoverEvent>
 #include <QKeyEvent>
 #include <QPointF>
 #include <QGraphicsEllipseItem>
@@ -22,13 +25,20 @@
 #include <QTimer>
 #include <QGraphicsRectItem>
 #include <QMouseEvent>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QFile>
+#include <QDebug>
+#include <QBrush>
+#include <QFileDialog>
 
 #include <iterator>
 
 #include "math/vector2.h"
 
 /***** OTHERS *****/
-enum Action {
+enum Action : int {
     NO_ACTION = 0,
     MOVE_ACTION,
     RESIZE_ACTION

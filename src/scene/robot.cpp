@@ -1,20 +1,33 @@
-#include "scene/robot.h"
+#include "robot.h"
 
-Robot::Robot (const qreal size, const qreal coords_x, const qreal coords_y, PlayGround* playground)
-    : mp_coords     (coords_x, coords_y),
-      mp_diameter   (size),
-      mp_rotation   (0),
+Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGround* playground)
+    : SceneObject(Vector2(coord_x, coord_y)),
       mp_type       ("Robot"),
-      mp_obj_action (NO_ACTION),
+      mp_diameter   (size),
       mp_playground (playground),
-      mp_arrow      (nullptr),
-      mp_is_active  (false)
+      mp_arrow      (nullptr)
 {
+    constructor_actions();
+}
+
+Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
+    : Robot(size, coords.x(), coords.y(), playground)
+{
+}
+
+Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, PlayGround* playground)
+    : SceneObject(coords, rotation),
+      mp_type       ("Robot"),
+      mp_diameter   (size),
+      mp_playground (playground),
+      mp_arrow      (nullptr)
+{
+    constructor_actions();
+}
+
+void Robot::constructor_actions() {
     // Set ellipsis properties
     this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
-
-    // Make Robot moveable (able to receive mouse events)
-    this->setFlag(QGraphicsItem::ItemIsSelectable);
 
     // Prepare vector of points from which polygon will be created
     QVector<QPointF> points_arr;
@@ -33,15 +46,16 @@ Robot::Robot (const qreal size, const qreal coords_x, const qreal coords_y, Play
     // Create arrow showing current rotation
     mp_arrow = new QGraphicsPolygonItem(QPolygonF(points_arr));
     mp_arrow->setPos(mp_coords.x() + (mp_diameter / 2), mp_coords.y() + (mp_diameter / 2) - ARROW_LENGTH);
-    mp_arrow->setRotation(mp_rotation); // mp_rotation == 0
+    mp_arrow->setRotation(mp_rotation);
 
     // Set correct rotation origin
     mp_arrow->setTransformOriginPoint(QPointF(0, ARROW_LENGTH));
-}
 
-Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
-    : Robot(size, coords.x(), coords.y(), playground)
-{
+    // Allow hover events
+    this->setAcceptHoverEvents(true);
+
+    // White background
+    setBrush(QBrush(Qt::white));
 }
 
 Robot::~Robot () {
@@ -61,24 +75,24 @@ QGraphicsPolygonItem* Robot::get_robot_arrow () {
 }
 
 void Robot::set_active (bool active, Action action) {
-    Qt::GlobalColor color = Qt::black;
-    mp_is_active          = active;
-    mp_obj_action         = action;
+    mp_color      = Qt::black;
+    mp_is_active  = active;
+    mp_obj_action = action;
 
     if (active) {
-        if (action == MOVE_ACTION)
-            // Focused and moving -> red
-            color = Qt::red;
+        if (action == MOVE_ACTION) { // Focused and moving -> red
+            mp_color = Qt::red;
+        }
     }
 
-    QPen pen(color);
+    QPen pen(mp_color);
     // Apply new color
     this->setPen(pen);
     this->mp_arrow->setPen(pen);
 }
 
 void Robot::set_obj_pos (const QPointF pos) {
-    if (scene()->sceneRect().contains(QRectF(pos.x(), pos.y(), mp_diameter, mp_diameter))) {
+    if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_diameter, mp_diameter))) {
         // If new position is inside current scene, update robot coords
         mp_coords.setX(pos.x());
         mp_coords.setY(pos.y());
@@ -114,19 +128,16 @@ void Robot::keyPressEvent (QKeyEvent* event) {
 
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
-        if (!mp_is_active) {
-            // Notify PlayGround and get focus
+        if (!mp_is_active) { // Notify PlayGround and get focus
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
-        else {
-            // Lose focus
+        else { // Lose focus
             mp_playground->disable_focus();
         }
     }
 
     if (event->button() == Qt::MouseButton::RightButton) {
-        if (mp_is_active) {
-            // Lose focus and return to previous pos
+        if (mp_is_active) { // Lose focus and return to previous pos
             this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
             mp_playground->disable_focus();
         }
@@ -134,9 +145,20 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 }
 
 void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
-    // Move robot, if focused
-    if (mp_is_active) {
+    if (mp_is_active) { // Move robot, if focused
         this->set_obj_pos(event->pos());
+    }
+}
+
+void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
+    // Light grey color
+    setBrush(QBrush(QColor(245, 245, 245)));
+}
+
+void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
+    setBrush(QBrush(Qt::white));
+    if (mp_obj_action == NO_ACTION) {
+        this->mp_arrow->setPen(QPen(Qt::black));
     }
 }
 
@@ -154,5 +176,13 @@ void Robot::move_forward () {
     qreal dx = 10 * qCos(rads);
     qreal dy = 10 * qSin(rads);
 
+    // Update Robot's position according to calculated change
     set_obj_pos(QPointF((get_pos().x() + dx), (get_pos().y() - dy)));
+}
+
+QJsonObject Robot::get_obj_data () {
+    QJsonObject conf_data = SceneObject::get_obj_data();
+    conf_data["obj_type"] = mp_type;
+    conf_data["diameter"] = mp_diameter;
+    return conf_data;
 }

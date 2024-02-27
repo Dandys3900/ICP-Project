@@ -20,6 +20,7 @@ SOURCES += window/main.cpp \
            math/vector2.cpp
 
 HEADERS += window/main_window.h \
+           window/custom_view.h \
            includes/libs_file.h \
            scene/playground.h \
            scene/scene_object.h \

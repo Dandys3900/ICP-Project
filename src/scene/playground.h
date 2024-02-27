@@ -4,30 +4,29 @@
 #include "scene/robot.h"
 #include "scene/obstacle.h"
 
+// Enum representing desired config file operation
+enum Operation : int {
+    LOAD = 0,
+    STORE
+};
+
 class PlayGround : public QGraphicsRectItem {
     private:
-        /* mp_size.x() ... width
-           mp_size.y() ... height */
-        Vector2 mp_size;
-
-        // Vector for storing instancies of Robots and Obstacles
+        // Vector for storing instancies of Robots and Obstacles placed to scene
         QVector<SceneObject*> mp_scene_objs_vec;
+
+        // Vector for storing generated objects ids
+        QVector<size_t> m_ids_array;
 
         QPointF mp_active_obj_orig_pos;
 
-        class QGraphicsScene* mp_scene;
-        class SceneObject*    mp_active_obj;
+        QGraphicsScene*    mp_scene;
+        class SceneObject* mp_active_obj;
 
-        enum Action mp_cur_action;
+        Action mp_cur_action;
 
     public:
-        PlayGround (const qreal width,
-                    const qreal height,
-                    QGraphicsScene* scene);
-
-        PlayGround (const Vector2& size,
-                    QGraphicsScene* scene);
-
+        PlayGround (QGraphicsScene* scene);
         ~PlayGround ();
 
         // Adding objects to the playground
@@ -40,6 +39,11 @@ class PlayGround : public QGraphicsRectItem {
         void disable_focus ();
 
         QPointF get_active_obj_orig_pos ();
+
+        // Methods for load/store scene configuration
+        QString get_selected_file (Operation operation);
+        void load_config ();
+        void store_config ();
 
         // Events - handling
         void keyPressEvent (QKeyEvent* event) override;

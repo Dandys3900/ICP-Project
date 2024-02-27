@@ -1,8 +1,7 @@
-#include "includes/libs_file.h"
-
 #include "scene/robot.h"
 #include "scene/obstacle.h"
 #include "scene/playground.h"
+#include "custom_view.h"
 
 /**
  * @brief Main file for starting the simulator by creating
@@ -20,7 +19,10 @@ int main(int argc, char *argv[])
     scene->setSceneRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Create playground
-    PlayGround* playground = new PlayGround(WINDOW_WIDTH, WINDOW_HEIGHT, scene);
+    PlayGround* playground = new PlayGround(scene);
+
+    // Create view
+    CustomView* view = new CustomView(scene, playground);
 
     // Create robot
     qreal robot_size = 100;
@@ -35,12 +37,10 @@ int main(int argc, char *argv[])
     // Add obstacle to the playground
     playground->add_scene_obj(obstacle);
 
-    // Create view
-    QGraphicsView* view = new QGraphicsView();
+    // Set borders
+    view->setStyleSheet("border: 5px solid black;");
     // Set title
     view->setWindowTitle("ICP 2023/2024 Project");
-    // Set fixed size for view
-    view->setFixedSize(WINDOW_WIDTH + BORDER_WIDTH * 2, WINDOW_HEIGHT + BORDER_WIDTH * 2);
     // Add scene to the view
     view->setScene(scene);
     // Set view visible
