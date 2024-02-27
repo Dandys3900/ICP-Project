@@ -7,7 +7,7 @@
 
 class RectangeCollisionShape : protected PolygonCollisionShape {
 	public:
-		RectangeCollisionShape(const Vector2& size) {
+		RectangeCollisionShape(const Vector2& size) : PolygonCollisionShape() {
 			this->origin = Vector2();
 			QPointF half_size = size / 2;
 			

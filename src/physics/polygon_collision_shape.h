@@ -62,6 +62,10 @@ class PolygonCollisionShape : public CollisionShape {
 		QVector<Vector2> get_sat_collision_normals(const CollisionShape& other_shape) const override;
 
 		const QVector<Vector2>& get_sat_collision_verticies() const override;
+	
+	protected:
+		// Do nothing constructor for use in derived classes
+		PolygonCollisionShape(){}
 };
 
 
