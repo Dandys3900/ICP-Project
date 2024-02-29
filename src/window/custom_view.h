@@ -5,27 +5,26 @@
 #include "scene/playground.h"
 
 class CustomView : public QGraphicsView {
-    public:
-        CustomView (QGraphicsScene* scene, QGraphicsRectItem* playground)
-            : QGraphicsView      (scene),
-              mp_playground_rect (playground)
-        {
-        }
+    Q_OBJECT
 
-        ~CustomView () {
-        }
+    public:
+        CustomView (QGraphicsScene* scene, PlayGround* playground, QWidget* widget);
+        ~CustomView ();
 
     protected:
         // Override resize event to resize PlayGround rect representing the border
-        void resizeEvent (QResizeEvent *event) {
-            if (mp_playground_rect) {
-                QRectF new_rect = this->mapToScene(this->viewport()->rect()).boundingRect();
-                mp_playground_rect->setRect(new_rect);
-            }
-        }
+        void resizeEvent (QResizeEvent *event) override;
 
     private:
-        QGraphicsRectItem* mp_playground_rect;
+        PlayGround* mp_playground;
+        QWidget* mp_widget;
+
+        void construct_menu_bar ();
+
+    private slots:
+        // Methods for handling menu buttons presses
+        void load_config ();
+        void store_config ();
 };
 
 #endif // CUSTOM_VIEW_H

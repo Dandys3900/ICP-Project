@@ -13,14 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += window/main.cpp \
-           window/main_window.cpp \
+           window/custom_view.cpp \
            scene/playground.cpp \
            scene/obstacle.cpp \
            scene/robot.cpp \
            math/vector2.cpp
 
-HEADERS += window/main_window.h \
-           window/custom_view.h \
+HEADERS += window/custom_view.h \
            includes/libs_file.h \
            scene/playground.h \
            scene/scene_object.h \

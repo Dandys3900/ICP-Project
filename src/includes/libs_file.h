@@ -32,6 +32,10 @@
 #include <QDebug>
 #include <QBrush>
 #include <QFileDialog>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QMainWindow>
 
 #include <iterator>
 

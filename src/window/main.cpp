@@ -13,6 +13,9 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    // Create the main window
+    QMainWindow* main_window = new QMainWindow();
+
     // Create scene
     QGraphicsScene* scene = new QGraphicsScene();
     // Set its initial size
@@ -22,7 +25,7 @@ int main(int argc, char *argv[])
     PlayGround* playground = new PlayGround(scene);
 
     // Create view
-    CustomView* view = new CustomView(scene, playground);
+    CustomView* view = new CustomView(scene, playground, main_window);
 
     // Create robot
     qreal robot_size = 100;
@@ -44,7 +47,10 @@ int main(int argc, char *argv[])
     // Add scene to the view
     view->setScene(scene);
     // Set view visible
-    view->show();
+    //view->show();
+
+    main_window->setCentralWidget(view);
+    main_window->show();
 
     return app.exec();
 }
