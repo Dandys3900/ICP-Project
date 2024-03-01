@@ -17,7 +17,11 @@ SOURCES += window/main.cpp \
            scene/playground.cpp \
            scene/obstacle.cpp \
            scene/robot.cpp \
-           math/vector2.cpp
+           math/vector2.cpp \
+           physics/collision_shape.cpp \
+           physics/circle_collision_shape.cpp \
+           physics/polygon_collision_shape.cpp \
+           physics/rectangle_collision_shape.cpp \
 
 HEADERS += window/main_window.h \
            window/custom_view.h \
@@ -26,6 +30,10 @@ HEADERS += window/main_window.h \
            scene/scene_object.h \
            scene/obstacle.h \
            scene/robot.h \
-           math/vector2.h
+           math/vector2.h \
+           physics/collision_shape.h \
+           physics/circle_collision_shape.h \
+           physics/polygon_collision_shape.h \
+           physics/rectangle_collision_shape.h \
 
 FORMS   += forms/main_window.ui
