@@ -8,7 +8,7 @@ class CustomView : public QGraphicsView {
     Q_OBJECT
 
     public:
-        CustomView (QGraphicsScene* scene, PlayGround* playground, QWidget* widget);
+        CustomView (QGraphicsScene* scene, PlayGround* playground, QWidget* window);
         ~CustomView ();
 
         QMenuBar* get_menu_bar ();
@@ -19,7 +19,7 @@ class CustomView : public QGraphicsView {
 
     private:
         PlayGround* mp_playground;
-        QWidget*    mp_widget;
+        QWidget*    mp_main_window;
         QMenuBar*   mp_menu_bar;
 
         void construct_menu_bar ();

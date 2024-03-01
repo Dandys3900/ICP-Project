@@ -1,10 +1,10 @@
 #include "custom_view.h"
 
-CustomView::CustomView (QGraphicsScene* scene, PlayGround* playground, QWidget* widget)
-    : QGraphicsView (scene, widget),
-      mp_playground (playground),
-      mp_widget     (widget),
-      mp_menu_bar   (nullptr)
+CustomView::CustomView (QGraphicsScene* scene, PlayGround* playground, QWidget* window)
+    : QGraphicsView (scene, window),
+      mp_playground  (playground),
+      mp_main_window (window),
+      mp_menu_bar    (nullptr)
 {
     construct_menu_bar();
 }
@@ -26,7 +26,7 @@ void CustomView::resizeEvent (QResizeEvent* event /*not used*/) {
 
 void CustomView::construct_menu_bar () {
     // Create the menu bar
-    this->mp_menu_bar = new QMenuBar(mp_widget);
+    mp_menu_bar = new QMenuBar(mp_main_window);
 
     // Add "File" menu option
     QMenu *menu_file = mp_menu_bar->addMenu("&File");

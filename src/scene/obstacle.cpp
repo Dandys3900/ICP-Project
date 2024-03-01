@@ -125,8 +125,8 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
             posChange.setY(qFabs(event->pos().y() - mp_coords.y()));
 
             // Update obstacle size
-            this->mp_size.setX(posChange.x());
-            this->mp_size.setY(posChange.y());
+            mp_size.setX(posChange.x());
+            mp_size.setY(posChange.y());
 
             // Update rectangle and rotation origin
             this->set_obj_pos(mp_coords);

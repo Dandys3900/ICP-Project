@@ -36,10 +36,13 @@
 #include <QMenu>
 #include <QAction>
 #include <QMainWindow>
+#include <QLabel>
+#include <QVBoxLayout>
 
 #include <iterator>
 
 #include "math/vector2.h"
+#include "errors/error_popup.h"
 
 /***** OTHERS *****/
 enum Action : int {

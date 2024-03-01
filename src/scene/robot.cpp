@@ -158,7 +158,7 @@ void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
 void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
     setBrush(QBrush(Qt::white));
     if (mp_obj_action == NO_ACTION) {
-        this->mp_arrow->setPen(QPen(Qt::black));
+        mp_arrow->setPen(QPen(Qt::black));
     }
 }
 

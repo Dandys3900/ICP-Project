@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     // Create the main window
-    QMainWindow* main_window = new QMainWindow();
+    QMainWindow* mp_main_window = new QMainWindow();
 
     // Create scene
     QGraphicsScene* scene = new QGraphicsScene();
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     PlayGround* playground = new PlayGround(scene);
 
     // Create view
-    CustomView* view = new CustomView(scene, playground, main_window);
+    CustomView* view = new CustomView(scene, playground, mp_main_window);
     // Set borders
     view->setStyleSheet("border: 5px solid black;");
     // Set title
@@ -46,11 +46,14 @@ int main(int argc, char *argv[])
     playground->add_scene_obj(obstacle);
 
     // Place view to window
-    main_window->setCentralWidget(view);
+    mp_main_window->setCentralWidget(view);
     // Add constructed menu bar to window
-    main_window->setMenuBar(view->get_menu_bar());
+    mp_main_window->setMenuBar(view->get_menu_bar());
     // Show window
-    main_window->show();
+    mp_main_window->show();
+
+    // Init error popup class - must be after main window being shown
+    Error_PopUp err_popup(mp_main_window);
 
     return app.exec();
 }

@@ -17,7 +17,8 @@ SOURCES += window/main.cpp \
            scene/playground.cpp \
            scene/obstacle.cpp \
            scene/robot.cpp \
-           math/vector2.cpp
+           math/vector2.cpp \
+           errors/error_popup.cpp
 
 HEADERS += window/custom_view.h \
            includes/libs_file.h \
@@ -25,6 +26,5 @@ HEADERS += window/custom_view.h \
            scene/scene_object.h \
            scene/obstacle.h \
            scene/robot.h \
-           math/vector2.h
-
-FORMS   += forms/main_window.ui
+           math/vector2.h \
+           errors/error_popup.h
