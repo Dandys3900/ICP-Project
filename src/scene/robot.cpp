@@ -2,8 +2,8 @@
 
 Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGround* playground)
     : SceneObject(Vector2(coord_x, coord_y)),
-      mp_type       ("Robot"),
       mp_diameter   (size),
+      mp_type       ("Robot"),
       mp_playground (playground),
       mp_arrow      (nullptr)
 {
@@ -17,8 +17,8 @@ Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
 
 Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, PlayGround* playground)
     : SceneObject(coords, rotation),
-      mp_type       ("Robot"),
       mp_diameter   (size),
+      mp_type       ("Robot"),
       mp_playground (playground),
       mp_arrow      (nullptr)
 {
@@ -144,18 +144,18 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     }
 }
 
-void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
+void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
     if (mp_is_active) { // Move robot, if focused
         this->set_obj_pos(event->pos());
     }
 }
 
-void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
+void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
     // Light grey color
     setBrush(QBrush(QColor(245, 245, 245)));
 }
 
-void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
+void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
     setBrush(QBrush(Qt::white));
     if (mp_obj_action == NO_ACTION) {
         this->mp_arrow->setPen(QPen(Qt::black));

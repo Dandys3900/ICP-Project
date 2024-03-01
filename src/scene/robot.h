@@ -46,10 +46,10 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
     protected:
         // Events - handling
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
-        void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
+        void mouseMoveEvent (QGraphicsSceneMouseEvent* event) override;
         void keyPressEvent (QKeyEvent* event) override;
-        void hoverEnterEvent (QGraphicsSceneHoverEvent *event) override;
-        void hoverLeaveEvent (QGraphicsSceneHoverEvent *event) override;
+        void hoverEnterEvent (QGraphicsSceneHoverEvent* event) override;
+        void hoverLeaveEvent (QGraphicsSceneHoverEvent* event) override;
 };
 
 #endif // ROBOT_H

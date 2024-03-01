@@ -26,6 +26,12 @@ int main(int argc, char *argv[])
 
     // Create view
     CustomView* view = new CustomView(scene, playground, main_window);
+    // Set borders
+    view->setStyleSheet("border: 5px solid black;");
+    // Set title
+    view->setWindowTitle("ICP 2023/2024 Project");
+    // Add scene to the view
+    view->setScene(scene);
 
     // Create robot
     qreal robot_size = 100;
@@ -36,20 +42,14 @@ int main(int argc, char *argv[])
 
     // Add robot to the playground
     playground->add_scene_obj(robot);
-
     // Add obstacle to the playground
     playground->add_scene_obj(obstacle);
 
-    // Set borders
-    view->setStyleSheet("border: 5px solid black;");
-    // Set title
-    view->setWindowTitle("ICP 2023/2024 Project");
-    // Add scene to the view
-    view->setScene(scene);
-    // Set view visible
-    //view->show();
-
+    // Place view to window
     main_window->setCentralWidget(view);
+    // Add constructed menu bar to window
+    main_window->setMenuBar(view->get_menu_bar());
+    // Show window
     main_window->show();
 
     return app.exec();

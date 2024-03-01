@@ -11,13 +11,16 @@ class CustomView : public QGraphicsView {
         CustomView (QGraphicsScene* scene, PlayGround* playground, QWidget* widget);
         ~CustomView ();
 
+        QMenuBar* get_menu_bar ();
+
     protected:
         // Override resize event to resize PlayGround rect representing the border
         void resizeEvent (QResizeEvent *event) override;
 
     private:
         PlayGround* mp_playground;
-        QWidget* mp_widget;
+        QWidget*    mp_widget;
+        QMenuBar*   mp_menu_bar;
 
         void construct_menu_bar ();
 
