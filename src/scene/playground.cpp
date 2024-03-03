@@ -80,11 +80,8 @@ void PlayGround::remove_scene_obj (SceneObject* object) {
 
     // Found - delete it
     if (iter != mp_scene_objs_vec.end()) {
-        // Remove from scene
-        Obstacle* obstacle = dynamic_cast<Obstacle*>(object);
-        if (obstacle) {
-            mp_scene->removeItem(obstacle);
-        }
+        // Delet found object
+        delete object;
         // Remove from vector as well
         mp_scene_objs_vec.erase(iter);
 
@@ -111,7 +108,7 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
     }
 }
 
-void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
+void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
     if (mp_active_obj) { // Distribute mouse move event to focused (active) object
         mp_active_obj->mouseMoveEvent(event);
     }
@@ -149,7 +146,7 @@ void PlayGround::store_config () {
     // Open config file
     QFile conf_file(get_selected_file(STORE));
     if (!conf_file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Failed to open configuration file for writing:" << conf_file.errorString();
+        Error_PopUp::show_err(QString("Failed to open configuration file for writing: " + conf_file.errorString()));
         return;
     }
 
@@ -166,14 +163,17 @@ void PlayGround::store_config () {
 }
 
 void PlayGround::load_config () {
-    // List of all JSON objects in file (=> one JSON object for each scene object)
-    QList<QJsonObject> obj_config;
-
     QFile conf_file(get_selected_file(LOAD));
     if (!conf_file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Failed to open configuration file for writing:" << conf_file.errorString();
+        Error_PopUp::show_err(QString("Failed to open configuration file for reading: " + conf_file.errorString()));
         return;
     }
+
+    // Clear current scene objects as new one will be created
+    for (SceneObject* obj : this->mp_scene_objs_vec) {
+        delete obj;
+    }
+    mp_scene_objs_vec.clear();
 
     // Parse the file to JSON format
     QJsonParseError parse_error;
@@ -181,7 +181,7 @@ void PlayGround::load_config () {
     conf_file.close();
 
     if (parse_error.error != QJsonParseError::NoError) {
-        qWarning() << "Failed to parse JSON:" << parse_error.errorString();
+        Error_PopUp::show_err(QString("Failed to parse JSON: " + parse_error.errorString()));
         return;
     }
 
@@ -197,14 +197,14 @@ void PlayGround::load_config () {
             obj_type = scene_obj["obj_type"].toString();
         }
         else { // If missing -> output error and exit
-            qWarning() << "Missing mandatory JSON value: object type, can't finish the loading procedure";
+            Error_PopUp::show_err(QString("Missing mandatory JSON value: object type, can't finish the loading procedure"));
             return;
         }
 
         // See if loaded config file contains desired values and if not use default ones
-        Vector2 coords(                                    // config value : default value
-            (scene_obj.contains("coord_x")) ? scene_obj["coord_x"].toInt() : 10,
-            (scene_obj.contains("coord_y")) ? scene_obj["coord_y"].toInt() : 10
+        Vector2 coords(                                       // config value : default value
+            (scene_obj.contains("coord_x")) ? scene_obj["coord_x"].toDouble() : 10,
+            (scene_obj.contains("coord_y")) ? scene_obj["coord_y"].toDouble() : 10
         );
 
         qreal rotation =
@@ -212,7 +212,7 @@ void PlayGround::load_config () {
 
         if (obj_type == QString("Robot")) {
             size_t diameter =
-                (scene_obj.contains("diameter")) ? scene_obj["diameter"].toInt() : 20;
+                (scene_obj.contains("diameter")) ? scene_obj["diameter"].toDouble() : 20;
 
             new_obj = new Robot(diameter,
                                 coords,
@@ -221,8 +221,8 @@ void PlayGround::load_config () {
         }
         else { // obj_type == Obstacle
             Vector2 size(
-                (scene_obj.contains("size_x")) ? scene_obj["size_x"].toInt() : 10,
-                (scene_obj.contains("size_y")) ? scene_obj["size_y"].toInt() : 10
+                (scene_obj.contains("size_x")) ? scene_obj["size_x"].toDouble() : 10,
+                (scene_obj.contains("size_y")) ? scene_obj["size_y"].toDouble() : 10
             );
 
             new_obj = new Obstacle(size,

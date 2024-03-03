@@ -13,6 +13,9 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    // Create the main window
+    QMainWindow* mp_main_window = new QMainWindow();
+
     // Create scene
     QGraphicsScene* scene = new QGraphicsScene();
     // Set its initial size
@@ -22,7 +25,13 @@ int main(int argc, char *argv[])
     PlayGround* playground = new PlayGround(scene);
 
     // Create view
-    CustomView* view = new CustomView(scene, playground);
+    CustomView* view = new CustomView(scene, playground, mp_main_window);
+    // Set borders
+    view->setStyleSheet("border: 5px solid black;");
+    // Set title
+    view->setWindowTitle("ICP 2023/2024 Project");
+    // Add scene to the view
+    view->setScene(scene);
 
     // Create robot
     qreal robot_size = 100;
@@ -33,18 +42,25 @@ int main(int argc, char *argv[])
 
     // Add robot to the playground
     playground->add_scene_obj(robot);
-
     // Add obstacle to the playground
     playground->add_scene_obj(obstacle);
 
-    // Set borders
-    view->setStyleSheet("border: 5px solid black;");
-    // Set title
-    view->setWindowTitle("ICP 2023/2024 Project");
-    // Add scene to the view
-    view->setScene(scene);
-    // Set view visible
-    view->show();
+    // Place view to window
+    mp_main_window->setCentralWidget(view);
+    // Add constructed menu bar to window
+    mp_main_window->setMenuBar(view->get_menu_bar());
+    // Show window
+    mp_main_window->show();
 
-    return app.exec();
+    // Init error popup class - must be after main window being shown
+    Error_PopUp* err_popup = new Error_PopUp(mp_main_window);
+
+    const int app_retval = app.exec();
+
+    // Clean memory allocated by Error_PopUp class
+    Error_PopUp::clean_up();
+    // Avoid double deletion
+    err_popup = nullptr;
+
+    return app_retval;
 }
