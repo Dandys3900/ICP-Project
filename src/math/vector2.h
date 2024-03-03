@@ -12,11 +12,18 @@ class Vector2 : public QPointF {
         Vector2(const Vector2& v);
         Vector2(const QPointF& qp);
 
+        Vector2 normal() const;
+        Vector2 normal_right() const;
+        Vector2 normal_left() const;
+
         void normalize();
         Vector2 normalized() const;
 
         void rotate(qreal angle);
         Vector2 rotated(qreal angle) const;
+
+        void rotate_around(const QPointF& point, qreal angle);
+        Vector2 rotated_around(const QPointF& point, qreal angle) const;
 
         qreal length() const;
         qreal length_squared() const;
