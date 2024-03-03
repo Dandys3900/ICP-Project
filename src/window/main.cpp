@@ -53,7 +53,14 @@ int main(int argc, char *argv[])
     mp_main_window->show();
 
     // Init error popup class - must be after main window being shown
-    Error_PopUp err_popup(mp_main_window);
+    Error_PopUp* err_popup = new Error_PopUp(mp_main_window);
 
-    return app.exec();
+    const int app_retval = app.exec();
+
+    // Clean memory allocated by Error_PopUp class
+    Error_PopUp::clean_up();
+    // Avoid double deletion
+    err_popup = nullptr;
+
+    return app_retval;
 }

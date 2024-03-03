@@ -1,7 +1,7 @@
 #include "custom_view.h"
 
 CustomView::CustomView (QGraphicsScene* scene, PlayGround* playground, QWidget* window)
-    : QGraphicsView (scene, window),
+    : QGraphicsView  (scene, window),
       mp_playground  (playground),
       mp_main_window (window),
       mp_menu_bar    (nullptr)

@@ -26,32 +26,41 @@ Error_PopUp::Error_PopUp (QWidget* window)
     setStyleSheet("background-color: red; color: black;");
 
     // Set static variable representing current instance of this class
+    if (Error_PopUp::instance != nullptr) {
+        // Instance already exists, so delete it and replace it with this new one
+        delete Error_PopUp::instance;
+    }
     Error_PopUp::instance = this;
 }
 
 Error_PopUp::~Error_PopUp() {
-}
-
-Error_PopUp* Error_PopUp::get_instance () {
-    return instance;
+    delete mp_popup_timer;
+    delete mp_err_txt_label;
 }
 
 void Error_PopUp::show_err (QString err_msg) {
+    Error_PopUp* cur_instance = Error_PopUp::instance;
+
     // Add error message to label
-    mp_err_txt_label->setText(err_msg);
+    cur_instance->mp_err_txt_label->setText(err_msg);
     // Adjust size for message to fit in label
-    adjustSize();
+    cur_instance->adjustSize();
 
     // Calculate new position of popup to ensure it fits inside window
     QPointF new_pos(
-        mp_main_window->rect().bottomRight().x() - width(),
-        mp_main_window->rect().bottomRight().y() - height()
+        cur_instance->mp_main_window->rect().bottomRight().x() - cur_instance->width(),
+        cur_instance->mp_main_window->rect().bottomRight().y() - cur_instance->height()
     );
     // Apply calculated position
-    move(new_pos.x(), new_pos.y());
+    cur_instance->move(new_pos.x(), new_pos.y());
 
     // Start timer for 5s
-    mp_popup_timer->start(5000);
+    cur_instance->mp_popup_timer->start(5000);
     // Show popup
-    this->show();
+    cur_instance->show();
+}
+
+void Error_PopUp::clean_up () {
+    delete Error_PopUp::instance;
+    Error_PopUp::instance = nullptr;
 }

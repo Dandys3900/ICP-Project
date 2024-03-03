@@ -146,7 +146,7 @@ void PlayGround::store_config () {
     // Open config file
     QFile conf_file(get_selected_file(STORE));
     if (!conf_file.open(QIODevice::WriteOnly)) {
-        Error_PopUp::get_instance()->show_err(QString("Failed to open configuration file for writing: " + conf_file.errorString()));
+        Error_PopUp::show_err(QString("Failed to open configuration file for writing: " + conf_file.errorString()));
         return;
     }
 
@@ -165,7 +165,7 @@ void PlayGround::store_config () {
 void PlayGround::load_config () {
     QFile conf_file(get_selected_file(LOAD));
     if (!conf_file.open(QIODevice::ReadOnly)) {
-        Error_PopUp::get_instance()->show_err(QString("Failed to open configuration file for reading: " + conf_file.errorString()));
+        Error_PopUp::show_err(QString("Failed to open configuration file for reading: " + conf_file.errorString()));
         return;
     }
 
@@ -181,7 +181,7 @@ void PlayGround::load_config () {
     conf_file.close();
 
     if (parse_error.error != QJsonParseError::NoError) {
-        Error_PopUp::get_instance()->show_err(QString("Failed to parse JSON: " + parse_error.errorString()));
+        Error_PopUp::show_err(QString("Failed to parse JSON: " + parse_error.errorString()));
         return;
     }
 
@@ -197,7 +197,7 @@ void PlayGround::load_config () {
             obj_type = scene_obj["obj_type"].toString();
         }
         else { // If missing -> output error and exit
-            Error_PopUp::get_instance()->show_err(QString("Missing mandatory JSON value: object type, can't finish the loading procedure"));
+            Error_PopUp::show_err(QString("Missing mandatory JSON value: object type, can't finish the loading procedure"));
             return;
         }
 

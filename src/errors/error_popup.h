@@ -8,9 +8,8 @@ class Error_PopUp : public QWidget {
         Error_PopUp (QWidget* window = nullptr);
         ~Error_PopUp ();
 
-        static Error_PopUp* get_instance ();
-
-        void show_err (QString err_msg);
+        static void show_err (QString err_msg);
+        static void clean_up ();
 
     private:
         QLabel*  mp_err_txt_label;
