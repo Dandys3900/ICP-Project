@@ -2,6 +2,7 @@
 #include "scene/obstacle.h"
 #include "scene/playground.h"
 #include "custom_view.h"
+#include "user_menu.h"
 
 /**
  * @brief Main file for starting the simulator by creating
@@ -14,7 +15,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     // Create the main window
-    QMainWindow* mp_main_window = new QMainWindow();
+    QMainWindow* main_window = new QMainWindow();
 
     // Create scene
     QGraphicsScene* scene = new QGraphicsScene();
@@ -25,7 +26,7 @@ int main(int argc, char *argv[])
     PlayGround* playground = new PlayGround(scene);
 
     // Create view
-    CustomView* view = new CustomView(scene, playground, mp_main_window);
+    CustomView* view = new CustomView(scene, playground, main_window);
     // Set borders
     view->setStyleSheet("border: 5px solid black;");
     // Set title
@@ -38,7 +39,7 @@ int main(int argc, char *argv[])
     Robot* robot = new Robot(robot_size, (WINDOW_WIDTH / 2) - (robot_size / 2), (WINDOW_HEIGHT / 2) - (robot_size / 2), playground);
 
     // Create obstacle
-    Obstacle* obstacle = new Obstacle(50, 20, 10, 15, playground);
+    Obstacle* obstacle = new Obstacle(50, 20, 20, 25, playground);
 
     // Add robot to the playground
     playground->add_scene_obj(robot);
@@ -46,14 +47,15 @@ int main(int argc, char *argv[])
     playground->add_scene_obj(obstacle);
 
     // Place view to window
-    mp_main_window->setCentralWidget(view);
-    // Add constructed menu bar to window
-    mp_main_window->setMenuBar(view->get_menu_bar());
+    main_window->setCentralWidget(view);
     // Show window
-    mp_main_window->show();
+    main_window->show();
+
+    // Create and add user menu to the scene
+    UserMenu* user_menu = new UserMenu(scene, playground, main_window);
 
     // Init error popup class - must be after main window being shown
-    Error_PopUp* err_popup = new Error_PopUp(mp_main_window);
+    Error_PopUp* err_popup = new Error_PopUp(main_window);
 
     const int app_retval = app.exec();
 

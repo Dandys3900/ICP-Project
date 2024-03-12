@@ -38,6 +38,11 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QPushButton>
+#include <QGraphicsProxyWidget>
+#include <QSlider>
+#include <QComboBox>
+#include <QGroupBox>
 
 #include <iterator>
 
