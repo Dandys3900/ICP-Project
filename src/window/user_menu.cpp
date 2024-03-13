@@ -7,10 +7,13 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
       mp_expanded    (false)
 {
     // Create menu button
-    QPushButton* menu_button = new QPushButton("Menu");
+    QPushButton* menu_button = new QPushButton();
     QGraphicsProxyWidget* proxy_button = mp_scene->addWidget(menu_button);
+
     // Set button position to window's top left corner
     proxy_button->setPos(5, 5);
+    // Set hamburger icon for menu button
+    menu_button->setIcon(QIcon(":/icons/menu_icon.png"));
 
     // Create container widget to hold all user menu items
     mp_menu_container = new QWidget();
@@ -41,6 +44,9 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
     // Add buttons for user to control automatic simulation process
     QPushButton* stop_sim_btn = new QPushButton("Stop");
     QPushButton* start_sim_btn = new QPushButton("Start");
+    // Set corresponding icons
+    stop_sim_btn->setIcon(QIcon(":/icons/stop_icon.png"));
+    start_sim_btn->setIcon(QIcon(":/icons/play_icon.png"));
 
     // Create horizontal layout for start and stop buttons
     QHBoxLayout* sim_buttons_layout = new QHBoxLayout;

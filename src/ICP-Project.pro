@@ -38,3 +38,5 @@ HEADERS += window/custom_view.h \
            physics/circle_collision_shape.h \
            physics/polygon_collision_shape.h \
            physics/rectangle_collision_shape.h
+
+RESOURCES += resources.qrc

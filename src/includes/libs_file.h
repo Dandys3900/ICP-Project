@@ -43,6 +43,7 @@
 #include <QSlider>
 #include <QComboBox>
 #include <QGroupBox>
+#include <QIcon>
 
 #include <iterator>
 
