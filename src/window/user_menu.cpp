@@ -89,7 +89,7 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
     QObject::connect(store_conf_btn, &QPushButton::clicked, this, &UserMenu::store_config);
     QObject::connect(add_robot_btn, &QPushButton::clicked, this, &UserMenu::add_robot);
     QObject::connect(add_obstacle_btn, &QPushButton::clicked, this, &UserMenu::add_obstacle);
-    QObject::connect(sim_select_box, QOverload<int>::of(&QComboBox::activated), this, &UserMenu::mode_select);
+    QObject::connect(sim_select_box, SIGNAL(activated(int)), this, SLOT(mode_select(int)));
     QObject::connect(stop_sim_btn, &QPushButton::clicked, this, &UserMenu::stop_sim);
     QObject::connect(start_sim_btn, &QPushButton::clicked, this, &UserMenu::start_sim);
     QObject::connect(speed_slider, &QSlider::valueChanged, this, &UserMenu::sim_speed_set);

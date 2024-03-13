@@ -152,7 +152,7 @@ void PlayGround::store_config () {
 
     // Array of JSON objects from each scene obj
     QJsonArray objs_data_arr;
-    for (qsizetype pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
+    for (size_t pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
         objs_data_arr.append(mp_scene_objs_vec.at(pos)->get_obj_data());
     }
 
