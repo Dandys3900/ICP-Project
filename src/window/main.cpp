@@ -59,6 +59,8 @@ int main(int argc, char *argv[])
 
     const int app_retval = app.exec();
 
+    // Clean memory allocated by UserMenu class
+    delete user_menu;
     // Clean memory allocated by Error_PopUp class
     Error_PopUp::clean_up();
     // Avoid double deletion
