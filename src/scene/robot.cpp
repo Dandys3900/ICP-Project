@@ -79,10 +79,8 @@ void Robot::set_active (bool active, Action action) {
     mp_is_active  = active;
     mp_obj_action = action;
 
-    if (active) {
-        if (action == MOVE_ACTION) { // Focused and moving -> red
-            mp_color = Qt::red;
-        }
+    if (active && action == MOVE_ACTION) { // Focused and moving -> red
+        mp_color = Qt::red;
     }
 
     QPen pen(mp_color);
