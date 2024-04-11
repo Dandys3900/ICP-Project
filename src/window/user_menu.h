@@ -12,10 +12,25 @@ class UserMenu : public QWidget {
         ~UserMenu ();
 
     private:
-        PlayGround*     mp_playground;
-        QGraphicsScene* mp_scene;
-        QGroupBox*      mp_sim_mode_items;
-        QWidget*        mp_menu_container;
+        PlayGround*           mp_playground;
+        QGraphicsScene*       mp_scene;
+        QPushButton*          mp_menu_button;
+        QGraphicsProxyWidget* mp_proxy_button;
+        QWidget*              mp_menu_container;
+        QVBoxLayout*          mp_menu_layout;
+        QPushButton*          mp_load_conf_btn;
+        QPushButton*          mp_store_conf_btn;
+        QHBoxLayout*          mp_conf_items_layout;
+        QPushButton*          mp_add_robot_btn;
+        QPushButton*          mp_add_obstacle_btn;
+        QComboBox*            mp_sim_select_box;
+        QGroupBox*            mp_sim_mode_items;
+        QPushButton*          mp_stop_sim_btn;
+        QPushButton*          mp_start_sim_btn;
+        QHBoxLayout*          mp_sim_buttons_layout;
+        QSlider*              mp_speed_slider;
+        QVBoxLayout*          mp_sim_items_layout;
+        QGraphicsProxyWidget* mp_container_proxy;
 
         bool mp_expanded;
 

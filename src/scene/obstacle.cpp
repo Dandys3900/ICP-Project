@@ -1,10 +1,11 @@
 #include "obstacle.h"
 
 Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, const qreal coord_y, PlayGround* playground)
-    : SceneObject(Vector2(coord_x, coord_y)),
-      mp_type       ("Obstacle"),
-      mp_size       (width, height),
-      mp_playground (playground)
+    : SceneObject       (Vector2(coord_x, coord_y)),
+      QGraphicsRectItem (nullptr),
+      mp_type           ("Obstacle"),
+      mp_size           (width, height),
+      mp_playground     (playground)
 {
     constructor_actions();
 }
@@ -15,10 +16,11 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* play
 }
 
 Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, PlayGround* playground)
-    : SceneObject(coords, rotation),
-      mp_type       ("Obstacle"),
-      mp_size       (size),
-      mp_playground (playground)
+    : SceneObject       (coords, rotation),
+      QGraphicsRectItem (nullptr),
+      mp_type           ("Obstacle"),
+      mp_size           (size),
+      mp_playground     (playground)
 {
     constructor_actions();
 }

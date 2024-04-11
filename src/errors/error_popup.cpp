@@ -12,10 +12,10 @@ Error_PopUp::Error_PopUp (QWidget* window)
     mp_err_txt_label = new QLabel(this);
 
     // Create pop-up layout
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    mp_layout = new QVBoxLayout(this);
     // Add label to layout
-    layout->addWidget(mp_err_txt_label);
-    layout->setAlignment(Qt::AlignCenter);
+    mp_layout->addWidget(mp_err_txt_label);
+    mp_layout->setAlignment(Qt::AlignCenter);
 
     // Create timer to show popup only given time
     mp_popup_timer = new QTimer(this);
@@ -34,8 +34,11 @@ Error_PopUp::Error_PopUp (QWidget* window)
 }
 
 Error_PopUp::~Error_PopUp() {
+    // Disconnect all button signals (good practice)
+    disconnect(mp_popup_timer, &QTimer::timeout, this, &Error_PopUp::hide);
+
     delete mp_popup_timer;
-    delete mp_err_txt_label;
+    delete mp_layout;
 }
 
 void Error_PopUp::show_err (QString err_msg) {

@@ -1,7 +1,8 @@
 #include "playground.h"
 
 PlayGround::PlayGround (QGraphicsScene* scene)
-    : mp_scene_objs_vec      (),
+    : QGraphicsRectItem      (nullptr),
+      mp_scene_objs_vec      (),
       mp_active_obj_orig_pos (),
       mp_scene               (scene),
       mp_active_obj          (nullptr),
@@ -16,6 +17,10 @@ PlayGround::PlayGround (QGraphicsScene* scene)
 }
 
 PlayGround::~PlayGround () {
+    // Remove all scene objects
+    for (SceneObject* obj : this->mp_scene_objs_vec) {
+        delete obj;
+    }
 }
 
 QPointF PlayGround::get_active_obj_orig_pos () {
@@ -80,7 +85,7 @@ void PlayGround::remove_scene_obj (SceneObject* object) {
 
     // Found - delete it
     if (iter != mp_scene_objs_vec.end()) {
-        // Delet found object
+        // Delete found object
         delete object;
         // Remove from vector as well
         mp_scene_objs_vec.erase(iter);
@@ -152,7 +157,7 @@ void PlayGround::store_config () {
 
     // Array of JSON objects from each scene obj
     QJsonArray objs_data_arr;
-    for (size_t pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
+    for (auto pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
         objs_data_arr.append(mp_scene_objs_vec.at(pos)->get_obj_data());
     }
 

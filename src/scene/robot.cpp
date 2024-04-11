@@ -1,11 +1,12 @@
 #include "robot.h"
 
 Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGround* playground)
-    : SceneObject(Vector2(coord_x, coord_y)),
-      mp_diameter   (size),
-      mp_type       ("Robot"),
-      mp_playground (playground),
-      mp_arrow      (nullptr)
+    : SceneObject          (Vector2(coord_x, coord_y)),
+      QGraphicsEllipseItem (nullptr),
+      mp_diameter          (size),
+      mp_type              ("Robot"),
+      mp_playground        (playground),
+      mp_arrow             (nullptr)
 {
     constructor_actions();
 }
@@ -16,11 +17,12 @@ Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
 }
 
 Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, PlayGround* playground)
-    : SceneObject(coords, rotation),
-      mp_diameter   (size),
-      mp_type       ("Robot"),
-      mp_playground (playground),
-      mp_arrow      (nullptr)
+    : SceneObject          (coords, rotation),
+      QGraphicsEllipseItem (nullptr),
+      mp_diameter          (size),
+      mp_type              ("Robot"),
+      mp_playground        (playground),
+      mp_arrow             (nullptr)
 {
     constructor_actions();
 }

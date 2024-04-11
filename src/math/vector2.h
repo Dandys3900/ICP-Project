@@ -34,6 +34,16 @@ class Vector2 : public QPointF {
         qreal angle_to(const QPointF& qp) const;
 
         static qreal crossProduct(const QPointF& qp1, const QPointF& qp2);
+
+        // Assignment operator
+        Vector2& operator=(const Vector2& other) {
+            if (this != &other) {
+                // Copy data
+                this->setX(other.x());
+                this->setY(other.y());
+            }
+            return *this;
+        }
 };
 
 
