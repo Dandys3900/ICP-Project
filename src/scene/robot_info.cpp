@@ -105,6 +105,16 @@ void Robot_Info::show_widget (Robot* cur_robot) {
     }
 }
 
+void Robot_Info::hide_related_widget (class Robot* cur_robot) {
+    // If given robot widget is shown, hide it
+    Robot_Info* cur_instance = Robot_Info::instance;
+    if (cur_instance->mp_robot == cur_robot) {
+        // Hide the widget
+        cur_instance->mp_info_container->setVisible(false);
+        cur_instance->mp_visible = false;
+    }
+}
+
 void Robot_Info::process_robot_info () {
     // Load values vector from robot
     QVector<QString> info_from_robot = mp_robot->get_robot_info();

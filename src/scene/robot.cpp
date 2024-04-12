@@ -163,6 +163,15 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     }
 }
 
+void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
+    // Remove Robot
+    if (event->button() == Qt::MouseButton::RightButton) {
+        // if robot widget is shown, hide it first
+        Robot_Info::hide_related_widget(this);
+        mp_playground->remove_scene_obj(this);
+    }
+}
+
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
         if (!mp_is_active) { // Notify PlayGround and get focus

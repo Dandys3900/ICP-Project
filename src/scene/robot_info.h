@@ -12,6 +12,7 @@ class Robot_Info : public QWidget {
         ~Robot_Info ();
 
         static void show_widget (class Robot* cur_robot);
+        static void hide_related_widget (class Robot* cur_robot);
         static void clean_up ();
 
     private:

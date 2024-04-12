@@ -38,11 +38,12 @@ class SceneObject {
             return conf_data;
         }
 
-        virtual void mousePressEvent (QGraphicsSceneMouseEvent* event) = 0;
-        virtual void keyPressEvent (QKeyEvent* event)                  = 0;
-        virtual void mouseMoveEvent (QGraphicsSceneMouseEvent *event)  = 0;
-        virtual void hoverEnterEvent (QGraphicsSceneHoverEvent *event) = 0;
-        virtual void hoverLeaveEvent (QGraphicsSceneHoverEvent *event) = 0;
+        virtual void mousePressEvent (QGraphicsSceneMouseEvent* event)       = 0;
+        virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) = 0;
+        virtual void keyPressEvent (QKeyEvent* event)                        = 0;
+        virtual void mouseMoveEvent (QGraphicsSceneMouseEvent *event)        = 0;
+        virtual void hoverEnterEvent (QGraphicsSceneHoverEvent *event)       = 0;
+        virtual void hoverLeaveEvent (QGraphicsSceneHoverEvent *event)       = 0;
 
     protected:
         Vector2 mp_coords;

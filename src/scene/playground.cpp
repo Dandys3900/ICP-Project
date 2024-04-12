@@ -14,9 +14,6 @@ PlayGround::PlayGround (QGraphicsScene* scene)
 
     // Add PlayGround to the scene
     mp_scene->addItem(this);
-
-    // Seed the random number generator
-    srand(time(nullptr));
 }
 
 PlayGround::~PlayGround () {
@@ -81,12 +78,18 @@ void PlayGround::add_scene_obj (SceneObject* object) {
 }
 
 void PlayGround::safely_place (SceneObject* object) {
+    // Init seed for "random" number generation
+    qsrand(QTime::currentTime().msec());
+
     while (collide_with_other(object->get_rect())) {
-        QPointF new_pos (
-            rand() % qRound(this->boundingRect().x()),
-            rand() % qRound(this->boundingRect().y())
-        );
-        object->set_obj_pos(new_pos);
+        // Get current window properties to avoid generating position outside of the window
+        qreal maxX = this->boundingRect().width();
+        qreal maxY = this->boundingRect().height();
+
+        qreal randomX = qrand() % static_cast<int>(maxX);
+        qreal randomY = qrand() % static_cast<int>(maxY);
+        // Set new position for object being added to scene
+        object->set_obj_pos(QPointF(randomX, randomY));
     }
 }
 

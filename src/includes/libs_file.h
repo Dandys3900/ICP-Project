@@ -45,10 +45,10 @@
 #include <QIcon>
 #include <QLineEdit>
 #include <QVector>
+#include <QRectF>
+#include <QTime>
 
-#include <cstdlib>
 #include <iterator>
-#include <ctime>
 
 #include "math/vector2.h"
 #include "errors/error_popup.h"
