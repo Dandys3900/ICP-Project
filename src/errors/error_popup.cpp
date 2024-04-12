@@ -4,7 +4,6 @@ Error_PopUp* Error_PopUp::instance = nullptr;
 
 Error_PopUp::Error_PopUp (QWidget* window)
     : QWidget          (window),
-      mp_err_txt_label (nullptr),
       mp_main_window   (window),
       mp_popup_timer   (nullptr)
 {
@@ -34,9 +33,6 @@ Error_PopUp::Error_PopUp (QWidget* window)
 }
 
 Error_PopUp::~Error_PopUp() {
-    // Disconnect all button signals (good practice)
-    disconnect(mp_popup_timer, &QTimer::timeout, this, &Error_PopUp::hide);
-
     delete mp_popup_timer;
     delete mp_layout;
 }
@@ -50,12 +46,12 @@ void Error_PopUp::show_err (QString err_msg) {
     cur_instance->adjustSize();
 
     // Calculate new position of popup to ensure it fits inside window
-    QPointF new_pos(
+    QPoint new_pos(
         cur_instance->mp_main_window->rect().bottomRight().x() - cur_instance->width(),
         cur_instance->mp_main_window->rect().bottomRight().y() - cur_instance->height()
     );
     // Apply calculated position
-    cur_instance->move(new_pos.x(), new_pos.y());
+    cur_instance->move(new_pos);
 
     // Start timer for 5s
     cur_instance->mp_popup_timer->start(5000);

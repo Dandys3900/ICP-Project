@@ -29,7 +29,7 @@ void Obstacle::constructor_actions () {
     this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
     // Set rotation origin
-    this->setTransformOriginPoint(QPointF(mp_coords.x() + (mp_size.x() / 2), mp_coords.y() + (mp_size.y() / 2)));
+    this->setTransformOriginPoint(QPointF(this->rect().center().x(), this->rect().center().y()));
 
     // Allow hover events
     this->setAcceptHoverEvents(true);
@@ -49,6 +49,10 @@ QPointF Obstacle::get_pos () {
     return QPointF(mp_coords.x(), mp_coords.y());
 }
 
+QRectF Obstacle::get_rect () {
+    return this->rect();
+}
+
 void Obstacle::set_obj_pos (const QPointF pos) {
     if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_size.x(), mp_size.y()))) {
         // If new position is inside current scene, update robot coords
@@ -58,7 +62,7 @@ void Obstacle::set_obj_pos (const QPointF pos) {
         this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
         // Update rotation origin
-        this->setTransformOriginPoint(QPointF(mp_coords.x() + (mp_size.x() / 2), mp_coords.y() + (mp_size.y() / 2)));
+        this->setTransformOriginPoint(QPointF(this->rect().center().x(), this->rect().center().y()));
     }
 }
 

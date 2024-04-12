@@ -23,6 +23,7 @@ class SceneObject {
         virtual ~SceneObject () {}
 
         virtual QString get_type ()                          = 0;
+        virtual QRectF get_rect ()                           = 0;
         virtual QPointF get_pos ()                           = 0;
         virtual void set_obj_pos (QPointF pos)               = 0;
         virtual void set_active (bool active, Action action) = 0;

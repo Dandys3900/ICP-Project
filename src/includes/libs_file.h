@@ -6,7 +6,6 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define BORDER_WIDTH 10
-#define RAND_MAX_VAL 10000
 
 /***** LIBS *****/
 #include <QApplication>
@@ -44,8 +43,12 @@
 #include <QComboBox>
 #include <QGroupBox>
 #include <QIcon>
+#include <QLineEdit>
+#include <QVector>
 
+#include <cstdlib>
 #include <iterator>
+#include <ctime>
 
 #include "math/vector2.h"
 #include "errors/error_popup.h"
@@ -55,6 +58,18 @@ enum Action : int {
     NO_ACTION = 0,
     MOVE_ACTION,
     RESIZE_ACTION
+};
+
+// Enum representing current Robot mode
+enum Mode : int {
+    MANUAL = 0,
+    AUTOMATIC
+};
+
+// Enum representing rotation direction
+enum Direction : int {
+    CLOCKWISE = 0,
+    ANTICLOCKWISE
 };
 
 #endif // INCLUDEFILE_H

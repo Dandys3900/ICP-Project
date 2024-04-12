@@ -38,6 +38,9 @@ class PlayGround : public QGraphicsRectItem {
         // Active object will lose focus
         void disable_focus ();
 
+        void safely_place (SceneObject* object);
+        bool collide_with_other (QRectF obj_rect);
+
         QPointF get_active_obj_orig_pos ();
 
         // Methods for load/store scene configuration

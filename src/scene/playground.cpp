@@ -14,6 +14,9 @@ PlayGround::PlayGround (QGraphicsScene* scene)
 
     // Add PlayGround to the scene
     mp_scene->addItem(this);
+
+    // Seed the random number generator
+    srand(time(nullptr));
 }
 
 PlayGround::~PlayGround () {
@@ -54,6 +57,9 @@ void PlayGround::set_active_obj (SceneObject* object, Action action) {
 }
 
 void PlayGround::add_scene_obj (SceneObject* object) {
+    // Firstly safely place the object to scene
+    safely_place(object);
+    // Add to scene object vector
     mp_scene_objs_vec.push_back(object);
 
     if (object->get_type() == QString("Robot")) {
@@ -72,6 +78,25 @@ void PlayGround::add_scene_obj (SceneObject* object) {
             mp_scene->addItem(obstacle);
         }
     }
+}
+
+void PlayGround::safely_place (SceneObject* object) {
+    while (collide_with_other(object->get_rect())) {
+        QPointF new_pos (
+            rand() % qRound(this->boundingRect().x()),
+            rand() % qRound(this->boundingRect().y())
+        );
+        object->set_obj_pos(new_pos);
+    }
+}
+
+bool PlayGround::collide_with_other (QRectF obj_rect) {
+    for (SceneObject* obj : this->mp_scene_objs_vec) {
+        if (obj->get_rect().intersects(obj_rect)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void PlayGround::remove_scene_obj (SceneObject* object) {
@@ -208,8 +233,8 @@ void PlayGround::load_config () {
 
         // See if loaded config file contains desired values and if not use default ones
         Vector2 coords(                                       // config value : default value
-            (scene_obj.contains("coord_x")) ? scene_obj["coord_x"].toDouble() : 10,
-            (scene_obj.contains("coord_y")) ? scene_obj["coord_y"].toDouble() : 10
+            (scene_obj.contains("coord_x")) ? scene_obj["coord_x"].toDouble() : 100,
+            (scene_obj.contains("coord_y")) ? scene_obj["coord_y"].toDouble() : 100
         );
 
         qreal rotation =
@@ -226,8 +251,8 @@ void PlayGround::load_config () {
         }
         else { // obj_type == Obstacle
             Vector2 size(
-                (scene_obj.contains("size_x")) ? scene_obj["size_x"].toDouble() : 10,
-                (scene_obj.contains("size_y")) ? scene_obj["size_y"].toDouble() : 10
+                (scene_obj.contains("size_x")) ? scene_obj["size_x"].toDouble() : 20,
+                (scene_obj.contains("size_y")) ? scene_obj["size_y"].toDouble() : 20
             );
 
             new_obj = new Obstacle(size,

@@ -18,6 +18,7 @@ SOURCES += window/main.cpp \
            scene/playground.cpp \
            scene/obstacle.cpp \
            scene/robot.cpp \
+           scene/robot_info.cpp \
            math/vector2.cpp \
            errors/error_popup.cpp \
            physics/collision_shape.cpp \
@@ -32,6 +33,7 @@ HEADERS += window/custom_view.h \
            scene/scene_object.h \
            scene/obstacle.h \
            scene/robot.h \
+           scene/robot_info.h \
            math/vector2.h \
            errors/error_popup.h \
            physics/collision_shape.h \

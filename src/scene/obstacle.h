@@ -41,6 +41,7 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         // Implementations of virtual base class methods
         QString get_type () override;
         QPointF get_pos () override;
+        QRectF get_rect () override;
         void set_obj_pos (const QPointF pos) override;
         void set_active (bool active, Action action) override;
         QJsonObject get_obj_data () override;
