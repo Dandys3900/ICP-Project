@@ -78,10 +78,19 @@ void PlayGround::add_scene_obj (SceneObject* object) {
 }
 
 void PlayGround::safely_place (SceneObject* object) {
+    // Keep track of placing attempts to avoid inifinite loop
+    unsigned int place_attempts = 0;
     // Init seed for "random" number generation
     qsrand(QTime::currentTime().msec());
 
     while (collide_with_other(object->get_rect())) {
+        // Stop when max attempts count is reached
+        if (place_attempts == 100) {
+            Error_PopUp::show_err("Failed to place a new object to the scene");
+            return;
+        }
+        place_attempts++;
+
         // Get current window properties to avoid generating position outside of the window
         qreal maxX = this->boundingRect().width();
         qreal maxY = this->boundingRect().height();
