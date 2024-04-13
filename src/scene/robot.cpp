@@ -175,6 +175,7 @@ void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
         if (!mp_is_active) { // Notify PlayGround and get focus
+            this->mp_move_action_mouse_offset = this->mp_coords - event->pos();
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
         else { // Lose focus
@@ -195,7 +196,7 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 
 void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
     if (mp_is_active) { // Move robot, if focused
-        this->set_obj_pos(event->pos());
+        this->set_obj_pos(event->pos() + this->mp_move_action_mouse_offset);
     }
 }
 

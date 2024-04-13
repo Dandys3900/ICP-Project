@@ -51,6 +51,7 @@ class SceneObject {
         Action mp_obj_action;
         bool mp_is_active;
         Qt::GlobalColor mp_color;
+        Vector2 mp_move_action_mouse_offset;
 };
 
 #endif // SCENEOBJECT_H
