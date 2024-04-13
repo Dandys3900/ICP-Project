@@ -99,6 +99,8 @@ UserMenu::~UserMenu() {
 }
 
 void UserMenu::btn_click () {
+    // Take focus away from focused scene object (if any)
+    mp_playground->set_active_obj(nullptr, NO_ACTION);
     // Update user menu status and set its visibility accordingly
     mp_expanded = !mp_expanded;
     mp_menu_container->setVisible(mp_expanded);
@@ -113,17 +115,15 @@ void UserMenu::store_config () {
 }
 
 void UserMenu::add_robot () {
-    // Initial position is not important, will be placed safely to scene by Playground class
-    Robot* new_robot = new Robot(100, 50, 50, mp_playground);
-    // Add it to scene
-    mp_playground->add_scene_obj(new_robot);
+    // Initial position is not important, mouse click to scene will place it later
+    Robot* new_robot = new Robot(100, 0, 0, mp_playground);
+    mp_playground->set_toplace_obj(new_robot);
 }
 
 void UserMenu::add_obstacle () {
-    // Initial position is not important, will be placed safely to scene by Playground class
-    Obstacle* new_obstacle = new Obstacle(50, 20, 150, 150, mp_playground);
-    // Add it to scene
-    mp_playground->add_scene_obj(new_obstacle);
+    // Initial position is not important, mouse click to scene will place it later
+    Obstacle* new_obstacle = new Obstacle(50, 20, 0, 0, mp_playground);
+    mp_playground->set_toplace_obj(new_obstacle);
 }
 
 void UserMenu::mode_select (int index) {

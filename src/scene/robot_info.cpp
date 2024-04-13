@@ -84,25 +84,27 @@ Robot_Info::~Robot_Info() {
 
 void Robot_Info::show_widget (Robot* cur_robot) {
     Robot_Info* cur_instance = Robot_Info::instance;
-    // Ignore if widget is already shown
-    if (!cur_instance->mp_visible) {
-        // Update class robot property
-        cur_instance->mp_robot = cur_robot;
-        // Load robot info
-        cur_instance->process_robot_info();
-
-        // Calculate new position of popup to ensure it fits inside window
-        QPointF new_pos(
-            cur_instance->mp_main_window->rect().topRight().x() - 200,
-            cur_instance->mp_main_window->rect().topRight().y() - 5
-        );
-        // Apply calculated position
-        cur_instance->mp_proxy->setPos(new_pos);
-
-        // Show the widget
-        cur_instance->mp_visible = true;
-        cur_instance->mp_info_container->setVisible(true);
+    // If already shown, hide it
+    if (cur_instance->mp_visible) {
+        cur_instance->mp_visible = false;
+        cur_instance->mp_info_container->setVisible(false);
     }
+    // Update class robot property
+    cur_instance->mp_robot = cur_robot;
+    // Load robot info
+    cur_instance->process_robot_info();
+
+    // Calculate new position of popup to ensure it fits inside window
+    QPointF new_pos(
+        cur_instance->mp_main_window->rect().topRight().x() - 200,
+        cur_instance->mp_main_window->rect().topRight().y() - 5
+    );
+    // Apply calculated position
+    cur_instance->mp_proxy->setPos(new_pos);
+
+    // Show the widget
+    cur_instance->mp_visible = true;
+    cur_instance->mp_info_container->setVisible(true);
 }
 
 void Robot_Info::hide_related_widget (class Robot* cur_robot) {

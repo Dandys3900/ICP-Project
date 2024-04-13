@@ -6,6 +6,7 @@ PlayGround::PlayGround (QGraphicsScene* scene)
       mp_active_obj_orig_pos (),
       mp_scene               (scene),
       mp_active_obj          (nullptr),
+      mp_toplace_obj         (nullptr),
       mp_cur_action          (NO_ACTION)
 {
     // Make PlayGround focusable
@@ -53,9 +54,13 @@ void PlayGround::set_active_obj (SceneObject* object, Action action) {
     }
 }
 
+void PlayGround::set_toplace_obj (SceneObject* object) {
+    mp_toplace_obj = object;
+    // Change mouse icon to notify user about object to be placed
+    QApplication::setOverrideCursor(Qt::PointingHandCursor);
+}
+
 void PlayGround::add_scene_obj (SceneObject* object) {
-    // Firstly safely place the object to scene
-    safely_place(object);
     // Add to scene object vector
     mp_scene_objs_vec.push_back(object);
 
@@ -75,40 +80,6 @@ void PlayGround::add_scene_obj (SceneObject* object) {
             mp_scene->addItem(obstacle);
         }
     }
-}
-
-void PlayGround::safely_place (SceneObject* object) {
-    // Keep track of placing attempts to avoid inifinite loop
-    unsigned int place_attempts = 0;
-    // Init seed for "random" number generation
-    qsrand(QTime::currentTime().msec());
-
-    while (collide_with_other(object->get_rect())) {
-        // Stop when max attempts count is reached
-        if (place_attempts == 100) {
-            Error_PopUp::show_err("Failed to place a new object to the scene");
-            return;
-        }
-        place_attempts++;
-
-        // Get current window properties to avoid generating position outside of the window
-        qreal maxX = this->boundingRect().width();
-        qreal maxY = this->boundingRect().height();
-
-        qreal randomX = qrand() % static_cast<int>(maxX);
-        qreal randomY = qrand() % static_cast<int>(maxY);
-        // Set new position for object being added to scene
-        object->set_obj_pos(QPointF(randomX, randomY));
-    }
-}
-
-bool PlayGround::collide_with_other (QRectF obj_rect) {
-    for (SceneObject* obj : this->mp_scene_objs_vec) {
-        if (obj->get_rect().intersects(obj_rect)) {
-            return true;
-        }
-    }
-    return false;
 }
 
 void PlayGround::remove_scene_obj (SceneObject* object) {
@@ -157,8 +128,16 @@ void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
 }
 
 void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    if (mp_active_obj) { // Distribute mouse move event to focused (active) object
+    if (mp_active_obj) { // Distribute mouse press event to focused (active) object
         mp_active_obj->mousePressEvent(event);
+    }
+    else if (mp_toplace_obj) { // Place new object to mouse click position
+        mp_toplace_obj->set_obj_pos(event->pos());
+        add_scene_obj(mp_toplace_obj);
+        // Reset for next use
+        mp_toplace_obj = nullptr;
+        // Restore mouse icon
+        QApplication::restoreOverrideCursor();
     }
 }
 
