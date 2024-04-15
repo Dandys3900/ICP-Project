@@ -68,6 +68,8 @@ void PlayGround::add_scene_obj (SceneObject* object) {
         // Cast it to the Robot class
         Robot* robot = dynamic_cast<Robot*>(object);
         if (robot) {
+            // Set Playground as object parent
+            robot->setParentItem(this);
             // Add robot + its arrow
             mp_scene->addItem(robot->get_robot_arrow());
             mp_scene->addItem(robot);
@@ -77,6 +79,8 @@ void PlayGround::add_scene_obj (SceneObject* object) {
         // Cast it to the Obstacle class
         Obstacle* obstacle = dynamic_cast<Obstacle*>(object);
         if (obstacle) { // Add obstacle
+            // Set Playground as object parent
+            obstacle->setParentItem(this);
             mp_scene->addItem(obstacle);
         }
     }

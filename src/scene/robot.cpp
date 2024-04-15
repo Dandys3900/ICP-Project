@@ -49,6 +49,8 @@ void Robot::constructor_actions() {
     mp_arrow = new QGraphicsPolygonItem(QPolygonF(points_arr));
     mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
     mp_arrow->setRotation(mp_rotation);
+    // Place it below robot ellipsis
+    mp_arrow->setZValue(this->zValue() - 1);
 
     // Set correct rotation origin
     mp_arrow->setTransformOriginPoint(QPointF(0, ARROW_LENGTH));
