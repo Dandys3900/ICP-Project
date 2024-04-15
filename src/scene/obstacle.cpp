@@ -88,7 +88,7 @@ void Obstacle::set_active (bool active, Action action) {
 void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
         if (!mp_is_active) { // Notify PlayGround and get focus
-            this->mp_move_action_mouse_offset = this->mp_coords - event->pos();
+            this->mp_move_action_mouse_offset = this->mp_coords - event->scenePos();
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
         else { // Lose focus
@@ -128,8 +128,8 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
         if (mp_obj_action == RESIZE_ACTION) {
             // Calculate resize change
             QPointF posChange;
-            posChange.setX(qFabs(event->pos().x() - mp_coords.x()));
-            posChange.setY(qFabs(event->pos().y() - mp_coords.y()));
+            posChange.setX(qFabs(event->scenePos().x() - mp_coords.x()));
+            posChange.setY(qFabs(event->scenePos().y() - mp_coords.y()));
 
             // Update obstacle size
             mp_size.setX(posChange.x());
@@ -139,7 +139,7 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
             this->set_obj_pos(mp_coords);
         }
         else { // MOVE_ACTION
-            this->set_obj_pos(event->pos() + this->mp_move_action_mouse_offset);
+            this->set_obj_pos(event->scenePos() + this->mp_move_action_mouse_offset);
         }
     }
 }
