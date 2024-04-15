@@ -36,10 +36,10 @@ int main(int argc, char *argv[])
 
     // Create robot
     qreal robot_size = 100;
-    Robot* robot = new Robot(robot_size, (WINDOW_WIDTH / 2) - (robot_size / 2), (WINDOW_HEIGHT / 2) - (robot_size / 2), playground);
+    Robot* robot = new Robot(robot_size, main_window->rect().center().x(), main_window->rect().center().y(), playground);
 
     // Create obstacle
-    Obstacle* obstacle = new Obstacle(50, 20, 20, 25, playground);
+    Obstacle* obstacle = new Obstacle(50, 20, 150, 150, playground);
 
     // Add robot to the playground
     playground->add_scene_obj(robot);
@@ -57,14 +57,20 @@ int main(int argc, char *argv[])
     // Init error popup class - must be after main window being shown
     Error_PopUp* err_popup = new Error_PopUp(main_window);
 
+    // Init robot info (help) class
+    Robot_Info* info = new Robot_Info(scene, main_window);
+
     const int app_retval = app.exec();
 
-    // Clean memory allocated by UserMenu class
-    delete user_menu;
-    // Clean memory allocated by Error_PopUp class
+    /***** Clean memory *****/
+    Robot_Info::clean_up();
     Error_PopUp::clean_up();
-    // Avoid double deletion
-    err_popup = nullptr;
+    delete user_menu;
+    delete view;
+    delete playground;
+    delete scene;
+    delete main_window;
 
+    // Return and end
     return app_retval;
 }

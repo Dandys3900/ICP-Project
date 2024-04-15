@@ -8,10 +8,10 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
 {
     // Create menu button
     QPushButton* menu_button = new QPushButton();
-    QGraphicsProxyWidget* proxy_button = mp_scene->addWidget(menu_button);
+    mp_proxy_button = mp_scene->addWidget(menu_button);
 
     // Set button position to window's top left corner
-    proxy_button->setPos(5, 5);
+    mp_proxy_button->setPos(5, 5);
     // Set hamburger icon for menu button
     menu_button->setIcon(QIcon(":/icons/menu_icon.png"));
 
@@ -34,8 +34,7 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
 
     // Combo box for user to select between manual control of the simulation or automatic
     QComboBox* sim_select_box = new QComboBox();
-    sim_select_box->addItem("Manual");
-    sim_select_box->addItem("Automatic");
+    sim_select_box->addItems({"Manual", "Automatic"});
 
     // Create a group for grouping all automatic simulation related items and control their visibility centrally
     mp_sim_mode_items = new QGroupBox();
@@ -62,7 +61,6 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
 
     // Add the buttons layout to the group box
     mp_sim_mode_items->setLayout(sim_items_layout);
-
     // Hide initially (default is manual control)
     mp_sim_mode_items->hide();
 
@@ -77,28 +75,32 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
     mp_menu_container->setLayout(menu_layout);
 
     // Set the position of the container widget below menu button
-    QGraphicsProxyWidget* container_proxy = mp_scene->addWidget(mp_menu_container);
-    container_proxy->setPos(5, 35);
+    mp_container_proxy = mp_scene->addWidget(mp_menu_container);
+    mp_container_proxy->setPos(5, 35);
 
     // Hide user menu initially
     mp_menu_container->hide();
 
     // Connect buttons event actions
-    QObject::connect(menu_button, &QPushButton::clicked, this, &UserMenu::btn_click);
-    QObject::connect(load_conf_btn, &QPushButton::clicked, this, &UserMenu::load_config);
-    QObject::connect(store_conf_btn, &QPushButton::clicked, this, &UserMenu::store_config);
-    QObject::connect(add_robot_btn, &QPushButton::clicked, this, &UserMenu::add_robot);
-    QObject::connect(add_obstacle_btn, &QPushButton::clicked, this, &UserMenu::add_obstacle);
-    QObject::connect(sim_select_box, SIGNAL(activated(int)), this, SLOT(mode_select(int)));
-    QObject::connect(stop_sim_btn, &QPushButton::clicked, this, &UserMenu::stop_sim);
-    QObject::connect(start_sim_btn, &QPushButton::clicked, this, &UserMenu::start_sim);
-    QObject::connect(speed_slider, &QSlider::valueChanged, this, &UserMenu::sim_speed_set);
+    connect(menu_button, &QPushButton::clicked, this, &UserMenu::btn_click);
+    connect(load_conf_btn, &QPushButton::clicked, this, &UserMenu::load_config);
+    connect(store_conf_btn, &QPushButton::clicked, this, &UserMenu::store_config);
+    connect(add_robot_btn, &QPushButton::clicked, this, &UserMenu::add_robot);
+    connect(add_obstacle_btn, &QPushButton::clicked, this, &UserMenu::add_obstacle);
+    connect(sim_select_box, SIGNAL(activated(int)), this, SLOT(mode_select(int)));
+    connect(stop_sim_btn, &QPushButton::clicked, this, &UserMenu::stop_sim);
+    connect(start_sim_btn, &QPushButton::clicked, this, &UserMenu::start_sim);
+    connect(speed_slider, &QSlider::valueChanged, this, &UserMenu::sim_speed_set);
 }
 
 UserMenu::~UserMenu() {
+    delete mp_container_proxy;
+    delete mp_proxy_button;
 }
 
 void UserMenu::btn_click () {
+    // Take focus away from focused scene object (if any)
+    mp_playground->set_active_obj(nullptr, NO_ACTION);
     // Update user menu status and set its visibility accordingly
     mp_expanded = !mp_expanded;
     mp_menu_container->setVisible(mp_expanded);
@@ -113,15 +115,19 @@ void UserMenu::store_config () {
 }
 
 void UserMenu::add_robot () {
-    // Placeholder for handling "Add Robot" button click
+    // Initial position is not important, mouse click to scene will place it later
+    Robot* new_robot = new Robot(100, 0, 0, mp_playground);
+    mp_playground->set_toplace_obj(new_robot);
 }
 
 void UserMenu::add_obstacle () {
-    // Placeholder for handling "Add Obstacle" button click
+    // Initial position is not important, mouse click to scene will place it later
+    Obstacle* new_obstacle = new Obstacle(50, 20, 0, 0, mp_playground);
+    mp_playground->set_toplace_obj(new_obstacle);
 }
 
 void UserMenu::mode_select (int index) {
-    if (index == 0) { // Hide simulation controls
+    if (index == MANUAL) { // Hide simulation controls
         mp_sim_mode_items->hide();
     }
     else { // Show simulation controls

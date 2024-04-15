@@ -22,9 +22,9 @@ class SceneObject {
 
         virtual ~SceneObject () {}
 
-        virtual QString get_type () = 0;
-        virtual QPointF get_pos ()  = 0;
-
+        virtual QString get_type ()                          = 0;
+        virtual QRectF get_rect ()                           = 0;
+        virtual QPointF get_pos ()                           = 0;
         virtual void set_obj_pos (QPointF pos)               = 0;
         virtual void set_active (bool active, Action action) = 0;
 
@@ -38,11 +38,12 @@ class SceneObject {
             return conf_data;
         }
 
-        virtual void mousePressEvent (QGraphicsSceneMouseEvent* event) = 0;
-        virtual void keyPressEvent (QKeyEvent* event)                  = 0;
-        virtual void mouseMoveEvent (QGraphicsSceneMouseEvent *event)  = 0;
-        virtual void hoverEnterEvent (QGraphicsSceneHoverEvent *event) = 0;
-        virtual void hoverLeaveEvent (QGraphicsSceneHoverEvent *event) = 0;
+        virtual void mousePressEvent (QGraphicsSceneMouseEvent* event)       = 0;
+        virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) = 0;
+        virtual void keyPressEvent (QKeyEvent* event)                        = 0;
+        virtual void mouseMoveEvent (QGraphicsSceneMouseEvent *event)        = 0;
+        virtual void hoverEnterEvent (QGraphicsSceneHoverEvent *event)       = 0;
+        virtual void hoverLeaveEvent (QGraphicsSceneHoverEvent *event)       = 0;
 
     protected:
         Vector2 mp_coords;
@@ -50,6 +51,7 @@ class SceneObject {
         Action mp_obj_action;
         bool mp_is_active;
         Qt::GlobalColor mp_color;
+        Vector2 mp_move_action_mouse_offset;
 };
 
 #endif // SCENEOBJECT_H

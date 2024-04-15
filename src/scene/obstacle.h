@@ -41,6 +41,7 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         // Implementations of virtual base class methods
         QString get_type () override;
         QPointF get_pos () override;
+        QRectF get_rect () override;
         void set_obj_pos (const QPointF pos) override;
         void set_active (bool active, Action action) override;
         QJsonObject get_obj_data () override;
@@ -50,7 +51,7 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
         void keyPressEvent (QKeyEvent* event) override;
-        void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
+        void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) override;
         void hoverEnterEvent (QGraphicsSceneHoverEvent *event) override;
         void hoverLeaveEvent (QGraphicsSceneHoverEvent *event) override;
 };

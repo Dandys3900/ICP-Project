@@ -4,7 +4,6 @@ Error_PopUp* Error_PopUp::instance = nullptr;
 
 Error_PopUp::Error_PopUp (QWidget* window)
     : QWidget          (window),
-      mp_err_txt_label (nullptr),
       mp_main_window   (window),
       mp_popup_timer   (nullptr)
 {
@@ -12,10 +11,10 @@ Error_PopUp::Error_PopUp (QWidget* window)
     mp_err_txt_label = new QLabel(this);
 
     // Create pop-up layout
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    mp_layout = new QVBoxLayout(this);
     // Add label to layout
-    layout->addWidget(mp_err_txt_label);
-    layout->setAlignment(Qt::AlignCenter);
+    mp_layout->addWidget(mp_err_txt_label);
+    mp_layout->setAlignment(Qt::AlignCenter);
 
     // Create timer to show popup only given time
     mp_popup_timer = new QTimer(this);
@@ -35,7 +34,7 @@ Error_PopUp::Error_PopUp (QWidget* window)
 
 Error_PopUp::~Error_PopUp() {
     delete mp_popup_timer;
-    delete mp_err_txt_label;
+    delete mp_layout;
 }
 
 void Error_PopUp::show_err (QString err_msg) {
@@ -47,12 +46,12 @@ void Error_PopUp::show_err (QString err_msg) {
     cur_instance->adjustSize();
 
     // Calculate new position of popup to ensure it fits inside window
-    QPointF new_pos(
+    QPoint new_pos(
         cur_instance->mp_main_window->rect().bottomRight().x() - cur_instance->width(),
         cur_instance->mp_main_window->rect().bottomRight().y() - cur_instance->height()
     );
     // Apply calculated position
-    cur_instance->move(new_pos.x(), new_pos.y());
+    cur_instance->move(new_pos);
 
     // Start timer for 5s
     cur_instance->mp_popup_timer->start(5000);

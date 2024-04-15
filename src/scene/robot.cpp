@@ -1,11 +1,12 @@
 #include "robot.h"
 
 Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGround* playground)
-    : SceneObject(Vector2(coord_x, coord_y)),
-      mp_diameter   (size),
-      mp_type       ("Robot"),
-      mp_playground (playground),
-      mp_arrow      (nullptr)
+    : SceneObject          (Vector2(coord_x, coord_y)),
+      QGraphicsEllipseItem (nullptr),
+      mp_diameter          (size),
+      mp_type              ("Robot"),
+      mp_playground        (playground),
+      mp_arrow             (nullptr)
 {
     constructor_actions();
 }
@@ -16,11 +17,12 @@ Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
 }
 
 Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, PlayGround* playground)
-    : SceneObject(coords, rotation),
-      mp_diameter   (size),
-      mp_type       ("Robot"),
-      mp_playground (playground),
-      mp_arrow      (nullptr)
+    : SceneObject          (coords, rotation),
+      QGraphicsEllipseItem (nullptr),
+      mp_diameter          (size),
+      mp_type              ("Robot"),
+      mp_playground        (playground),
+      mp_arrow             (nullptr)
 {
     constructor_actions();
 }
@@ -45,8 +47,10 @@ void Robot::constructor_actions() {
 
     // Create arrow showing current rotation
     mp_arrow = new QGraphicsPolygonItem(QPolygonF(points_arr));
-    mp_arrow->setPos(mp_coords.x() + (mp_diameter / 2), mp_coords.y() + (mp_diameter / 2) - ARROW_LENGTH);
+    mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
     mp_arrow->setRotation(mp_rotation);
+    // Place it below robot ellipsis
+    mp_arrow->setZValue(this->zValue() - 1);
 
     // Set correct rotation origin
     mp_arrow->setTransformOriginPoint(QPointF(0, ARROW_LENGTH));
@@ -56,6 +60,13 @@ void Robot::constructor_actions() {
 
     // White background
     setBrush(QBrush(Qt::white));
+
+    // TODO: Adapt when implementing simulation
+    // Set robot initial details
+    mp_mode = MANUAL;
+    mp_rotation_angle = 5.0;
+    mp_rotation_direction = CLOCKWISE;
+    mp_detect_threshold = 1.0;
 }
 
 Robot::~Robot () {
@@ -70,8 +81,38 @@ QPointF Robot::get_pos () {
     return QPointF(mp_coords.x(), mp_coords.y());
 }
 
+QRectF Robot::get_rect () {
+    return this->rect();
+}
+
 QGraphicsPolygonItem* Robot::get_robot_arrow () {
     return mp_arrow;
+}
+
+QVector<QString> Robot::get_robot_info () {
+    // Construct new vector containing robot's details
+    return QVector<QString> {
+        QString::number(mp_mode),
+        QString::number(mp_detect_threshold),
+        QString::number(mp_rotation_angle),
+        QString::number(mp_rotation_direction)
+    };
+}
+
+void Robot::set_mode (int new_mode) {
+    mp_mode = static_cast<enum Mode>(new_mode);
+}
+
+void Robot::set_detect_threshold (qreal new_threshold) {
+    mp_detect_threshold = new_threshold;
+}
+
+void Robot::set_rotation_angle (qreal new_angle) {
+    mp_rotation_angle = new_angle;
+}
+
+void Robot::set_rotation_direction (int new_direction) {
+    mp_rotation_direction = static_cast<enum Direction>(new_direction);
 }
 
 void Robot::set_active (bool active, Action action) {
@@ -99,7 +140,7 @@ void Robot::set_obj_pos (const QPointF pos) {
         this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
 
         // Re-center arrow after robot moved
-        mp_arrow->setPos(mp_coords.x() + (mp_diameter / 2), mp_coords.y() + (mp_diameter / 2) - ARROW_LENGTH);
+        mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
     }
 }
 
@@ -107,11 +148,11 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     switch (event->key()) {
         case Qt::Key_Left:
             // Rotate counter-clockwise
-            do_rotation(qreal(-5));
+            do_rotation(-mp_rotation_angle);
             break;
         case Qt::Key_Right:
             // Rotate clockwise
-            do_rotation(qreal(5));
+            do_rotation(mp_rotation_angle);
             break;
         case Qt::Key_Up:
             // Move forward
@@ -124,9 +165,19 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     }
 }
 
+void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
+    // Remove Robot
+    if (event->button() == Qt::MouseButton::RightButton) {
+        // if robot widget is shown, hide it first
+        Robot_Info::hide_related_widget(this);
+        mp_playground->remove_scene_obj(this);
+    }
+}
+
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
         if (!mp_is_active) { // Notify PlayGround and get focus
+            this->mp_move_action_mouse_offset = this->mp_coords - event->pos();
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
         else { // Lose focus
@@ -139,12 +190,15 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
             this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
             mp_playground->disable_focus();
         }
+        else { // Show Robot details
+            Robot_Info::show_widget(this);
+        }
     }
 }
 
 void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
     if (mp_is_active) { // Move robot, if focused
-        this->set_obj_pos(event->pos());
+        this->set_obj_pos(event->pos() + this->mp_move_action_mouse_offset);
     }
 }
 

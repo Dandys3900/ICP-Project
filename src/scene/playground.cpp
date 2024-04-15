@@ -1,10 +1,12 @@
 #include "playground.h"
 
 PlayGround::PlayGround (QGraphicsScene* scene)
-    : mp_scene_objs_vec      (),
+    : QGraphicsRectItem      (nullptr),
+      mp_scene_objs_vec      (),
       mp_active_obj_orig_pos (),
       mp_scene               (scene),
       mp_active_obj          (nullptr),
+      mp_toplace_obj         (nullptr),
       mp_cur_action          (NO_ACTION)
 {
     // Make PlayGround focusable
@@ -16,6 +18,10 @@ PlayGround::PlayGround (QGraphicsScene* scene)
 }
 
 PlayGround::~PlayGround () {
+    // Remove all scene objects
+    for (SceneObject* obj : this->mp_scene_objs_vec) {
+        delete obj;
+    }
 }
 
 QPointF PlayGround::get_active_obj_orig_pos () {
@@ -48,13 +54,22 @@ void PlayGround::set_active_obj (SceneObject* object, Action action) {
     }
 }
 
+void PlayGround::set_toplace_obj (SceneObject* object) {
+    mp_toplace_obj = object;
+    // Change mouse icon to notify user about object to be placed
+    QApplication::setOverrideCursor(Qt::PointingHandCursor);
+}
+
 void PlayGround::add_scene_obj (SceneObject* object) {
+    // Add to scene object vector
     mp_scene_objs_vec.push_back(object);
 
     if (object->get_type() == QString("Robot")) {
         // Cast it to the Robot class
         Robot* robot = dynamic_cast<Robot*>(object);
         if (robot) {
+            // Set Playground as object parent
+            robot->setParentItem(this);
             // Add robot + its arrow
             mp_scene->addItem(robot->get_robot_arrow());
             mp_scene->addItem(robot);
@@ -64,6 +79,8 @@ void PlayGround::add_scene_obj (SceneObject* object) {
         // Cast it to the Obstacle class
         Obstacle* obstacle = dynamic_cast<Obstacle*>(object);
         if (obstacle) { // Add obstacle
+            // Set Playground as object parent
+            obstacle->setParentItem(this);
             mp_scene->addItem(obstacle);
         }
     }
@@ -80,7 +97,7 @@ void PlayGround::remove_scene_obj (SceneObject* object) {
 
     // Found - delete it
     if (iter != mp_scene_objs_vec.end()) {
-        // Delet found object
+        // Delete found object
         delete object;
         // Remove from vector as well
         mp_scene_objs_vec.erase(iter);
@@ -115,8 +132,16 @@ void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
 }
 
 void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    if (mp_active_obj) { // Distribute mouse move event to focused (active) object
+    if (mp_active_obj) { // Distribute mouse press event to focused (active) object
         mp_active_obj->mousePressEvent(event);
+    }
+    else if (mp_toplace_obj) { // Place new object to mouse click position
+        mp_toplace_obj->set_obj_pos(event->pos());
+        add_scene_obj(mp_toplace_obj);
+        // Reset for next use
+        mp_toplace_obj = nullptr;
+        // Restore mouse icon
+        QApplication::restoreOverrideCursor();
     }
 }
 
@@ -152,7 +177,7 @@ void PlayGround::store_config () {
 
     // Array of JSON objects from each scene obj
     QJsonArray objs_data_arr;
-    for (size_t pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
+    for (auto pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
         objs_data_arr.append(mp_scene_objs_vec.at(pos)->get_obj_data());
     }
 
@@ -203,8 +228,8 @@ void PlayGround::load_config () {
 
         // See if loaded config file contains desired values and if not use default ones
         Vector2 coords(                                       // config value : default value
-            (scene_obj.contains("coord_x")) ? scene_obj["coord_x"].toDouble() : 10,
-            (scene_obj.contains("coord_y")) ? scene_obj["coord_y"].toDouble() : 10
+            (scene_obj.contains("coord_x")) ? scene_obj["coord_x"].toDouble() : 100,
+            (scene_obj.contains("coord_y")) ? scene_obj["coord_y"].toDouble() : 100
         );
 
         qreal rotation =
@@ -221,8 +246,8 @@ void PlayGround::load_config () {
         }
         else { // obj_type == Obstacle
             Vector2 size(
-                (scene_obj.contains("size_x")) ? scene_obj["size_x"].toDouble() : 10,
-                (scene_obj.contains("size_y")) ? scene_obj["size_y"].toDouble() : 10
+                (scene_obj.contains("size_x")) ? scene_obj["size_x"].toDouble() : 20,
+                (scene_obj.contains("size_y")) ? scene_obj["size_y"].toDouble() : 20
             );
 
             new_obj = new Obstacle(size,

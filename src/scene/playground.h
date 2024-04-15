@@ -22,6 +22,7 @@ class PlayGround : public QGraphicsRectItem {
 
         QGraphicsScene*    mp_scene;
         class SceneObject* mp_active_obj;
+        class SceneObject* mp_toplace_obj;
 
         Action mp_cur_action;
 
@@ -37,6 +38,8 @@ class PlayGround : public QGraphicsRectItem {
         void set_active_obj (SceneObject* object, Action action);
         // Active object will lose focus
         void disable_focus ();
+        // Setting new object which will be placed by mouse click to scene
+        void set_toplace_obj (SceneObject* object);
 
         QPointF get_active_obj_orig_pos ();
 

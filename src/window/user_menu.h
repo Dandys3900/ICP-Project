@@ -8,14 +8,16 @@ class UserMenu : public QWidget {
     Q_OBJECT
 
     public:
-        UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* window = nullptr);
+        UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* window);
         ~UserMenu ();
 
     private:
-        PlayGround*     mp_playground;
-        QGraphicsScene* mp_scene;
-        QGroupBox*      mp_sim_mode_items;
-        QWidget*        mp_menu_container;
+        PlayGround*           mp_playground;
+        QGraphicsScene*       mp_scene;
+        QWidget*              mp_menu_container;
+        QGroupBox*            mp_sim_mode_items;
+        QGraphicsProxyWidget* mp_proxy_button;
+        QGraphicsProxyWidget* mp_container_proxy;
 
         bool mp_expanded;
 

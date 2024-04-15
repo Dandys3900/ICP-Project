@@ -1,10 +1,11 @@
 #include "obstacle.h"
 
 Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, const qreal coord_y, PlayGround* playground)
-    : SceneObject(Vector2(coord_x, coord_y)),
-      mp_type       ("Obstacle"),
-      mp_size       (width, height),
-      mp_playground (playground)
+    : SceneObject       (Vector2(coord_x, coord_y)),
+      QGraphicsRectItem (nullptr),
+      mp_type           ("Obstacle"),
+      mp_size           (width, height),
+      mp_playground     (playground)
 {
     constructor_actions();
 }
@@ -15,10 +16,11 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* play
 }
 
 Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, PlayGround* playground)
-    : SceneObject(coords, rotation),
-      mp_type       ("Obstacle"),
-      mp_size       (size),
-      mp_playground (playground)
+    : SceneObject       (coords, rotation),
+      QGraphicsRectItem (nullptr),
+      mp_type           ("Obstacle"),
+      mp_size           (size),
+      mp_playground     (playground)
 {
     constructor_actions();
 }
@@ -27,7 +29,7 @@ void Obstacle::constructor_actions () {
     this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
     // Set rotation origin
-    this->setTransformOriginPoint(QPointF(mp_coords.x() + (mp_size.x() / 2), mp_coords.y() + (mp_size.y() / 2)));
+    this->setTransformOriginPoint(QPointF(this->rect().center().x(), this->rect().center().y()));
 
     // Allow hover events
     this->setAcceptHoverEvents(true);
@@ -47,6 +49,10 @@ QPointF Obstacle::get_pos () {
     return QPointF(mp_coords.x(), mp_coords.y());
 }
 
+QRectF Obstacle::get_rect () {
+    return this->rect();
+}
+
 void Obstacle::set_obj_pos (const QPointF pos) {
     if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_size.x(), mp_size.y()))) {
         // If new position is inside current scene, update robot coords
@@ -56,7 +62,7 @@ void Obstacle::set_obj_pos (const QPointF pos) {
         this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
         // Update rotation origin
-        this->setTransformOriginPoint(QPointF(mp_coords.x() + (mp_size.x() / 2), mp_coords.y() + (mp_size.y() / 2)));
+        this->setTransformOriginPoint(QPointF(this->rect().center().x(), this->rect().center().y()));
     }
 }
 
@@ -82,6 +88,7 @@ void Obstacle::set_active (bool active, Action action) {
 void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
         if (!mp_is_active) { // Notify PlayGround and get focus
+            this->mp_move_action_mouse_offset = this->mp_coords - event->pos();
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
         else { // Lose focus
@@ -132,7 +139,7 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
             this->set_obj_pos(mp_coords);
         }
         else { // MOVE_ACTION
-            this->set_obj_pos(event->pos());
+            this->set_obj_pos(event->pos() + this->mp_move_action_mouse_offset);
         }
     }
 }
