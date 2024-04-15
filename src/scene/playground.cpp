@@ -136,7 +136,7 @@ void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
         mp_active_obj->mousePressEvent(event);
     }
     else if (mp_toplace_obj) { // Place new object to mouse click position
-        mp_toplace_obj->set_obj_pos(event->pos());
+        mp_toplace_obj->set_obj_pos(event->scenePos());
         add_scene_obj(mp_toplace_obj);
         // Reset for next use
         mp_toplace_obj = nullptr;
