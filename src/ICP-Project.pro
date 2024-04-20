@@ -36,3 +36,5 @@ HEADERS += window/custom_view.h \
            physics/rectangle_collision_shape.h
 
 RESOURCES += resources.qrc
+
+CONFIG += c++17

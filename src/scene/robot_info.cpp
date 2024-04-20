@@ -131,7 +131,7 @@ void Robot_Info::process_robot_info () {
     mp_collisionLineEdit->setText(info_from_robot.at(1));
     mp_rotationLineEdit->setText(info_from_robot.at(2));
     mp_directionComboBox->setCurrentIndex(info_from_robot.at(3).toInt());
-    // set visible items base of robot current mode
+    // Set visible items based of robot current mode
     update_visible_items(mp_typeComboBox->currentIndex());
 }
 

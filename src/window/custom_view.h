@@ -12,12 +12,24 @@
 
 class CustomView : public QGraphicsView {
     public:
+        /**
+         * @brief Constructor.
+         * @param scene Constructed scene.
+         * @param playground Scene objects and event management.
+         * @param window Program window widget.
+         */
         CustomView (QGraphicsScene* scene, PlayGround* playground, QWidget* window);
+        /**
+         * @brief Destructor.
+         */
         ~CustomView ();
 
     protected:
-        // Override resize event to resize PlayGround rect representing the border
-        void resizeEvent (QResizeEvent *event) override;
+        /**
+         * @brief Overrides resize event handling to resize playground border rect.
+         * @param event Generated resize event.
+         */
+        void resizeEvent (QResizeEvent* event) override;
 
     private:
         PlayGround* mp_playground;

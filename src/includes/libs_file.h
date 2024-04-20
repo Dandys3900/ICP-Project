@@ -60,6 +60,7 @@
 #include "errors/error_popup.h"
 
 /***** OTHERS *****/
+// Enum representing action of active object
 enum Action : int {
     NO_ACTION = 0,
     MOVE_ACTION,

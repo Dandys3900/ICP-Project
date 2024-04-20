@@ -31,20 +31,40 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         void move_forward ();
 
     public:
+        /**
+         * @brief Constructor.
+         * @param size Diameter of circle (robot).
+         * @param coord_x X-axis position of robot in the scene.
+         * @param coord_y Y-axis position of robot in the scene.
+         * @param playground Scene objects and event management.
+         */
         Robot (const qreal size,
                const qreal coord_x,
                const qreal coord_y,
                PlayGround* playground);
-
+        /**
+         * @brief Constructor.
+         * @param size Diameter of circle (robot).
+         * @param coords Vector containing position of robot in the scene.
+         * @param playground Scene objects and event management.
+         */
         Robot (const qreal size,
                const Vector2& coords,
                PlayGround* playground);
-
+        /**
+         * @brief Constructor.
+         * @param size Diameter of circle (robot).
+         * @param coords Vector containing position of robot in the scene.
+         * @param rotation Initial rotation of robot's arrow.
+         * @param playground Scene objects and event management.
+         */
         Robot (const qreal size,
                const Vector2& coords,
                qreal rotation,
                PlayGround* playGround);
-
+        /**
+         * @brief Destructor.
+         */
         ~Robot ();
 
         // Implementations of virtual base class methods
@@ -55,10 +75,18 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         void set_active (bool active, Action action) override;
         QJsonObject get_obj_data () override;
 
+        /**
+         * @brief Getter for robot's arrow polygon (pointing current direction of movement).
+         * @return QGraphicsPolygonItem Representing robot's arrow.
+         */
         QGraphicsPolygonItem* get_robot_arrow ();
 
+        /**
+         * @brief Getter for robot's current attribute values used for constructing robot_info widget.
+         * @return QVector<QString> Vector of robot's attributes.
+         */
         QVector<QString> get_robot_info ();
-        // Setters for possible updates of robot info
+        // Setters for possible updates of robot attributes
         void set_mode (int new_mode);
         void set_rotation_angle (qreal new_angle);
         void set_rotation_direction (int new_direction);
@@ -69,7 +97,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent* event) override;
         void keyPressEvent (QKeyEvent* event) override;
-        void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) override;
+        void mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) override;
         void hoverEnterEvent (QGraphicsSceneHoverEvent* event) override;
         void hoverLeaveEvent (QGraphicsSceneHoverEvent* event) override;
 };

@@ -171,7 +171,7 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     }
 }
 
-void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
+void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
     // Remove Robot
     if (event->button() == Qt::MouseButton::RightButton) {
         // if robot widget is shown, hide it first

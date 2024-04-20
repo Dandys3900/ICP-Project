@@ -27,21 +27,42 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         void do_rotation (const qreal angle);
 
     public:
+        /**
+         * @brief Constructor.
+         * @param width Width of rectangle (obstacle).
+         * @param height Height of rectangle (obstacle).
+         * @param coord_x X-axis position of obstacle in the scene.
+         * @param coord_y Y-axis position of obstacle in the scene.
+         * @param playground Scene objects and event management.
+         */
         Obstacle (const qreal width,
                   const qreal height,
                   const qreal coord_x,
                   const qreal coord_y,
                   PlayGround* playground);
-
+        /**
+         * @brief Constructor.
+         * @param size Vector containing size of rectangle (obstacle).
+         * @param coords Vector containing position of obstacle in the scene.
+         * @param playground Scene objects and event management.
+         */
         Obstacle (const Vector2& size,
                   const Vector2& coords,
                   PlayGround* playground);
-
+        /**
+         * @brief Constructor.
+         * @param size Vector containing size of rectangle (obstacle).
+         * @param coords Vector containing position of obstacle in the scene.
+         * @param rotation Initial rotation of rectangle (obstacle).
+         * @param playground Scene objects and event management.
+         */
         Obstacle (const Vector2& size,
                   const Vector2& coords,
                   qreal rotation,
                   PlayGround* playGround);
-
+        /**
+         * @brief Destructor.
+         */
         ~Obstacle ();
 
         // Implementations of virtual base class methods
@@ -55,11 +76,11 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
     protected:
         // Events - handling
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
-        void mouseMoveEvent (QGraphicsSceneMouseEvent *event) override;
+        void mouseMoveEvent (QGraphicsSceneMouseEvent* event) override;
         void keyPressEvent (QKeyEvent* event) override;
-        void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) override;
-        void hoverEnterEvent (QGraphicsSceneHoverEvent *event) override;
-        void hoverLeaveEvent (QGraphicsSceneHoverEvent *event) override;
+        void mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) override;
+        void hoverEnterEvent (QGraphicsSceneHoverEvent* event) override;
+        void hoverLeaveEvent (QGraphicsSceneHoverEvent* event) override;
 };
 
 #endif // OBSTACLE_H
