@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file scene_object.h
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Header file for SceneObject class.
+ */
+
 #ifndef SCENEOBJECT_H
 #define SCENEOBJECT_H
 

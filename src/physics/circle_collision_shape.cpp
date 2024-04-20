@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file circle_collision_shape.cpp
+ * @author Jakub Janšta (xjanst02)
+ * @brief Handling collisions of circular objects.
+ */
+
 #include "physics/circle_collision_shape.h"
 
 

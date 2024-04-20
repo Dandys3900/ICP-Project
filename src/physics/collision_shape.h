@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file collision_shape.h
+ * @author Jakub Janšta (xjanst02)
+ * @brief Header file for CollisionShape base class.
+ */
+
 #ifndef COLLISION_SHAPE_H
 #define COLLISION_SHAPE_H
 
@@ -22,7 +28,7 @@ class CollisionShape {
 		 * This will not move the shape, but rather just move the origin that the whole shape moves around.
 		 */
 		virtual void set_origin(Vector2 origin) = 0;
-		
+
 		/*!
 		 * Returns the shape's "origin".
 		 */
@@ -41,7 +47,7 @@ class CollisionShape {
 
 		/*!
 		 * Rotates the shape around the shape's "origin" by @param angle.  Also @see get_rotation()
-		 */		
+		 */
 		virtual void set_rotation(qreal angle) = 0;
 
 		/*!
@@ -54,7 +60,7 @@ class CollisionShape {
 		 * The current scale will always be seen as 1, so if you want to scale the object to 1.5x it's scale, you would use scale(1.5)
 		 * scale(0.5) - scale to 50% original size - 50% off the current size
 		 * scale(0.5) - scale to 25% original size - 50% off the current size
-		 */		
+		 */
 		virtual void scale(qreal scaling_factor) = 0;
 
 		/*!

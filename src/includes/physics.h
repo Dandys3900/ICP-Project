@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file physics.h
+ * @author Jakub Janšta (xjanst02)
+ * @brief Header file containing all necessary includes for physics and collision classes.
+ */
+
 #ifndef PHYSICS_H
 #define PHYSICS_H
 

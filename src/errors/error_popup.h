@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file error_popup.h
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Header file for Error_PopUp class.
+ */
+
 #ifndef ERRPOPUP_H
 #define ERRPOPUP_H
 

@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file polygon_collision_shape.h
+ * @author Jakub Janšta (xjanst02)
+ * @brief Header file for PolygonCollisionShape class.
+ */
+
 #ifndef POLYGON_COLLISION_SHAPE_H
 #define POLYGON_COLLISION_SHAPE_H
 
@@ -14,7 +20,7 @@ class PolygonCollisionShape : public CollisionShape {
 		 * An invalid polygon is represended with not verticies.
 		 */
 		QVector<Vector2> verticies; // Should not be handled ONLY by provided methods
-		
+
 		/*!
 		 * Polyon's imaginary origin around which is everything scaled and rotated.
 		 * If not set, the first vertex is used as origin.
@@ -34,17 +40,17 @@ class PolygonCollisionShape : public CollisionShape {
 			this->verticies = verticies;
 			this->origin = verticies[0];
 		}
-		
+
 		PolygonCollisionShape(QVector<Vector2> verticies, Vector2 origin) : PolygonCollisionShape(verticies) {
 			this->origin = origin;
 		}
-		
+
 		PolygonCollisionShape(QVector<Vector2> verticies, Vector2 origin, Vector2 position) : PolygonCollisionShape(verticies, origin) {
 			this->set_position(position);
 		}
 
 		virtual void set_origin(Vector2 origin) override;
-		
+
 		virtual Vector2 get_origin() const override;
 
 		virtual void set_position(Vector2 position) override;
@@ -62,7 +68,7 @@ class PolygonCollisionShape : public CollisionShape {
 		QVector<Vector2> get_sat_collision_normals(const CollisionShape& other_shape) const override;
 
 		const QVector<Vector2>& get_sat_collision_verticies() const override;
-	
+
 	protected:
 		// Do nothing constructor for use in derived classes
 		PolygonCollisionShape(){}

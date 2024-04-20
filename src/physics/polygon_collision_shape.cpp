@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file polygon_collision_shape.cpp
+ * @author Jakub Janšta (xjanst02)
+ * @brief Handling collisions of polygon objects.
+ */
+
 #include "physics/polygon_collision_shape.h"
 
 
@@ -14,7 +20,7 @@ Vector2 PolygonCollisionShape::get_origin() const {
 void PolygonCollisionShape::set_position(Vector2 position) {
 	Vector2 position_delta = Vector2(position - this->origin);
 	this->origin = position;
-	// Move all the verticies based on position_delta	
+	// Move all the verticies based on position_delta
 	for (quint8 i = 0; i < this->verticies.size(); i++) {
 		this->verticies[i] = Vector2(this->verticies[i] + position_delta);
 	}

@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file user_menu.h
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Header file for UserMenu class.
+ */
+
 #ifndef USER_MENU_H
 #define USER_MENU_H
 

@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file custom_view.h
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Header file for CustomView class.
+ */
+
 #ifndef CUSTOM_VIEW_H
 #define CUSTOM_VIEW_H
 

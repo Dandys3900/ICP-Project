@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file playground.h
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Header file for PlayGround class.
+ */
+
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 

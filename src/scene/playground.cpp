@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file playground.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Representation of a scene where both robots and obstacles are placed.
+ */
+
 #include "playground.h"
 
 PlayGround::PlayGround (QGraphicsScene* scene)

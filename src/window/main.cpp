@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file main.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Application execution point.
+ */
+
 #include "scene/robot.h"
 #include "scene/obstacle.h"
 #include "scene/playground.h"

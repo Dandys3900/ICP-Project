@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file robot_info.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Widget displaying selected robot editable details to the user.
+ */
+
 #include "robot_info.h"
 
 Robot_Info* Robot_Info::instance = nullptr;

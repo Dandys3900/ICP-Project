@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file obstacle.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Representation of an obstacle in the scene.
+ */
+
 #include "obstacle.h"
 
 Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, const qreal coord_y, PlayGround* playground)

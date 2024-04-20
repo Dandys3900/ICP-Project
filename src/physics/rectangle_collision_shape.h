@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file rectangle_collision_shape.h
+ * @author Jakub Janšta (xjanst02)
+ * @brief Header file for RectangeCollisionShape class.
+ */
+
 #ifndef RECTANGLE_COLLISION_SHAPE_H
 #define RECTANGLE_COLLISION_SHAPE_H
 
@@ -10,14 +16,14 @@ class RectangeCollisionShape : protected PolygonCollisionShape {
 		RectangeCollisionShape(const Vector2& size) : PolygonCollisionShape() {
 			this->origin = Vector2();
 			QPointF half_size = size / 2;
-			
+
 			this->verticies.resize(4);
 			this->verticies[0] = Vector2(this->origin.x() - half_size.x(), this->origin.y() - half_size.y());
 			this->verticies[1] = Vector2(this->origin.x() + half_size.x(), this->origin.y() - half_size.y());
 			this->verticies[2] = Vector2(this->origin.x() + half_size.x(), this->origin.y() + half_size.y());
 			this->verticies[3] = Vector2(this->origin.x() - half_size.x(), this->origin.y() + half_size.y());
 		}
-		
+
 		RectangeCollisionShape(const Vector2& size, Vector2 position) : RectangeCollisionShape(size) {
 			this->set_position(position);
 		}

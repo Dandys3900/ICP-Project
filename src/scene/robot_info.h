@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file robot_info.h
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Header file for Robot_Info class.
+ */
+
 #ifndef ROBOTINFO_H
 #define ROBOTINFO_H
 

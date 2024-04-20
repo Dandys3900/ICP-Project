@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file obstacle.h
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Header file for Obstacle class.
+ */
+
 #ifndef OBSTACLE_H
 #define OBSTACLE_H
 
