@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file custom_view.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Handling scene resizing and adjusts PlayGround's rectangle properties.
+ */
+
 #include "custom_view.h"
 
 CustomView::CustomView (QGraphicsScene* scene, PlayGround* playground, QWidget* window)

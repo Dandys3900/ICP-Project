@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file main.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Application execution point.
+ */
+
 #include "scene/robot.h"
 #include "scene/obstacle.h"
 #include "scene/playground.h"
@@ -5,11 +11,21 @@
 #include "user_menu.h"
 
 /**
- * @brief Main file for starting the simulator by creating
- * the Robot class instance and Obstacle class instance which
- * are then added to the PlayGround class instance.
+ * @brief ICP Project 2023/2024 - Implementation of robot's movement and collision avoiding simulator.
+ *
+ * The aim of this project is to create an iterative simulator that simulates the movements of robots,
+ * both manually and automatically controlled, in an environment full of obstacles to avoid collision with.
+ *
+ * Dependencies:
+ * - QT Library (version 5.5 or higher)
+ * - C++17 compiler
+ *
+ * Contributors:
+ * - Tomáš Daniel (xdanie14)
+ * - Jakub Janšta (xjanst02)
+ *
+ * License: MIT License
  */
-
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

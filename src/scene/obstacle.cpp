@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file obstacle.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Representation of an obstacle in the scene.
+ */
+
 #include "obstacle.h"
 
 Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, const qreal coord_y, PlayGround* playground)
@@ -122,7 +128,7 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
     }
 }
 
-void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
+void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
     // React to mouse move only if focused
     if (mp_is_active) {
         if (mp_obj_action == RESIZE_ACTION) {
@@ -144,7 +150,7 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent *event) {
     }
 }
 
-void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
+void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
     // Insert new Obstacle
     if (event->button() == Qt::MouseButton::LeftButton) {
         // Clone this obstacle and insert it to Playground
@@ -160,12 +166,12 @@ void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
     }
 }
 
-void Obstacle::hoverEnterEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
+void Obstacle::hoverEnterEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
     // Light grey color
     setBrush(QBrush(QColor(245, 245, 245)));
 }
 
-void Obstacle::hoverLeaveEvent (QGraphicsSceneHoverEvent *event /*not used*/) {
+void Obstacle::hoverLeaveEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
     setBrush(QBrush(Qt::white));
 }
 

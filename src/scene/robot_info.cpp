@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file robot_info.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Widget displaying selected robot editable details to the user.
+ */
+
 #include "robot_info.h"
 
 Robot_Info* Robot_Info::instance = nullptr;
@@ -125,7 +131,7 @@ void Robot_Info::process_robot_info () {
     mp_collisionLineEdit->setText(info_from_robot.at(1));
     mp_rotationLineEdit->setText(info_from_robot.at(2));
     mp_directionComboBox->setCurrentIndex(info_from_robot.at(3).toInt());
-    // set visible items base of robot current mode
+    // Set visible items based of robot current mode
     update_visible_items(mp_typeComboBox->currentIndex());
 }
 

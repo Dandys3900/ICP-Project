@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file robot.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Representation of a robot in the scene.
+ */
+
 #include "robot.h"
 
 Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGround* playground)
@@ -165,7 +171,7 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     }
 }
 
-void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) {
+void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
     // Remove Robot
     if (event->button() == Qt::MouseButton::RightButton) {
         // if robot widget is shown, hide it first

@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2024-02-05T15:47:42
-#
-#-------------------------------------------------
-
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -42,3 +36,5 @@ HEADERS += window/custom_view.h \
            physics/rectangle_collision_shape.h
 
 RESOURCES += resources.qrc
+
+CONFIG += c++17

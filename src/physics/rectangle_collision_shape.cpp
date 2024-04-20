@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file rectangle_collision_shape.cpp
+ * @author Jakub Janšta (xjanst02)
+ * @brief Handling collisions of rectangular objects.
+ */
+
 #include "physics/rectangle_collision_shape.h"
 
 

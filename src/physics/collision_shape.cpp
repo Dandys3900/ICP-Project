@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file collision_shape.cpp
+ * @author Jakub Janšta (xjanst02)
+ * @brief Handling collisions of objects in general.
+ */
+
 #include "collision_shape.h"
 
 

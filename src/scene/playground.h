@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file playground.h
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Header file for PlayGround class.
+ */
+
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
@@ -27,25 +33,60 @@ class PlayGround : public QGraphicsRectItem {
         Action mp_cur_action;
 
     public:
+        /**
+         * @brief Constructor.
+         * @param scene Constructed scene to be handled.
+         */
         PlayGround (QGraphicsScene* scene);
+        /**
+         * @brief Destructor.
+         */
         ~PlayGround ();
 
-        // Adding objects to the playground
+        /**
+         * @brief Adding objects to the playground (scene).
+         * @param object Target object.
+         */
         void add_scene_obj (SceneObject* object);
-        // Removing objects from the playground
+        /**
+         * @brief Removing objects from the playground (scene).
+         * @param object Target object.
+         */
         void remove_scene_obj (SceneObject* object);
-        // Set scene object as currently active
+        /**
+         * @brief Set target scene object as currently active.
+         * @param object Target object.
+         * @param action Selects action to be done with target (active) object.
+         */
         void set_active_obj (SceneObject* object, Action action);
-        // Active object will lose focus
+        /**
+         * @brief Active scene object will lose focus.
+         */
         void disable_focus ();
-        // Setting new object which will be placed by mouse click to scene
+        /**
+         * @brief New scene object which will be placed by mouse click to the playground (scene).
+         * @param object Target object.
+         */
         void set_toplace_obj (SceneObject* object);
-
+        /**
+         * @brief Returns scene coordinates where current active object is located.
+         * @return QPointF Active object coordinates.
+         */
         QPointF get_active_obj_orig_pos ();
 
-        // Methods for load/store scene configuration
+        /**
+         * @brief Constructs file dialog widget for user to select a file.
+         * @param operation Defines restrictions for file selection related to selected operation.
+         * @return QString Selected filename.
+         */
         QString get_selected_file (Operation operation);
+        /**
+         * @brief Handles selected file content representing stored scene.
+         */
         void load_config ();
+        /**
+         * @brief Stores current scene to the file.
+         */
         void store_config ();
 
         // Events - handling

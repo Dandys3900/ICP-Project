@@ -1,3 +1,10 @@
+/** ICP Project 2023/2024
+ * @file libs_file.h
+ * @author Tomáš Daniel (xdanie14)
+ * @author Jakub Janšta (xjanst02)
+ * @brief Header file containing all necessary includes and constants needed among the project.
+ */
+
 #ifndef INCLUDEFILE_H
 #define INCLUDEFILE_H
 
@@ -53,6 +60,7 @@
 #include "errors/error_popup.h"
 
 /***** OTHERS *****/
+// Enum representing action of active object
 enum Action : int {
     NO_ACTION = 0,
     MOVE_ACTION,

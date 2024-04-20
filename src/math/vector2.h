@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file vector2.h
+ * @author Jakub Janšta (xjanst02)
+ * @brief Header file for Vector2 class.
+ */
+
 #ifndef VECTOR2_H
 #define VECTOR2_H
 

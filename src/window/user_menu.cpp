@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file user_menu.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Displaying program and simulation controls to the user.
+ */
+
 #include "user_menu.h"
 
 UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* window)

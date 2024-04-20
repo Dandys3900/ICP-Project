@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file vector2.cpp
+ * @author Jakub Janšta (xjanst02)
+ * @brief Vector representating requiered for physics and collision calculations.
+ */
+
 #include "vector2.h"
 
 

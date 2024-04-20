@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file circle_collision_shape.h
+ * @author Jakub Janšta (xjanst02)
+ * @brief Header file for CircleCollisionShape class.
+ */
+
 #ifndef CIRCLE_COLLISION_SHAPE_H
 #define CIRCLE_COLLISION_SHAPE_H
 
@@ -18,7 +24,7 @@ class CircleCollisionShape : public CollisionShape {
 		}
 
 		virtual void set_origin(Vector2 origin) override;
-		
+
 		virtual Vector2 get_origin() const override;
 
 		virtual void set_position(Vector2 position) override;

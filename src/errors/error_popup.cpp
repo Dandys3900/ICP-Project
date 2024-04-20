@@ -1,3 +1,9 @@
+/** ICP Project 2023/2024
+ * @file error_popup.cpp
+ * @author Tomáš Daniel (xdanie14)
+ * @brief Displaying error widget with given error message to the user.
+ */
+
 #include "error_popup.h"
 
 Error_PopUp* Error_PopUp::instance = nullptr;
