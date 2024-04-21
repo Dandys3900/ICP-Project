@@ -56,11 +56,19 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
          * @param size Diameter of circle (robot).
          * @param coords Vector containing position of robot in the scene.
          * @param rotation Initial rotation of robot's arrow.
+         * @param mode Initial mode of robot (manual/automatic).
+         * @param rot_direction Initial direction of robot's rotation (clockwise/anticlockwise).
+         * @param rotation_step Sets rotation value used with each robot's arrow movement.
+         * @param collision_thr Initial values for collision threshold of robot.
          * @param playground Scene objects and event management.
          */
         Robot (const qreal size,
                const Vector2& coords,
                qreal rotation,
+               const int mode,
+               const int rot_direction,
+               const qreal rotation_step,
+               const qreal collision_thr,
                PlayGround* playGround);
         /**
          * @brief Destructor.

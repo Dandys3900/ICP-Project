@@ -1,10 +1,14 @@
 [
     {
+        "collis_thres": 5,
         "coord_x": 475,
         "coord_y": 317,
         "diameter": 100,
+        "mode": 1,
         "obj_type": "Robot",
-        "rotation": 20
+        "rotation": 20,
+        "rotation_dir": 1,
+        "rotation_step": 5
     },
     {
         "coord_x": 553,
@@ -31,11 +35,15 @@
         "size_y": 90
     },
     {
+        "collis_thres": 0,
         "coord_x": 71,
         "coord_y": 62,
         "diameter": 100,
+        "mode": 0,
         "obj_type": "Robot",
-        "rotation": -45
+        "rotation": -45,
+        "rotation_dir": 0,
+        "rotation_step": 5
     },
     {
         "coord_x": 448,

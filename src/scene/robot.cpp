@@ -7,12 +7,16 @@
 #include "robot.h"
 
 Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGround* playground)
-    : SceneObject          (Vector2(coord_x, coord_y)),
-      QGraphicsEllipseItem (nullptr),
-      mp_diameter          (size),
-      mp_type              ("Robot"),
-      mp_playground        (playground),
-      mp_arrow             (nullptr)
+    : SceneObject           (Vector2(coord_x, coord_y)),
+      QGraphicsEllipseItem  (nullptr),
+      mp_diameter           (size),
+      mp_type               ("Robot"),
+      mp_mode               (MANUAL),
+      mp_rotation_direction (CLOCKWISE),
+      mp_rotation_angle     (5.0),
+      mp_detect_threshold   (0.0),
+      mp_playground         (playground),
+      mp_arrow              (nullptr)
 {
     constructor_actions();
 }
@@ -22,13 +26,17 @@ Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
 {
 }
 
-Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, PlayGround* playground)
-    : SceneObject          (coords, rotation),
-      QGraphicsEllipseItem (nullptr),
-      mp_diameter          (size),
-      mp_type              ("Robot"),
-      mp_playground        (playground),
-      mp_arrow             (nullptr)
+Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, const int mode, const int rot_direction, const qreal rotation_step, const qreal collision_thr, PlayGround* playground)
+    : SceneObject           (coords, rotation),
+      QGraphicsEllipseItem  (nullptr),
+      mp_diameter           (size),
+      mp_type               ("Robot"),
+      mp_mode               ((enum Mode)mode),
+      mp_rotation_direction ((enum Direction)rot_direction),
+      mp_rotation_angle     (rotation_step),
+      mp_detect_threshold   (collision_thr),
+      mp_playground         (playground),
+      mp_arrow              (nullptr)
 {
     constructor_actions();
 }
@@ -66,13 +74,6 @@ void Robot::constructor_actions() {
 
     // White background
     setBrush(QBrush(Qt::white));
-
-    // TODO: Adapt when implementing simulation
-    // Set robot initial details
-    mp_mode = MANUAL;
-    mp_rotation_angle = 5.0;
-    mp_rotation_direction = CLOCKWISE;
-    mp_detect_threshold = 1.0;
 }
 
 Robot::~Robot () {
@@ -240,7 +241,11 @@ void Robot::move_forward () {
 
 QJsonObject Robot::get_obj_data () {
     QJsonObject conf_data = SceneObject::get_obj_data();
-    conf_data["obj_type"] = mp_type;
-    conf_data["diameter"] = mp_diameter;
+    conf_data["obj_type"]      = mp_type;
+    conf_data["diameter"]      = mp_diameter;
+    conf_data["mode"]          = mp_mode;
+    conf_data["rotation_step"] = mp_rotation_angle;
+    conf_data["rotation_dir"]  = mp_rotation_direction;
+    conf_data["collis_thres"]  = mp_detect_threshold;
     return conf_data;
 }

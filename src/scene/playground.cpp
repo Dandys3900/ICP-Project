@@ -242,12 +242,24 @@ void PlayGround::load_config () {
             (scene_obj.contains("rotation")) ? scene_obj["rotation"].toDouble() : 0;
 
         if (obj_type == QString("Robot")) {
-            size_t diameter =
+            qreal diameter =
                 (scene_obj.contains("diameter")) ? scene_obj["diameter"].toDouble() : 20;
+            int mode =
+                (scene_obj.contains("mode")) ? scene_obj["mode"].toInt() : MANUAL;
+            qreal rot_step =
+                (scene_obj.contains("rotation_step")) ? scene_obj["rotation_step"].toDouble() : 5.0;
+            int rot_direction =
+                (scene_obj.contains("rotation_dir")) ? scene_obj["rotation_dir"].toInt() : CLOCKWISE;
+            qreal collision_thr =
+                (scene_obj.contains("collis_thres")) ? scene_obj["collis_thres"].toDouble() : 0;
 
             new_obj = new Robot(diameter,
                                 coords,
                                 rotation,
+                                mode,
+                                rot_direction,
+                                rot_step,
+                                collision_thr,
                                 this);
         }
         else { // obj_type == Obstacle
