@@ -32,6 +32,9 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, 
 }
 
 void Obstacle::constructor_actions () {
+    // Set proper stack order
+    this->setZValue(0);
+
     this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
     // Set rotation origin
@@ -167,12 +170,28 @@ void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
 }
 
 void Obstacle::hoverEnterEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
-    // Light grey color
-    setBrush(QBrush(QColor(245, 245, 245)));
+    QPen pen(Qt::gray);
+    // Apply new color
+    this->setPen(pen);
 }
 
 void Obstacle::hoverLeaveEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
-    setBrush(QBrush(Qt::white));
+    QPen pen(mp_color);
+    // Apply new color
+    this->setPen(pen);
+}
+
+void Obstacle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+    // Texture source
+    QPixmap img(":/textures/box.jpeg");
+    // Paint the background image
+    painter->drawPixmap(
+        boundingRect().toRect(),
+        img.scaled(boundingRect().size().toSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+    );
+
+    // Call the base class implementation to ensure proper drawing
+    QGraphicsRectItem::paint(painter, option, widget);
 }
 
 void Obstacle::do_rotation (const qreal angle) {

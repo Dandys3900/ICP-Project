@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     Robot* robot = new Robot(robot_size, main_window->rect().center().x(), main_window->rect().center().y(), playground);
 
     // Create obstacle
-    Obstacle* obstacle = new Obstacle(50, 20, 150, 150, playground);
+    Obstacle* obstacle = new Obstacle(70, 70, 150, 150, playground);
 
     // Add robot to the playground
     playground->add_scene_obj(robot);

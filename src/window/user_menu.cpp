@@ -128,7 +128,7 @@ void UserMenu::add_robot () {
 
 void UserMenu::add_obstacle () {
     // Initial position is not important, mouse click to scene will place it later
-    Obstacle* new_obstacle = new Obstacle(50, 20, 0, 0, mp_playground);
+    Obstacle* new_obstacle = new Obstacle(70, 70, 0, 0, mp_playground);
     mp_playground->set_toplace_obj(new_obstacle);
 }
 

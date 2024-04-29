@@ -15,18 +15,32 @@ PlayGround::PlayGround (QGraphicsScene* scene)
       mp_toplace_obj         (nullptr),
       mp_cur_action          (NO_ACTION)
 {
+    // Set proper stack order
+    this->setZValue(0);
+
     // Make PlayGround focusable
     this->setFlag(QGraphicsItem::ItemIsFocusable);
     this->setFocus();
 
+    // Set texture for rectangle (playground)
+    QBrush background(QPixmap(":/textures/ground.jpeg"));
+    this->setBrush(background);
+
     // Add PlayGround to the scene
-    mp_scene->addItem(this);
+    add_to_scene(this);
 }
 
 PlayGround::~PlayGround () {
     // Remove all scene objects
     for (SceneObject* obj : this->mp_scene_objs_vec) {
         delete obj;
+    }
+}
+
+void PlayGround::add_to_scene (QGraphicsItem* new_item) {
+    // Avoid duplicit insertion to the scene
+    if (!mp_scene->items().contains(new_item)) {
+        mp_scene->addItem(new_item);
     }
 }
 
@@ -77,8 +91,8 @@ void PlayGround::add_scene_obj (SceneObject* object) {
             // Set Playground as object parent
             robot->setParentItem(this);
             // Add robot + its arrow
-            mp_scene->addItem(robot->get_robot_arrow());
-            mp_scene->addItem(robot);
+            add_to_scene(robot->get_robot_arrow());
+            add_to_scene(robot);
         }
     }
     else {
@@ -87,7 +101,7 @@ void PlayGround::add_scene_obj (SceneObject* object) {
         if (obstacle) { // Add obstacle
             // Set Playground as object parent
             obstacle->setParentItem(this);
-            mp_scene->addItem(obstacle);
+            add_to_scene(obstacle);
         }
     }
 }

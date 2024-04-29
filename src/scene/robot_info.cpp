@@ -137,11 +137,9 @@ void Robot_Info::process_robot_info () {
 
 void Robot_Info::update_visible_items (int mode) {
     if (mode == MANUAL) {
-        mp_rotationLineEdit->setReadOnly(true);
         mp_auto_mode_items->hide();
     }
     else { // Automatic
-        mp_rotationLineEdit->setReadOnly(false);
         mp_auto_mode_items->show();
     }
     Robot_Info::instance->mp_info_container->adjustSize();

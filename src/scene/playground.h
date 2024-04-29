@@ -32,6 +32,12 @@ class PlayGround : public QGraphicsRectItem {
 
         Action mp_cur_action;
 
+        /**
+         * @brief Private method for adding new item(s) to the scene.
+         * @param new_item Item to be added.
+         */
+        void add_to_scene (QGraphicsItem* new_item);
+
     public:
         /**
          * @brief Constructor.
