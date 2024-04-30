@@ -153,7 +153,7 @@ void Robot_Info::ok_click () {
 
 void Robot_Info::robot_type (int index) {
     // Update robot mode
-    mp_robot->set_mode(index);
+    mp_robot->set_mode((enum Mode)index);
     // set visible items base of robot current mode
     update_visible_items(index);
 }
@@ -170,7 +170,7 @@ void Robot_Info::rotation_value (const QString& text) {
 
 void Robot_Info::rotation_direction (int index) {
     // Update robot rotation angle direction
-    mp_robot->set_rotation_direction(index);
+    mp_robot->set_rotation_direction((enum Direction)index);
 }
 
 void Robot_Info::clean_up () {

@@ -1,10 +1,14 @@
 [
     {
+        "collis_thres": 2,
         "coord_x": 505,
         "coord_y": 412,
         "diameter": 100,
+        "mode": 1,
         "obj_type": "Robot",
-        "rotation": 5
+        "rotation": 5,
+        "rotation_dir": 0,
+        "rotation_step": 1
     },
     {
         "coord_x": 595,
@@ -31,17 +35,25 @@
         "size_y": 79
     },
     {
+        "collis_thres": 0,
         "coord_x": 71,
         "coord_y": 62,
         "diameter": 100,
+        "mode": 1,
         "obj_type": "Robot",
-        "rotation": -60
+        "rotation": -60,
+        "rotation_dir": 0,
+        "rotation_step": 50
     },
     {
+        "collis_thres": 0,
         "coord_x": 612,
         "coord_y": 54,
         "diameter": 100,
+        "mode": 0,
         "obj_type": "Robot",
-        "rotation": -15
+        "rotation": -15,
+        "rotation_dir": 0,
+        "rotation_step": 5
     }
 ]

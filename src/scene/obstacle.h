@@ -13,7 +13,7 @@
 
 class Obstacle : public SceneObject, public QGraphicsRectItem {
     private:
-        QString mp_type;
+        QString mp_obj_type;
 
         /* mp_size.x() ... width
            mp_size.y() ... height */

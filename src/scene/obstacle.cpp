@@ -9,7 +9,7 @@
 Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, const qreal coord_y, PlayGround* playground)
     : SceneObject       (Vector2(coord_x, coord_y)),
       QGraphicsRectItem (nullptr),
-      mp_type           ("Obstacle"),
+      mp_obj_type       ("Obstacle"),
       mp_size           (width, height),
       mp_playground     (playground)
 {
@@ -24,7 +24,7 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* play
 Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, PlayGround* playground)
     : SceneObject       (coords, rotation),
       QGraphicsRectItem (nullptr),
-      mp_type           ("Obstacle"),
+      mp_obj_type       ("Obstacle"),
       mp_size           (size),
       mp_playground     (playground)
 {
@@ -51,11 +51,11 @@ Obstacle::~Obstacle () {
 }
 
 QString Obstacle::get_type () {
-    return mp_type;
+    return mp_obj_type;
 }
 
 QPointF Obstacle::get_pos () {
-    return QPointF(mp_coords.x(), mp_coords.y());
+    return QPointF(this->rect().x(), this->rect().y());
 }
 
 QRectF Obstacle::get_rect () {
@@ -71,7 +71,7 @@ void Obstacle::set_obj_pos (const QPointF pos) {
         this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
         // Update rotation origin
-        this->setTransformOriginPoint(QPointF(this->rect().center().x(), this->rect().center().y()));
+        this->setTransformOriginPoint(this->rect().center());
     }
 }
 
@@ -97,7 +97,7 @@ void Obstacle::set_active (bool active, Action action) {
 void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
         if (!mp_is_active) { // Notify PlayGround and get focus
-            this->mp_move_action_mouse_offset = this->mp_coords - event->scenePos();
+            this->mp_move_action_mouse_offset = this->rect().topLeft() - event->scenePos();
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
         else { // Lose focus
@@ -135,17 +135,18 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
     // React to mouse move only if focused
     if (mp_is_active) {
         if (mp_obj_action == RESIZE_ACTION) {
-            // Calculate resize change
-            QPointF posChange;
-            posChange.setX(qFabs(event->scenePos().x() - mp_coords.x()));
-            posChange.setY(qFabs(event->scenePos().y() - mp_coords.y()));
+            // Calculate new rectangle based on initial position and current mouse position
+            QRectF newRect = QRectF(mp_coords, event->scenePos()).normalized();
 
-            // Update obstacle size
-            mp_size.setX(posChange.x());
-            mp_size.setY(posChange.y());
+            // Update mp_size
+            mp_size.setX(newRect.size().width());
+            mp_size.setY(newRect.size().height());
 
-            // Update rectangle and rotation origin
-            this->set_obj_pos(mp_coords);
+            // If the new rectangle is within the scene, update rectangle and rotation origin
+            if (mp_playground->boundingRect().contains(newRect)) {
+                this->setRect(newRect);
+                this->setTransformOriginPoint(newRect.center());
+            }
         }
         else { // MOVE_ACTION
             this->set_obj_pos(event->scenePos() + this->mp_move_action_mouse_offset);
@@ -157,7 +158,7 @@ void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
     // Insert new Obstacle
     if (event->button() == Qt::MouseButton::LeftButton) {
         // Clone this obstacle and insert it to Playground
-        Obstacle* newObstacle = new Obstacle(mp_size.x(), mp_size.y(), mp_coords.x(), mp_coords.y(), mp_playground);
+        Obstacle* newObstacle = new Obstacle(mp_size.x(), mp_size.y(), this->rect().x(), this->rect().y(), mp_playground);
 
         // Add obstacle to the PlayGround
         mp_playground->add_scene_obj(newObstacle);
@@ -202,7 +203,7 @@ void Obstacle::do_rotation (const qreal angle) {
 
 QJsonObject Obstacle::get_obj_data () {
     QJsonObject conf_data = SceneObject::get_obj_data();
-    conf_data["obj_type"] = mp_type;
+    conf_data["obj_type"] = mp_obj_type;
     conf_data["size_x"]   = mp_size.x();
     conf_data["size_y"]   = mp_size.y();
     return conf_data;
