@@ -72,13 +72,6 @@ void Robot::constructor_actions() {
 
     // Allow hover events
     this->setAcceptHoverEvents(true);
-
-    // TODO: Adapt when implementing simulation
-    // Set robot initial details
-    mp_mode = MANUAL;
-    mp_rotation_angle = 5.0;
-    mp_rotation_direction = CLOCKWISE;
-    mp_detect_threshold = 1.0;
 }
 
 Robot::~Robot () {
