@@ -3,5 +3,8 @@
         <file>icons/menu_icon.png</file>
         <file>icons/play_icon.png</file>
         <file>icons/stop_icon.png</file>
+        <file>textures/box.jpeg</file>
+        <file>textures/ground.jpeg</file>
+        <file>textures/robot.png</file>
     </qresource>
 </RCC>

@@ -108,6 +108,10 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         void mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) override;
         void hoverEnterEvent (QGraphicsSceneHoverEvent* event) override;
         void hoverLeaveEvent (QGraphicsSceneHoverEvent* event) override;
+        /**
+         * @brief Overriden Qt paint method for ensuring proper displaying of robot texture.
+         */
+        void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 };
 
 #endif // ROBOT_H

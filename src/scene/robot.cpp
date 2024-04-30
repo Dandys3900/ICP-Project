@@ -42,6 +42,9 @@ Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, const Mod
 }
 
 void Robot::constructor_actions() {
+    // Set proper stack order
+    this->setZValue(0);
+
     // Set ellipsis properties
     this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
 
@@ -60,11 +63,9 @@ void Robot::constructor_actions() {
     points_arr.append(QPointF(5, 5));
 
     // Create arrow showing current rotation
-    mp_arrow = new QGraphicsPolygonItem(QPolygonF(points_arr));
+    mp_arrow = new QGraphicsPolygonItem(QPolygonF(points_arr), this);
     mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
     mp_arrow->setRotation(mp_rotation);
-    // Place it below robot ellipsis
-    mp_arrow->setZValue(this->zValue() - 1);
 
     // Set correct rotation origin
     mp_arrow->setTransformOriginPoint(QPointF(0, ARROW_LENGTH));
@@ -72,8 +73,12 @@ void Robot::constructor_actions() {
     // Allow hover events
     this->setAcceptHoverEvents(true);
 
-    // White background
-    setBrush(QBrush(Qt::white));
+    // TODO: Adapt when implementing simulation
+    // Set robot initial details
+    mp_mode = MANUAL;
+    mp_rotation_angle = 5.0;
+    mp_rotation_direction = CLOCKWISE;
+    mp_detect_threshold = 1.0;
 }
 
 Robot::~Robot () {
@@ -210,15 +215,27 @@ void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
 }
 
 void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
-    // Light grey color
-    setBrush(QBrush(QColor(245, 245, 245)));
+    QPen pen(Qt::gray);
+    // Apply new color
+    this->setPen(pen);
 }
 
 void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
-    setBrush(QBrush(Qt::white));
-    if (mp_obj_action == NO_ACTION) {
-        mp_arrow->setPen(QPen(Qt::black));
-    }
+    QPen pen(mp_color);
+    // Apply new color
+    this->setPen(pen);
+}
+
+void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+    // Texture source
+    QPixmap img(":/textures/robot.png");
+    // Paint the background image
+    painter->drawPixmap(
+        boundingRect().toRect(),
+        img.scaled(boundingRect().size().toSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation)
+    );
+
+    QGraphicsEllipseItem::paint(painter, option, widget);
 }
 
 void Robot::do_rotation (const qreal angle) {

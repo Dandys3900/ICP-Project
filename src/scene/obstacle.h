@@ -81,6 +81,10 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         void mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) override;
         void hoverEnterEvent (QGraphicsSceneHoverEvent* event) override;
         void hoverLeaveEvent (QGraphicsSceneHoverEvent* event) override;
+        /**
+         * @brief Overriden Qt paint method for ensuring proper displaying of obstacle texture.
+         */
+        void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 };
 
 #endif // OBSTACLE_H
