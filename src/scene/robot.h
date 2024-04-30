@@ -15,12 +15,12 @@
 class Robot : public SceneObject, public QGraphicsEllipseItem {
     private:
         qreal mp_diameter;
-        QString mp_type;
+        QString mp_obj_type;
 
         // Robot details
         enum Mode mp_mode;
         enum Direction mp_rotation_direction;
-        qreal mp_rotation_angle;
+        qreal mp_rotation_step;
         qreal mp_detect_threshold;
 
         class PlayGround*     mp_playground;
@@ -56,11 +56,19 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
          * @param size Diameter of circle (robot).
          * @param coords Vector containing position of robot in the scene.
          * @param rotation Initial rotation of robot's arrow.
+         * @param mode Initial mode of robot (manual/automatic).
+         * @param rot_direction Initial direction of robot's rotation (clockwise/anticlockwise).
+         * @param rotation_step Sets rotation value used with each robot's arrow movement.
+         * @param collision_thr Initial values for collision threshold of robot.
          * @param playground Scene objects and event management.
          */
         Robot (const qreal size,
                const Vector2& coords,
                qreal rotation,
+               const Mode mode,
+               const Direction rot_direction,
+               const qreal rotation_step,
+               const qreal collision_thr,
                PlayGround* playGround);
         /**
          * @brief Destructor.
@@ -87,9 +95,9 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
          */
         QVector<QString> get_robot_info ();
         // Setters for possible updates of robot attributes
-        void set_mode (int new_mode);
+        void set_mode (Mode new_mode);
         void set_rotation_angle (qreal new_angle);
-        void set_rotation_direction (int new_direction);
+        void set_rotation_direction (Direction new_direction);
         void set_detect_threshold (qreal new_threshold);
 
     protected:
