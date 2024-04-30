@@ -244,14 +244,14 @@ void PlayGround::load_config () {
         if (obj_type == QString("Robot")) {
             qreal diameter =
                 (scene_obj.contains("diameter")) ? scene_obj["diameter"].toDouble() : 20;
-            int mode =
-                (scene_obj.contains("mode")) ? scene_obj["mode"].toInt() : MANUAL;
+            Mode mode = static_cast<enum Mode>(
+                (scene_obj.contains("mode")) ? scene_obj["mode"].toInt() : MANUAL);
             qreal rot_step =
                 (scene_obj.contains("rotation_step")) ? scene_obj["rotation_step"].toDouble() : 5.0;
-            int rot_direction =
-                (scene_obj.contains("rotation_dir")) ? scene_obj["rotation_dir"].toInt() : CLOCKWISE;
+            Direction rot_direction = static_cast<enum Direction>(
+                (scene_obj.contains("rotation_dir")) ? scene_obj["rotation_direction"].toInt() : CLOCKWISE);
             qreal collision_thr =
-                (scene_obj.contains("collis_thres")) ? scene_obj["collis_thres"].toDouble() : 0;
+                (scene_obj.contains("collis_thres")) ? scene_obj["collis_threshold"].toDouble() : 0;
 
             new_obj = new Robot(diameter,
                                 coords,

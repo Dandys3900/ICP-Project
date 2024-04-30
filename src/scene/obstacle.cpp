@@ -9,7 +9,7 @@
 Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, const qreal coord_y, PlayGround* playground)
     : SceneObject       (Vector2(coord_x, coord_y)),
       QGraphicsRectItem (nullptr),
-      mp_type           ("Obstacle"),
+      mp_obj_type       ("Obstacle"),
       mp_size           (width, height),
       mp_playground     (playground)
 {
@@ -24,7 +24,7 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* play
 Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, PlayGround* playground)
     : SceneObject       (coords, rotation),
       QGraphicsRectItem (nullptr),
-      mp_type           ("Obstacle"),
+      mp_obj_type       ("Obstacle"),
       mp_size           (size),
       mp_playground     (playground)
 {
@@ -48,7 +48,7 @@ Obstacle::~Obstacle () {
 }
 
 QString Obstacle::get_type () {
-    return mp_type;
+    return mp_obj_type;
 }
 
 QPointF Obstacle::get_pos () {
@@ -183,7 +183,7 @@ void Obstacle::do_rotation (const qreal angle) {
 
 QJsonObject Obstacle::get_obj_data () {
     QJsonObject conf_data = SceneObject::get_obj_data();
-    conf_data["obj_type"] = mp_type;
+    conf_data["obj_type"] = mp_obj_type;
     conf_data["size_x"]   = mp_size.x();
     conf_data["size_y"]   = mp_size.y();
     return conf_data;
