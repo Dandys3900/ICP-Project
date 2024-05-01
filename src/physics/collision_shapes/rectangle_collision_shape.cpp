@@ -4,7 +4,7 @@
  * @brief Handling collisions of rectangular objects.
  */
 
-#include "physics/rectangle_collision_shape.h"
+#include "physics/collision_shapes/rectangle_collision_shape.h"
 
 
 QVector<Vector2> RectangeCollisionShape::get_sat_collision_normals(const CollisionShape& other_shape) const {

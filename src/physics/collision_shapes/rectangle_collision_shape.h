@@ -8,14 +8,14 @@
 #define RECTANGLE_COLLISION_SHAPE_H
 
 
-#include "physics/polygon_collision_shape.h"
+#include "physics/collision_shapes/polygon_collision_shape.h"
 
 
-class RectangeCollisionShape : protected PolygonCollisionShape {
+class RectangeCollisionShape : public PolygonCollisionShape {
 	public:
 		RectangeCollisionShape(const Vector2& size) : PolygonCollisionShape() {
-			this->origin = Vector2();
 			QPointF half_size = size / 2;
+			this->origin = Vector2(half_size);
 
 			this->verticies.resize(4);
 			this->verticies[0] = Vector2(this->origin.x() - half_size.x(), this->origin.y() - half_size.y());

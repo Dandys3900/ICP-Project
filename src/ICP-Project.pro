@@ -15,10 +15,12 @@ SOURCES += window/main.cpp \
            scene/robot_info.cpp \
            math/vector2.cpp \
            errors/error_popup.cpp \
-           physics/collision_shape.cpp \
-           physics/circle_collision_shape.cpp \
-           physics/polygon_collision_shape.cpp \
-           physics/rectangle_collision_shape.cpp
+           physics/server/physics_server.cpp \
+           physics/collision_shapes/collision_shape.cpp \
+           physics/collision_shapes/circle_collision_shape.cpp \
+           physics/collision_shapes/polygon_collision_shape.cpp \
+           physics/collision_shapes/rectangle_collision_shape.cpp \
+           physics/physical_objects/physical_robot.cpp
 
 HEADERS += window/custom_view.h \
            window/user_menu.h \
@@ -30,10 +32,12 @@ HEADERS += window/custom_view.h \
            scene/robot_info.h \
            math/vector2.h \
            errors/error_popup.h \
-           physics/collision_shape.h \
-           physics/circle_collision_shape.h \
-           physics/polygon_collision_shape.h \
-           physics/rectangle_collision_shape.h
+           physics/server/physics_server.h \
+           physics/collision_shapes/collision_shape.h \
+           physics/collision_shapes/circle_collision_shape.h \
+           physics/collision_shapes/polygon_collision_shape.h \
+           physics/collision_shapes/rectangle_collision_shape.h \
+           physics/physical_objects/physical_robot.h
 
 RESOURCES += resources.qrc
 

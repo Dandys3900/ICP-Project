@@ -8,7 +8,7 @@
 #define CIRCLE_COLLISION_SHAPE_H
 
 
-#include "physics/collision_shape.h"
+#include "physics/collision_shapes/collision_shape.h"
 #include <QtGlobal>
 
 
@@ -47,6 +47,10 @@ class CircleCollisionShape : public CollisionShape {
 		 * Returns the closes vertex from @param verticies to center of this circle.
 		 */
 		const Vector2 get_closest_vertex(const QVector<Vector2>& verticies) const;
+
+		virtual void set_radius(qreal radius);
+		
+		virtual qreal get_radius() const;
 };
 
 

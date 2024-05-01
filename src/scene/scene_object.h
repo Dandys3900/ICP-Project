@@ -59,6 +59,34 @@ class SceneObject {
          */
         virtual void set_obj_pos (QPointF pos)               = 0;
         /**
+         * @brief Pure virtual setter for object's current rotation.
+         * @param new_rotation New object's rotation.
+         */
+        virtual qreal set_rotation (qreal new_rotation) {
+            this->mp_rotation = new_rotation;
+        }
+        /**
+         * @brief Pure virtual setter for object's current rotation in radians.
+         * @param new_rotation New object's rotation in radians.
+         */
+        virtual qreal set_rotation_radians (qreal new_rotation) {
+            this->mp_rotation = qRadiansToDegrees(new_rotation);
+        }
+        /**
+         * @brief Pure virtual getter for object's current rotation.
+         * @return qreal Object rotation.
+         */
+        virtual qreal get_rotation () {
+            return this->mp_rotation;
+        }
+        /**
+         * @brief Pure virtual getter for object's current rotation in radians.
+         * @return qreal Object rotation.
+         */
+        virtual qreal get_rotation_radians () {
+            return qDegreesToRadians(this->mp_rotation);
+        }
+        /**
          * @brief Pure virtual setter for toggling object's active (focus) status (active/inactive).
          * @param active Boolean value marking object active or not.
          * @param action Selects action to be done with object when active.

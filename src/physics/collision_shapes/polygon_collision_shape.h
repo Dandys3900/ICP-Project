@@ -8,7 +8,7 @@
 #define POLYGON_COLLISION_SHAPE_H
 
 
-#include "physics/collision_shape.h"
+#include "physics/collision_shapes/collision_shape.h"
 
 
 class PolygonCollisionShape : public CollisionShape {

@@ -165,7 +165,7 @@ void Robot_Info::collision_value (const QString& text) {
 
 void Robot_Info::rotation_value (const QString& text) {
     // Update robot rotation angle
-    mp_robot->set_rotation_angle(text.toDouble());
+    mp_robot->set_rotation_step(text.toDouble());
 }
 
 void Robot_Info::rotation_direction (int index) {

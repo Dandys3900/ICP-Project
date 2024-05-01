@@ -4,7 +4,7 @@
  * @brief Handling collisions of polygon objects.
  */
 
-#include "physics/polygon_collision_shape.h"
+#include "physics/collision_shapes/polygon_collision_shape.h"
 
 
 void PolygonCollisionShape::set_origin(Vector2 origin) {
