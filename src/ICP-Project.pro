@@ -20,7 +20,8 @@ SOURCES += window/main.cpp \
            physics/collision_shapes/circle_collision_shape.cpp \
            physics/collision_shapes/polygon_collision_shape.cpp \
            physics/collision_shapes/rectangle_collision_shape.cpp \
-           physics/physical_objects/physical_robot.cpp
+           physics/physical_objects/physical_robot.cpp \
+           physics/physical_objects/physical_obstacle.cpp
 
 HEADERS += window/custom_view.h \
            window/user_menu.h \
@@ -37,7 +38,8 @@ HEADERS += window/custom_view.h \
            physics/collision_shapes/circle_collision_shape.h \
            physics/collision_shapes/polygon_collision_shape.h \
            physics/collision_shapes/rectangle_collision_shape.h \
-           physics/physical_objects/physical_robot.h
+           physics/physical_objects/physical_robot.h \
+           physics/physical_objects/physical_obstacle.h
 
 RESOURCES += resources.qrc
 

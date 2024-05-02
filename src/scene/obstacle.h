@@ -10,6 +10,7 @@
 #include "includes/libs_file.h"
 #include "scene/scene_object.h"
 #include "scene/playground.h"
+#include "physics/physical_objects/physical_obstacle.h"
 
 class Obstacle : public SceneObject, public QGraphicsRectItem {
     private:
@@ -22,6 +23,8 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         Action mp_obj_action;
 
         class PlayGround* mp_playground;
+
+        class PhysicalObstacle* physical_obstacle;
 
         void constructor_actions ();
         void do_rotation (const qreal angle);
@@ -72,6 +75,8 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         void set_obj_pos (const QPointF pos) override;
         void set_active (bool active, Action action) override;
         QJsonObject get_obj_data () override;
+        
+        Vector2 get_size ();
 
     protected:
         // Events - handling

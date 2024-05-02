@@ -173,6 +173,9 @@ void Robot::set_obj_pos (const QPointF pos) {
 
         // Re-center arrow after robot moved
         mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
+
+        this->physical_robot->update_shape();
+        this->physical_robot->update_shapecast();
     }
 }
 
@@ -230,7 +233,6 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
     if (mp_is_active) { // Move robot, if focused
         this->set_obj_pos(event->scenePos() + this->mp_move_action_mouse_offset);
-        this->physical_robot->update_shape();
     }
 }
 

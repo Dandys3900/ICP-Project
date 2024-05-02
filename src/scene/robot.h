@@ -27,9 +27,9 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         class PlayGround*     mp_playground;
         QGraphicsPolygonItem* mp_arrow;
 
-        void constructor_actions ();
-
         class PhysicalRobot* physical_robot;
+
+        void constructor_actions ();
 
     public:
         /**

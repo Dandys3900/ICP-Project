@@ -45,9 +45,12 @@ void Obstacle::constructor_actions () {
 
     // Set rotation
     this->setRotation(mp_rotation);
+
+    this->physical_obstacle = new PhysicalObstacle(this);
 }
 
 Obstacle::~Obstacle () {
+    delete physical_obstacle;
 }
 
 QString Obstacle::get_type () {
@@ -72,7 +75,14 @@ void Obstacle::set_obj_pos (const QPointF pos) {
 
         // Update rotation origin
         this->setTransformOriginPoint(this->rect().center());
+
+        this->physical_obstacle->update_shape();
     }
+}
+
+
+Vector2 Obstacle::get_size() {
+    return mp_size;
 }
 
 void Obstacle::set_active (bool active, Action action) {
@@ -129,6 +139,7 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
         default:
             break;
     }
+    this->physical_obstacle->update_shape();
 }
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
@@ -146,6 +157,7 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
             if (mp_playground->boundingRect().contains(newRect)) {
                 this->setRect(newRect);
                 this->setTransformOriginPoint(newRect.center());
+                this->physical_obstacle->update_shape();
             }
         }
         else { // MOVE_ACTION

@@ -60,10 +60,8 @@ void PhysicalRobot::update_shapecast() {
 	this->shapecast_capsule_circle->set_radius(this->robot->get_diameter() / 2);
 	// Rectangle
 	this->shapecast_capsule_rectangle->set_position(Vector2(this->robot->get_pos()) + (Vector2(this->robot->get_diameter()) / 2) + threshold_endpoint_offset / 2);
-	this->shapecast_capsule_rectangle->set_rotation(this->robot->get_rotation_radians());
 	this->shapecast_capsule_rectangle->resize(Vector2(this->robot->get_diameter(), this->robot->get_detect_threshold()));
-
-	// QTextStream(stdout) << this->shapecast_capsule_circle->get_position().x() << "," << this->shapecast_capsule_circle->get_position().y() << endl;
+	this->shapecast_capsule_rectangle->set_rotation(this->robot->get_rotation_radians());
 }
 
 
