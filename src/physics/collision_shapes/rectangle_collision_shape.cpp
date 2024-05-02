@@ -7,6 +7,16 @@
 #include "physics/collision_shapes/rectangle_collision_shape.h"
 
 
+void RectangeCollisionShape::resize(const Vector2& size) {
+	QPointF half_size = size / 2;
+
+	this->verticies[0] = Vector2(this->origin.x() - half_size.x(), this->origin.y() - half_size.y());
+	this->verticies[1] = Vector2(this->origin.x() + half_size.x(), this->origin.y() - half_size.y());
+	this->verticies[2] = Vector2(this->origin.x() + half_size.x(), this->origin.y() + half_size.y());
+	this->verticies[3] = Vector2(this->origin.x() - half_size.x(), this->origin.y() + half_size.y());
+}
+
+
 QVector<Vector2> RectangeCollisionShape::get_sat_collision_normals(const CollisionShape& other_shape) const {
 	return QVector<Vector2> {
 		Vector2(this->verticies[1] - this->verticies[0]).normalized(),

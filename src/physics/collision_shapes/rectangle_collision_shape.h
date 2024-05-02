@@ -14,8 +14,8 @@
 class RectangeCollisionShape : public PolygonCollisionShape {
 	public:
 		RectangeCollisionShape(const Vector2& size) : PolygonCollisionShape() {
+			this->origin = Vector2();
 			QPointF half_size = size / 2;
-			this->origin = Vector2(half_size);
 
 			this->verticies.resize(4);
 			this->verticies[0] = Vector2(this->origin.x() - half_size.x(), this->origin.y() - half_size.y());
@@ -27,6 +27,8 @@ class RectangeCollisionShape : public PolygonCollisionShape {
 		RectangeCollisionShape(const Vector2& size, Vector2 position) : RectangeCollisionShape(size) {
 			this->set_position(position);
 		}
+
+		void resize(const Vector2& size);
 
 		/*!
 		 * A rectangle has two pairs of parallel edges, so just getting one of them is sufficient.

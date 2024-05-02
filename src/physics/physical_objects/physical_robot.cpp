@@ -48,20 +48,22 @@ void PhysicalRobot::update_shapecast() {
 	if (this->shapecast_capsule_circle == nullptr) {
 		this->shapecast_capsule_circle = new CircleCollisionShape(Vector2(), 0); // don't care about the constructor variables - will be set anyway
 	}
+
 	qreal current_rotation = this->robot->get_rotation_radians() - M_PI_2; // corrected angle in radians so that 0 is pointing up
 	Vector2 threshold_endpoint_offset = this->robot->get_detect_threshold() * Vector2(
 		qCos(current_rotation),
 		qSin(current_rotation)
 	); // rotated shapecast endpoint offset from the robot position
+
 	// Circle
-	this->shapecast_capsule_circle->set_position(Vector2(this->robot->get_pos()) + threshold_endpoint_offset);
+	this->shapecast_capsule_circle->set_position(Vector2(this->robot->get_pos()) + (Vector2(this->robot->get_diameter()) / 2) + threshold_endpoint_offset);
 	this->shapecast_capsule_circle->set_radius(this->robot->get_diameter() / 2);
 	// Rectangle
-	this->shapecast_capsule_rectangle->set_position(Vector2(this->robot->get_pos()) + threshold_endpoint_offset / 2);
+	this->shapecast_capsule_rectangle->set_position(Vector2(this->robot->get_pos()) + (Vector2(this->robot->get_diameter()) / 2) + threshold_endpoint_offset / 2);
 	this->shapecast_capsule_rectangle->set_rotation(this->robot->get_rotation_radians());
-	// TODO handle dynamic robot resize
+	this->shapecast_capsule_rectangle->resize(Vector2(this->robot->get_diameter(), this->robot->get_detect_threshold()));
 
-	QTextStream(stdout) << this->shapecast_capsule_circle->get_position().x() << "," << this->shapecast_capsule_circle->get_position().y() << endl;
+	// QTextStream(stdout) << this->shapecast_capsule_circle->get_position().x() << "," << this->shapecast_capsule_circle->get_position().y() << endl;
 }
 
 
@@ -82,18 +84,20 @@ void PhysicalRobot::move() {
 void PhysicalRobot::turn() {
 	int rotation_step_direction_multiplier = this->robot->get_rotation_direction() == Direction::CLOCKWISE ? 1 : -1;
 	this->robot->do_rotation(this->robot->get_rotation_step() * rotation_step_direction_multiplier); // robot visuals
-	this->shape->set_rotation(this->shape->get_rotation() + this->robot->get_rotation_step_radians() * rotation_step_direction_multiplier);
+	this->shape->set_rotation(this->robot->get_rotation_radians() + this->robot->get_rotation_step_radians() * rotation_step_direction_multiplier);
 	this->update_shapecast(); // rotate the shapecast
 }
 
 
 void PhysicalRobot::turn_left() {
-	this->shape->set_rotation(this->shape->get_rotation() - this->robot->get_rotation_step_radians());
+	this->robot->do_rotation(-this->robot->get_rotation_step());
+	this->shape->set_rotation(this->robot->get_rotation_radians() - this->robot->get_rotation_step_radians());
 	this->update_shapecast(); // rotate the shapecast
 }
 
 
 void PhysicalRobot::turn_right() {
-	this->shape->set_rotation(this->shape->get_rotation() + this->robot->get_rotation_step_radians());
+	this->robot->do_rotation(this->robot->get_rotation_step());
+	this->shape->set_rotation(this->robot->get_rotation_radians() + this->robot->get_rotation_step_radians());
 	this->update_shapecast(); // rotate the shapecast
 }

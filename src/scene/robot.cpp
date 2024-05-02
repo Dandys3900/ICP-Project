@@ -183,11 +183,9 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     switch (event->key()) {
         case Qt::Key_Left: // Rotate counter-clockwise
             physical_robot->turn_left();
-            do_rotation(-mp_rotation_step); // update visual
             break;
         case Qt::Key_Right: // Rotate clockwise
             physical_robot->turn_right();
-            do_rotation(mp_rotation_step); // update visual
             break;
         case Qt::Key_Up: // Move forward
             physical_robot->move();

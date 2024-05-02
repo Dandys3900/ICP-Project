@@ -265,7 +265,7 @@ void PlayGround::load_config () {
             Direction rot_direction = static_cast<enum Direction>(
                 (scene_obj.contains("rotation_dir")) ? scene_obj["rotation_direction"].toInt() : CLOCKWISE);
             qreal collision_thr =
-                (scene_obj.contains("collis_thres")) ? scene_obj["collis_threshold"].toDouble() : 0;
+                (scene_obj.contains("collis_threshold")) ? scene_obj["collis_threshold"].toDouble() : 0;
 
             new_obj = new Robot(diameter,
                                 coords,
