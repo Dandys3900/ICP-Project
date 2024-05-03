@@ -33,6 +33,8 @@ class PhysicalObstacle {
 		~PhysicalObstacle();
 
 		void update_shape();
+
+		const RectangeCollisionShape* get_shape();
 };
 
 

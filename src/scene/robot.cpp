@@ -74,10 +74,12 @@ void Robot::constructor_actions() {
     this->setAcceptHoverEvents(true);
 
     this->physical_robot = new PhysicalRobot(this);
+    mp_playground->physics_server->register_robot(this->physical_robot);
 }
 
 Robot::~Robot () {
     delete mp_arrow;
+    mp_playground->physics_server->unregister_robot(this->physical_robot);
     delete physical_robot;
 }
 
@@ -131,6 +133,10 @@ void Robot::set_rotation_direction (Direction new_direction) {
     mp_rotation_direction = new_direction;
 }
 
+Mode Robot::get_mode() {
+    return mp_mode;
+}
+
 qreal Robot::get_rotation_step () {
     return mp_rotation_step;
 }
@@ -181,17 +187,21 @@ void Robot::set_obj_pos (const QPointF pos) {
 
 void Robot::keyPressEvent (QKeyEvent* event) {
     if (mp_mode == AUTOMATIC) {
+        // this->physical_robot->queued_action = PhysicalRobot::QueuedAction::NOTHING;
         return;
     }
     switch (event->key()) {
         case Qt::Key_Left: // Rotate counter-clockwise
-            physical_robot->turn_left();
+            this->physical_robot->queued_action = PhysicalRobot::QueuedAction::TURN_LEFT;
+            this->mp_playground->physics_server->queue_step();
             break;
         case Qt::Key_Right: // Rotate clockwise
-            physical_robot->turn_right();
+            this->physical_robot->queued_action = PhysicalRobot::QueuedAction::TURN_RIGHT;
+            this->mp_playground->physics_server->queue_step();
             break;
         case Qt::Key_Up: // Move forward
-            physical_robot->move();
+            this->physical_robot->queued_action = PhysicalRobot::QueuedAction::MOVE;
+            this->mp_playground->physics_server->queue_step();
             break;
         case Qt::Key_Down: // Ignore as robot should move only forward
         default: // Ignore any other keys

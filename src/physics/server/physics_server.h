@@ -8,14 +8,21 @@
 #define PHYSICS_SERVER_H
 
 
+#include <QVector>
+
+#include "math/vector2.h"
+
 #include "physics/collision_shapes/collision_shape.h"
 #include "physics/collision_shapes/rectangle_collision_shape.h"
 #include "physics/collision_shapes/circle_collision_shape.h"
 #include "physics/collision_shapes/polygon_collision_shape.h"
 
-#include "math/vector2.h"
+#include "physics/physical_objects/physical_robot.h"
+#include "physics/physical_objects/physical_obstacle.h"
 
-#include <QVector>
+
+class PhysicalObstacle;
+class PhysicalRobot;
 
 
 /*!
@@ -23,19 +30,35 @@
  */
 class PhysicsServer {
 	protected: // fields
+		bool is_step_queued = false;
 		/*!
-		 * Used for playground boundaries, that cannot be passed trough. Must be changed everytime the playground is resized
+		 * Used for playground boundaries, that cannot be passed trough. Must be changed everytime the playground is resized.
 		 */
-		QVector<CollisionShape> playground_boundary_shapes = [];
+		QVector<PhysicalObstacle*> playground_boundary_obstacles = {};
 		/*!
-		 * Used for static objects like obstacles. During simulation static shapes cannot be moved.
+		 * Used for Obstacles. During simulation Obstacles cannot be moved.
 		 */
-		QVector<CollisionShape> static_shapes = [];
+		QVector<PhysicalObstacle*> obstacles = {};
 		/*!
-		 * used for dynamic objects like robots. During simulation they interact with every other shape.
+		 * Used for Robots. During simulation they interact with every other shape.
 		 */
-		QVector<CollisionShape> dynamic_shapes = [];
-}
+		QVector<PhysicalRobot*> robots = {};
+	
+
+	public: // methods
+		PhysicsServer();
+		~PhysicsServer();
+
+		void step();
+		void queue_step();
+		void force_step(bool clean_step_queue = true);
+
+		void register_robot(PhysicalRobot* robot);
+		void unregister_robot(PhysicalRobot* robot);
+		void register_obstacle(PhysicalObstacle* obstacle);
+		void unregister_obstacle(PhysicalObstacle* obstacle);
+
+};
 
 
 #endif // PHYSICS_SERVER_H

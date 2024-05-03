@@ -99,3 +99,76 @@ void PhysicalRobot::turn_right() {
 	this->shape->set_rotation(this->robot->get_rotation_radians() + this->robot->get_rotation_step_radians());
 	this->update_shapecast(); // rotate the shapecast
 }
+
+
+bool PhysicalRobot::is_colliding_with(const CollisionShape& other_shape) const {
+	if (&other_shape == this->shape) { // prevent self-collision
+		return false;
+	}
+	return this->shape->is_colliding_with(other_shape);
+}
+
+
+bool PhysicalRobot::is_shapecast_colliding_with(const CollisionShape& other_shape) const {
+	if (&other_shape == this->shape) { // prevent self-collision
+		return false;
+	}
+	return this->shapecast_capsule_rectangle->is_colliding_with(other_shape) || this->shapecast_capsule_circle->is_colliding_with(other_shape);
+}
+
+
+bool PhysicalRobot::is_colliding_with_any(QVector<const CollisionShape*>& other_shapes) const {
+	for (const CollisionShape* other_shape : other_shapes) {
+		if (this->is_colliding_with(*other_shape)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+bool PhysicalRobot::is_shapecast_colliding_with_any(QVector<const CollisionShape*>& other_shapes) const {
+	for (const CollisionShape* other_shape : other_shapes) {
+		if (this->is_shapecast_colliding_with(*other_shape)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+const CircleCollisionShape* PhysicalRobot::get_shape() {
+	return this->shape;
+}
+
+
+void PhysicalRobot::step(QVector<const CollisionShape*>& playground_boundary_obstacles, QVector<const CollisionShape*>& obstacles, QVector<const CollisionShape*>& robots) {
+	if (this->robot->get_mode() == AUTOMATIC) {
+		if (this->is_shapecast_colliding_with_any(playground_boundary_obstacles) || this->is_shapecast_colliding_with_any(obstacles) || this->is_shapecast_colliding_with_any(robots)) { // if colliding, rotate
+			this->turn();
+		} else {
+			this->move();
+		}
+	} else {
+		switch (this->queued_action) {
+			case QueuedAction::NOTHING:
+				return;
+			case QueuedAction::MOVE:
+				this->move(); // do test move
+				if (this->is_colliding_with_any(playground_boundary_obstacles) || this->is_colliding_with_any(obstacles) || this->is_colliding_with_any(robots)) { // if colliding, undo the test move
+					this->robot->set_rotation_radians(this->robot->get_rotation_radians() + M_PI); // flip the robot
+					this->move(); // move back
+					this->robot->set_rotation_radians(this->robot->get_rotation_radians() - M_PI); // flip the robot back
+					return;
+				}
+				// commit to the test move
+				break;
+			case QueuedAction::TURN_LEFT:
+				this->turn_left();
+				break;
+			case QueuedAction::TURN_RIGHT:
+				this->turn_right();
+				break;
+		}
+	}
+}

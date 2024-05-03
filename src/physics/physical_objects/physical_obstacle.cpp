@@ -28,3 +28,8 @@ void PhysicalObstacle::update_shape() {
 	this->shape->resize(Vector2(this->obstacle->get_size()));
 	this->shape->set_rotation(this->obstacle->get_rotation_radians());
 }
+
+
+const RectangeCollisionShape* PhysicalObstacle::get_shape() {
+	return this->shape;
+}

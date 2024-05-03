@@ -47,9 +47,11 @@ void Obstacle::constructor_actions () {
     this->setRotation(mp_rotation);
 
     this->physical_obstacle = new PhysicalObstacle(this);
+    mp_playground->physics_server->register_obstacle(this->physical_obstacle);
 }
 
 Obstacle::~Obstacle () {
+    mp_playground->physics_server->unregister_obstacle(this->physical_obstacle);
     delete physical_obstacle;
 }
 

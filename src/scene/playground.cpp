@@ -28,6 +28,8 @@ PlayGround::PlayGround (QGraphicsScene* scene)
 
     // Add PlayGround to the scene
     add_to_scene(this);
+
+    this->physics_server = new PhysicsServer();
 }
 
 PlayGround::~PlayGround () {
@@ -35,6 +37,7 @@ PlayGround::~PlayGround () {
     for (SceneObject* obj : this->mp_scene_objs_vec) {
         delete obj;
     }
+    delete this->physics_server;
 }
 
 void PlayGround::add_to_scene (QGraphicsItem* new_item) {
@@ -142,6 +145,7 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
                 (*iter)->keyPressEvent(event);
             }
         }
+        this->physics_server->step();
     }
 }
 

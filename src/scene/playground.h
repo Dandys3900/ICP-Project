@@ -10,11 +10,17 @@
 #include "scene/robot.h"
 #include "scene/obstacle.h"
 
+#include "physics/server/physics_server.h"
+
 // Enum representing desired config file operation
 enum Operation : int {
     LOAD = 0,
     STORE
 };
+
+
+class PhysicsServer;
+
 
 class PlayGround : public QGraphicsRectItem {
     private:
@@ -39,6 +45,9 @@ class PlayGround : public QGraphicsRectItem {
         void add_to_scene (QGraphicsItem* new_item);
 
     public:
+        // PhysicsServer of the Playground
+        PhysicsServer* physics_server;
+
         /**
          * @brief Constructor.
          * @param scene Constructed scene to be handled.

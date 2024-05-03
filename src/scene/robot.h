@@ -103,6 +103,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         void set_rotation_direction (Direction new_direction);
         void set_detect_threshold (qreal new_threshold);
         // Getters for robot attributes
+        Mode get_mode();
         qreal get_rotation_step ();
         qreal get_rotation_step_radians ();
         Direction get_rotation_direction ();
