@@ -62,14 +62,14 @@ class SceneObject {
          * @brief Pure virtual setter for object's current rotation.
          * @param new_rotation New object's rotation.
          */
-        virtual qreal set_rotation (qreal new_rotation) {
+        virtual void set_rotation (qreal new_rotation) {
             this->mp_rotation = new_rotation;
         }
         /**
          * @brief Pure virtual setter for object's current rotation in radians.
          * @param new_rotation New object's rotation in radians.
          */
-        virtual qreal set_rotation_radians (qreal new_rotation) {
+        virtual void set_rotation_radians (qreal new_rotation) {
             this->mp_rotation = qRadiansToDegrees(new_rotation);
         }
         /**

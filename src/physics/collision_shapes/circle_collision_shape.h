@@ -41,7 +41,7 @@ class CircleCollisionShape : public CollisionShape {
 
 		QVector<Vector2> get_sat_collision_normals(const CollisionShape& other_shape) const override;
 
-		const QVector<Vector2>& get_sat_collision_verticies() const override;
+		QVector<Vector2> get_sat_collision_verticies() const override;
 
 		/*!
 		 * Returns the closes vertex from @param verticies to center of this circle.
