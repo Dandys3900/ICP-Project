@@ -167,7 +167,7 @@ void Robot_Info::collision_value (const QString& text) {
     if (ok == false) {
         new_threshold = mp_robot->get_rotation_step();
     }
-    mp_rotationLineEdit->setText(QString::number(new_threshold));
+    mp_collisionLineEdit->setText(QString::number(new_threshold));
     mp_robot->set_detect_threshold(new_threshold);
 }
 
