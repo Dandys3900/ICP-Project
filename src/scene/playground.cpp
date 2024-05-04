@@ -187,7 +187,9 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
                 (*iter)->keyPressEvent(event);
             }
         }
-        if (this->simulation_mode == MANUAL) {
+        if (event->key() == Qt::Key_Space) {
+            this->physics_server->force_step();
+        } else if (this->simulation_mode == MANUAL) {
             this->physics_server->step();
         }
     }
@@ -317,7 +319,7 @@ void PlayGround::load_config () {
             qreal rot_step =
                 (scene_obj.contains("rotation_step")) ? scene_obj["rotation_step"].toDouble() : 5.0;
             Direction rot_direction = static_cast<enum Direction>(
-                (scene_obj.contains("rotation_dir")) ? scene_obj["rotation_direction"].toInt() : CLOCKWISE);
+                (scene_obj.contains("rotation_direction")) ? scene_obj["rotation_direction"].toInt() : CLOCKWISE);
             qreal collision_thr =
                 (scene_obj.contains("collis_threshold")) ? scene_obj["collis_threshold"].toDouble() : 0;
 

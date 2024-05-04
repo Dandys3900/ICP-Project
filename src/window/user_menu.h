@@ -34,6 +34,9 @@ class UserMenu : public QWidget {
         QGraphicsProxyWidget* mp_proxy_button;
         QGraphicsProxyWidget* mp_container_proxy;
 
+        QPushButton* mp_stop_sim_button;
+        QPushButton* mp_start_sim_button;
+
         bool mp_expanded;
 
     private slots:

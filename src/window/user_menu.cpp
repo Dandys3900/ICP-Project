@@ -49,8 +49,11 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
     // Add buttons for user to control automatic simulation process
     QPushButton* stop_sim_btn = new QPushButton("Stop");
     QPushButton* start_sim_btn = new QPushButton("Start");
+    this->mp_stop_sim_button = stop_sim_btn;
+    this->mp_start_sim_button = start_sim_btn;
     // Set corresponding icons
     stop_sim_btn->setIcon(QIcon(":/icons/stop_icon.png"));
+    stop_sim_btn->setEnabled(false);
     start_sim_btn->setIcon(QIcon(":/icons/play_icon.png"));
 
     // Create horizontal layout for start and stop buttons
@@ -154,8 +157,12 @@ void UserMenu::sim_speed_set (int slider_value) {
 
 void UserMenu::start_sim () {
     mp_playground->set_automatic_mode_running(true);
+    this->mp_stop_sim_button->setEnabled(true);
+    this->mp_start_sim_button->setEnabled(false);
 }
 
 void UserMenu::stop_sim () {
     mp_playground->set_automatic_mode_running(false);
+    this->mp_stop_sim_button->setEnabled(false);
+    this->mp_start_sim_button->setEnabled(true);
 }
