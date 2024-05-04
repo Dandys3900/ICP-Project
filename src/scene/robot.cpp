@@ -74,12 +74,12 @@ void Robot::constructor_actions() {
     this->setAcceptHoverEvents(true);
 
     this->physical_robot = new PhysicalRobot(this);
-    mp_playground->physics_server->register_robot(this->physical_robot);
+    mp_playground->get_physics_server()->register_robot(this->physical_robot);
 }
 
 Robot::~Robot () {
     delete mp_arrow;
-    mp_playground->physics_server->unregister_robot(this->physical_robot);
+    mp_playground->get_physics_server()->unregister_robot(this->physical_robot);
     delete physical_robot;
 }
 
@@ -193,15 +193,15 @@ void Robot::keyPressEvent (QKeyEvent* event) {
     switch (event->key()) {
         case Qt::Key_Left: // Rotate counter-clockwise
             this->physical_robot->queued_action = PhysicalRobot::QueuedAction::TURN_LEFT;
-            this->mp_playground->physics_server->queue_step();
+            this->mp_playground->get_physics_server()->queue_step();
             break;
         case Qt::Key_Right: // Rotate clockwise
             this->physical_robot->queued_action = PhysicalRobot::QueuedAction::TURN_RIGHT;
-            this->mp_playground->physics_server->queue_step();
+            this->mp_playground->get_physics_server()->queue_step();
             break;
         case Qt::Key_Up: // Move forward
             this->physical_robot->queued_action = PhysicalRobot::QueuedAction::MOVE;
-            this->mp_playground->physics_server->queue_step();
+            this->mp_playground->get_physics_server()->queue_step();
             break;
         case Qt::Key_Down: // Ignore as robot should move only forward
         default: // Ignore any other keys

@@ -7,6 +7,8 @@
 #ifndef PLAYGROUND_H
 #define PLAYGROUND_H
 
+#include "includes/libs_file.h"
+
 #include "scene/robot.h"
 #include "scene/obstacle.h"
 
@@ -22,7 +24,7 @@ enum Operation : int {
 class PhysicsServer;
 
 
-class PlayGround : public QGraphicsRectItem {
+class PlayGround : public QGraphicsRectItem, public QObject {
     private:
         // Vector for storing instancies of Robots and Obstacles placed to scene
         QVector<SceneObject*> mp_scene_objs_vec;
@@ -38,16 +40,23 @@ class PlayGround : public QGraphicsRectItem {
 
         Action mp_cur_action;
 
+        // PhysicsServer of the Playground
+        PhysicsServer* physics_server;
+        Mode simulation_mode = MANUAL;
+
+        QTimer* automatic_mode_timer;
+        bool automatic_mode_running = false;
+        int automatic_mode_step_interval = 0;
+
         /**
          * @brief Private method for adding new item(s) to the scene.
          * @param new_item Item to be added.
          */
         void add_to_scene (QGraphicsItem* new_item);
 
-    public:
-        // PhysicsServer of the Playground
-        PhysicsServer* physics_server;
+        void on_automatic_mode_timer_timeout();
 
+    public:
         /**
          * @brief Constructor.
          * @param scene Constructed scene to be handled.
@@ -83,6 +92,26 @@ class PlayGround : public QGraphicsRectItem {
          * @param object Target object.
          */
         void set_toplace_obj (SceneObject* object);
+        /**
+         * @brief Sets the simulation mode
+         * @param mode new simulation mode
+         */
+        void set_mode(Mode mode);
+        /**
+         * @brief Enables or pauses automatic mode
+         * @param running determines if automatic simulation is enabled or stopped
+         */
+        void set_automatic_mode_running(bool running);
+        /**
+         * @brief sets the speed of automatic mode
+         * @param speed speed of the automatic mode simulation from 1 to 100. Higher is faster.
+         */
+        void set_automatic_mode_speed(int speed);
+        /**
+         * @brief Returns pointer to the Playground's PhysicsServer
+         * @return PhysicsServer* of this Playground.
+         */
+        PhysicsServer* get_physics_server();
         /**
          * @brief Returns scene coordinates where current active object is located.
          * @return QPointF Active object coordinates.

@@ -67,7 +67,7 @@ void PhysicalRobot::update_shapecast() {
 
 void PhysicalRobot::move() {
 	qreal current_rotation = this->robot->get_rotation_radians() - M_PI_2; // corrected angle in radians so that 0 is pointing up
-	Vector2 movement_delta = 10 * Vector2(
+	Vector2 movement_delta = Vector2(
 		qCos(current_rotation), // change on x axis (dx)
 		qSin(current_rotation)  // change on y axis (dy)
 	);

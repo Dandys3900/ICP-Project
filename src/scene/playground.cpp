@@ -30,6 +30,10 @@ PlayGround::PlayGround (QGraphicsScene* scene)
     add_to_scene(this);
 
     this->physics_server = new PhysicsServer();
+    this->automatic_mode_timer = new QTimer();
+    // connect(mp_popup_timer, &QTimer::timeout, this, &Error_PopUp::hide);
+
+    connect(this->automatic_mode_timer, &QTimer::timeout, this, &PlayGround::on_automatic_mode_timer_timeout);
 }
 
 PlayGround::~PlayGround () {
@@ -38,6 +42,7 @@ PlayGround::~PlayGround () {
         delete obj;
     }
     delete this->physics_server;
+    delete this->automatic_mode_timer;
 }
 
 void PlayGround::add_to_scene (QGraphicsItem* new_item) {
@@ -45,6 +50,10 @@ void PlayGround::add_to_scene (QGraphicsItem* new_item) {
     if (!mp_scene->items().contains(new_item)) {
         mp_scene->addItem(new_item);
     }
+}
+
+void PlayGround::on_automatic_mode_timer_timeout() {
+    this->physics_server->force_step();
 }
 
 QPointF PlayGround::get_active_obj_orig_pos () {
@@ -81,6 +90,38 @@ void PlayGround::set_toplace_obj (SceneObject* object) {
     mp_toplace_obj = object;
     // Change mouse icon to notify user about object to be placed
     QApplication::setOverrideCursor(Qt::PointingHandCursor);
+}
+
+void PlayGround::set_mode(Mode mode) {
+    this->simulation_mode = mode;
+    if (mode == MANUAL) {
+        this->automatic_mode_running = false;
+        this->automatic_mode_timer->stop();
+    }
+}
+
+void PlayGround::set_automatic_mode_running(bool running) {
+    this->automatic_mode_running = running;
+    if (running) {
+        this->automatic_mode_timer->start(this->automatic_mode_step_interval);
+    } else {
+        this->automatic_mode_timer->stop();
+    }
+}
+
+void PlayGround::set_automatic_mode_speed(int speed) {
+    // this->automatic_mode_step_interval = 10 * (100 - (speed < 1 ? 1 : (speed > 100 ? 100 : speed))); // clamp speed between 1 and 100
+    this->automatic_mode_step_interval = (int)remap_value_between_ranges((double)speed, 1.0, 100.0, 250.0, 5.0);
+    QTextStream(stdout) << speed << endl;
+    QTextStream(stdout) << this->automatic_mode_step_interval << endl;
+    if (this->automatic_mode_running) {
+        this->automatic_mode_timer->stop();
+        this->automatic_mode_timer->start(this->automatic_mode_step_interval);
+    }
+}
+
+PhysicsServer* PlayGround::get_physics_server() {
+    return this->physics_server;
 }
 
 void PlayGround::add_scene_obj (SceneObject* object) {
@@ -135,17 +176,18 @@ void PlayGround::remove_scene_obj (SceneObject* object) {
 void PlayGround::keyPressEvent (QKeyEvent* event) {
     QVector<SceneObject*>::iterator iter;
 
-    // If we have active object, deliver this exclusively to it
-    if (mp_active_obj) {
+    if (mp_active_obj) { // If we have active object, deliver this exclusively to it
         mp_active_obj->keyPressEvent(event);
     }
-    else { // Robots should receive key presses to move
+    else { // All robots should receive key presses to move
         for (iter = mp_scene_objs_vec.begin(); iter < mp_scene_objs_vec.end(); ++iter) {
             if ((*iter)->get_type() == QString("Robot")) {
                 (*iter)->keyPressEvent(event);
             }
         }
-        this->physics_server->step();
+        if (this->simulation_mode == MANUAL) {
+            this->physics_server->step();
+        }
     }
 }
 

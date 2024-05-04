@@ -7,14 +7,10 @@
 #include "physics_server.h"
 
 
-PhysicsServer::PhysicsServer() {
-
-}
+PhysicsServer::PhysicsServer() {}
 
 
-PhysicsServer::~PhysicsServer() {
-
-}
+PhysicsServer::~PhysicsServer() {}
 
 
 void PhysicsServer::step() {
