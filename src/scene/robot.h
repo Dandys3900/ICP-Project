@@ -20,6 +20,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
 
         // Robot details
         enum Mode mp_mode;
+        enum Mode mp_old_mode;
         enum Direction mp_rotation_direction;
         qreal mp_rotation_step;
         qreal mp_detect_threshold;
@@ -114,6 +115,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
     protected:
         // Events - handling
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
+        void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent* event) override;
         void keyPressEvent (QKeyEvent* event) override;
         void mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) override;

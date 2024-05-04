@@ -170,8 +170,7 @@ void Robot::set_active (bool active, Action action) {
 }
 
 void Robot::set_obj_pos (const QPointF pos) {
-    if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_diameter, mp_diameter))) {
-        // If new position is inside current scene, update robot coords
+    // if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_diameter, mp_diameter))) { // If new position is inside current scene, update robot coords
         mp_coords.setX(pos.x());
         mp_coords.setY(pos.y());
 
@@ -183,7 +182,7 @@ void Robot::set_obj_pos (const QPointF pos) {
 
         this->physical_robot->update_shape();
         this->physical_robot->update_shapecast();
-    }
+    // }
 }
 
 void Robot::keyPressEvent (QKeyEvent* event) {
@@ -221,6 +220,9 @@ void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
         if (!mp_is_active) { // Notify PlayGround and get focus
+            // stop the robot if moving around
+            this->mp_old_mode = this->mp_mode;
+            this->mp_mode = MANUAL;
             this->mp_move_action_mouse_offset = this->mp_coords - event->scenePos();
             mp_playground->set_active_obj(this, MOVE_ACTION);
         }
@@ -231,12 +233,19 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 
     if (event->button() == Qt::MouseButton::RightButton) {
         if (mp_is_active) { // Lose focus and return to previous pos
-            this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
+            // this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
             mp_playground->disable_focus();
         }
         else { // Show Robot details
             Robot_Info::show_widget(this);
         }
+    }
+}
+
+void Robot::mouseReleaseEvent (QGraphicsSceneMouseEvent* event) {
+    if (event->button() == Qt::MouseButton::LeftButton) { // move event ended
+        // reenable robot
+        this->mp_mode = this->mp_old_mode;
     }
 }
 

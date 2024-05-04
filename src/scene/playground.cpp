@@ -112,8 +112,6 @@ void PlayGround::set_automatic_mode_running(bool running) {
 void PlayGround::set_automatic_mode_speed(int speed) {
     // this->automatic_mode_step_interval = 10 * (100 - (speed < 1 ? 1 : (speed > 100 ? 100 : speed))); // clamp speed between 1 and 100
     this->automatic_mode_step_interval = (int)remap_value_between_ranges((double)speed, 1.0, 100.0, 250.0, 5.0);
-    QTextStream(stdout) << speed << endl;
-    QTextStream(stdout) << this->automatic_mode_step_interval << endl;
     if (this->automatic_mode_running) {
         this->automatic_mode_timer->stop();
         this->automatic_mode_timer->start(this->automatic_mode_step_interval);
@@ -208,6 +206,12 @@ void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
         mp_toplace_obj = nullptr;
         // Restore mouse icon
         QApplication::restoreOverrideCursor();
+    }
+}
+
+void PlayGround::mouseReleaseEvent (QGraphicsSceneMouseEvent* event) {
+    if (mp_active_obj) { // Distribute mouse press event to focused (active) object
+        mp_active_obj->mouseReleaseEvent(event);
     }
 }
 

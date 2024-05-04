@@ -68,8 +68,7 @@ QRectF Obstacle::get_rect () {
 }
 
 void Obstacle::set_obj_pos (const QPointF pos) {
-    if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_size.x(), mp_size.y()))) {
-        // If new position is inside current scene, update robot coords
+    // if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_size.x(), mp_size.y()))) { // If new position is inside current scene, update robot coords
         mp_coords.setX(pos.x());
         mp_coords.setY(pos.y());
 
@@ -79,7 +78,7 @@ void Obstacle::set_obj_pos (const QPointF pos) {
         this->setTransformOriginPoint(this->rect().center());
 
         this->physical_obstacle->update_shape();
-    }
+    // }
 }
 
 
@@ -122,7 +121,7 @@ void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
             mp_playground->set_active_obj(this, RESIZE_ACTION);
         }
         else { // Lose focus and return to previous pos
-            this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
+            // this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
             mp_playground->disable_focus();
         }
     }

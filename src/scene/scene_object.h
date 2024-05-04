@@ -113,6 +113,11 @@ class SceneObject {
          */
         virtual void mousePressEvent (QGraphicsSceneMouseEvent* event)       = 0;
         /**
+         * @brief Pure virtual method for handling key release event in the scene.
+         * @param event Generated key release event.
+         */
+        virtual void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) {};
+        /**
          * @brief Pure virtual method for handling mouse double click event in the scene.
          * @param event Generated mouse press event.
          * Each derived class must implement this function to define custom behavior for this event.
