@@ -1,0 +1,68 @@
+[
+    {
+        "collis_threshold": 10,
+        "coord_x": 500,
+        "coord_y": 50,
+        "diameter": 175,
+        "mode": 1,
+        "obj_type": "Robot",
+        "rotation": 210,
+        "rotation_direction": 0,
+        "rotation_step": 30
+    },
+    {
+        "collis_threshold": 200,
+        "coord_x": 75,
+        "coord_y": 150,
+        "diameter": 100,
+        "mode": 1,
+        "obj_type": "Robot",
+        "rotation": 30,
+        "rotation_direction": 1,
+        "rotation_step": 5
+    },
+    {
+        "collis_threshold": 100,
+        "coord_x": 600,
+        "coord_y": 450,
+        "diameter": 75,
+        "mode": 1,
+        "obj_type": "Robot",
+        "rotation": -45,
+        "rotation_direction": 0,
+        "rotation_step": 15
+    },
+    {
+        "collis_threshold": 150,
+        "coord_x": 75,
+        "coord_y": 350,
+        "diameter": 100,
+        "mode": 1,
+        "obj_type": "Robot",
+        "rotation": -105,
+        "rotation_direction": 1,
+        "rotation_step": 15
+    },
+    {
+        "collis_threshold": 10,
+        "coord_x": 300,
+        "coord_y": 75,
+        "diameter": 50,
+        "mode": 1,
+        "obj_type": "Robot",
+        "rotation": 90,
+        "rotation_direction": 0,
+        "rotation_step": 45
+    },
+    {
+        "collis_threshold": 50,
+        "coord_x": 300,
+        "coord_y": 300,
+        "diameter": 100,
+        "mode": 0,
+        "obj_type": "Robot",
+        "rotation": 0,
+        "rotation_direction": 0,
+        "rotation_step": 15
+    }
+]

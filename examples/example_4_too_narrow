@@ -1,0 +1,48 @@
+[
+	{
+        "collis_threshold": 0,
+        "coord_x": 300,
+        "coord_y": 350,
+        "diameter": 100,
+        "mode": 1,
+        "obj_type": "Robot",
+        "rotation": 0,
+        "rotation_direction": 1,
+        "rotation_step": 15
+    },
+    {
+        "collis_threshold": 50,
+        "coord_x": 480,
+        "coord_y": 350,
+        "diameter": 100,
+        "mode": 1,
+        "obj_type": "Robot",
+        "rotation": 0,
+        "rotation_direction": 0,
+        "rotation_step": 15
+    },
+    {
+        "coord_x": 210,
+        "coord_y": 0,
+        "obj_type": "Obstacle",
+        "rotation": 0,
+        "size_x": 100,
+        "size_y": 250
+    },
+    {
+        "coord_x": 390,
+        "coord_y": 0,
+        "obj_type": "Obstacle",
+        "rotation": 0,
+        "size_x": 100,
+        "size_y": 250
+    },
+    {
+        "coord_x": 570,
+        "coord_y": 0,
+        "obj_type": "Obstacle",
+        "rotation": 0,
+        "size_x": 100,
+        "size_y": 250
+    }
+]
