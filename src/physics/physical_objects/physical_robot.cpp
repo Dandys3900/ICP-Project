@@ -66,7 +66,7 @@ void PhysicalRobot::update_shapecast() {
 
 void PhysicalRobot::move() {
 	qreal current_rotation = this->robot->get_rotation_radians() - M_PI_2; // corrected angle in radians so that 0 is pointing up
-	Vector2 movement_delta = Vector2(
+	Vector2 movement_delta = 5 * Vector2(
 		qCos(current_rotation), // change on x axis (dx)
 		qSin(current_rotation)  // change on y axis (dy)
 	);
@@ -156,8 +156,11 @@ void PhysicalRobot::step_automatic(QVector<const CollisionShape*>& playground_bo
 		this->turn();
 		return;
 	}
+	this->move();
+	if (this->robot->get_detect_threshold() > 0) {
+		return;
+	}
 	// this is used if collision threshold is 0 (robot collides only with its own body)
-	this->move(); // do test move
 	if (this->is_colliding_with_any(playground_boundary_obstacles) || this->is_colliding_with_any(obstacles) || this->is_colliding_with_any(robots)) { // if colliding, undo the test move
 		this->robot->set_rotation_radians(this->robot->get_rotation_radians() + M_PI); // flip the robot
 		this->move(); // move back

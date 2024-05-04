@@ -13,7 +13,7 @@ Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGr
       mp_obj_type           ("Robot"),
       mp_mode               (MANUAL),
       mp_rotation_direction (CLOCKWISE),
-      mp_rotation_step      (5.0),
+      mp_rotation_step      (15.0),
       mp_detect_threshold   (0.0),
       mp_playground         (playground),
       mp_arrow              (nullptr)
