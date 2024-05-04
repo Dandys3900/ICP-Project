@@ -34,7 +34,7 @@ class PhysicsServer {
 		/*!
 		 * Used for playground boundaries, that cannot be passed trough. Must be changed everytime the playground is resized.
 		 */
-		QVector<PhysicalObstacle*> playground_boundary_obstacles = {};
+		QVector<const CollisionShape*> playground_boundary_obstacle_shapes = {};
 		/*!
 		 * Used for Obstacles. During simulation Obstacles cannot be moved.
 		 */
@@ -57,7 +57,8 @@ class PhysicsServer {
 		void unregister_robot(PhysicalRobot* robot);
 		void register_obstacle(PhysicalObstacle* obstacle);
 		void unregister_obstacle(PhysicalObstacle* obstacle);
-
+		void register_boundaries(Vector2 playground_size);
+		void unregister_boundaries();
 };
 
 

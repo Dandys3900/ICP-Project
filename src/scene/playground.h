@@ -68,6 +68,12 @@ class PlayGround : public QGraphicsRectItem, public QObject {
         ~PlayGround ();
 
         /**
+         * @brief Resizes the playground
+         * @param new_rect new rect of the playground with the new size
+         */
+        void resize_playground(QRectF new_rect);
+
+        /**
          * @brief Adding objects to the playground (scene).
          * @param object Target object.
          */

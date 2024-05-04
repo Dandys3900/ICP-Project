@@ -10,7 +10,9 @@
 PhysicsServer::PhysicsServer() {}
 
 
-PhysicsServer::~PhysicsServer() {}
+PhysicsServer::~PhysicsServer() {
+	this->unregister_boundaries();
+}
 
 
 void PhysicsServer::step() {
@@ -30,11 +32,6 @@ void PhysicsServer::force_step(bool clean_step_queue) {
 		this->is_step_queued = false;
 	}
 
-	// playground boundary obstacle shapes
-	QVector<const CollisionShape*> playground_boundary_obstacle_shapes = {};
-	for (PhysicalObstacle* playground_boundary_obstacle : this->playground_boundary_obstacles) {
-		playground_boundary_obstacle_shapes.append(playground_boundary_obstacle->get_shape());
-	}
 	// obstacle shapes
 	QVector<const CollisionShape*> obstacle_shapes = {};
 	for (PhysicalObstacle* obstacle : this->obstacles) {
@@ -83,4 +80,25 @@ void PhysicsServer::unregister_obstacle(PhysicalObstacle* obstacle) {
 		return;
 	}
 	this->obstacles.remove(index);
+}
+
+
+void PhysicsServer::register_boundaries(Vector2 playground_size) {
+	this->unregister_boundaries();
+
+	QPointF half_size = playground_size / 2;
+
+	this->playground_boundary_obstacle_shapes = {
+		new RectangeCollisionShape(playground_size, Vector2(half_size.x(), -half_size.y())), // upper boundary
+		new RectangeCollisionShape(playground_size, Vector2(half_size.x(), playground_size.y() + half_size.y())), // lower boundary
+		new RectangeCollisionShape(playground_size, Vector2(-half_size.x(), half_size.y())),
+		new RectangeCollisionShape(playground_size, Vector2(playground_size.x() + half_size.x(), half_size.y()))
+	};
+}
+
+
+void PhysicsServer::unregister_boundaries() {
+	for (const CollisionShape* playground_boundary_obstacle_shape : this->playground_boundary_obstacle_shapes) {
+		delete playground_boundary_obstacle_shape;
+	}
 }

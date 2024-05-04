@@ -30,9 +30,10 @@ PlayGround::PlayGround (QGraphicsScene* scene)
     add_to_scene(this);
 
     this->physics_server = new PhysicsServer();
+    
+    this->resize_playground(scene->sceneRect());
+    
     this->automatic_mode_timer = new QTimer();
-    // connect(mp_popup_timer, &QTimer::timeout, this, &Error_PopUp::hide);
-
     connect(this->automatic_mode_timer, &QTimer::timeout, this, &PlayGround::on_automatic_mode_timer_timeout);
 }
 
@@ -43,6 +44,11 @@ PlayGround::~PlayGround () {
     }
     delete this->physics_server;
     delete this->automatic_mode_timer;
+}
+
+void PlayGround::resize_playground(QRectF new_rect) {
+    this->setRect(new_rect);
+    this->physics_server->register_boundaries(Vector2(new_rect.width(), new_rect.height()));
 }
 
 void PlayGround::add_to_scene (QGraphicsItem* new_item) {
