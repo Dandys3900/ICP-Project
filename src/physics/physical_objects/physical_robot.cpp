@@ -8,7 +8,6 @@
 
 
 PhysicalRobot::PhysicalRobot(Robot* robot) {
-	QTextStream(stdout) << "ROBOOOOOT" << endl;
 	this->robot = robot;
 	this->update_shape(); // create a new shape as it does not exist yet
 	this->update_shapecast(); // create new shapecast shapes as they do not exist yet

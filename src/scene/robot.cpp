@@ -203,6 +203,9 @@ void Robot::keyPressEvent (QKeyEvent* event) {
             this->mp_playground->get_physics_server()->queue_step();
             break;
         case Qt::Key_Down: // Ignore as robot should move only forward
+            break;
+        case Qt::Key_Space:
+            this->mp_playground->get_physics_server()->queue_step();
         default: // Ignore any other keys
             break;
     }
