@@ -33,13 +33,13 @@ class PhysicalObstacle;
 class PhysicalRobot {
 	public: // fields
 		enum QueuedAction {
-			NOTHING,
+			NONE,
 			MOVE,
 			TURN_LEFT,
 			TURN_RIGHT,
 		};
 
-		QueuedAction queued_action = QueuedAction::NOTHING;
+		QueuedAction queued_action = QueuedAction::NONE;
 
 	protected: // fields
 		Robot* robot = nullptr;
@@ -65,6 +65,8 @@ class PhysicalRobot {
 		const CircleCollisionShape* get_shape();
 
 		void step(QVector<const CollisionShape*>& playground_boundary_obstacles, QVector<const CollisionShape*>& obstacles, QVector<const CollisionShape*>& robots);
+		void step_automatic(QVector<const CollisionShape*>& playground_boundary_obstacles, QVector<const CollisionShape*>& obstacles, QVector<const CollisionShape*>& robots);
+		void step_manual(QVector<const CollisionShape*>& playground_boundary_obstacles, QVector<const CollisionShape*>& obstacles, QVector<const CollisionShape*>& robots);
 
 	protected: // methods
 		void move();

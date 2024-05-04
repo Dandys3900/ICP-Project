@@ -34,8 +34,6 @@ void PhysicsServer::force_step(bool clean_step_queue) {
 		this->is_step_queued = false;
 	}
 
-	QTextStream(stdout) << "PhysicsServer step..." << endl;
-
 	// playground boundary obstacle shapes
 	QVector<const CollisionShape*> playground_boundary_obstacle_shapes = {};
 	for (PhysicalObstacle* playground_boundary_obstacle : this->playground_boundary_obstacles) {
@@ -56,7 +54,6 @@ void PhysicsServer::force_step(bool clean_step_queue) {
 		robot->step(playground_boundary_obstacle_shapes, obstacle_shapes, robot_shapes);
 	}
 }
-
 
 
 void PhysicsServer::register_robot(PhysicalRobot* robot) {

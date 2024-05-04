@@ -115,6 +115,7 @@ QVector<QString> Robot::get_robot_info () {
 
 void Robot::set_mode (Mode new_mode) {
     mp_mode = new_mode;
+    physical_robot->queued_action = PhysicalRobot::QueuedAction::NONE; // reset queud action just to be sure
 }
 
 void Robot::set_detect_threshold (qreal new_threshold) {
@@ -187,7 +188,6 @@ void Robot::set_obj_pos (const QPointF pos) {
 
 void Robot::keyPressEvent (QKeyEvent* event) {
     if (mp_mode == AUTOMATIC) {
-        // this->physical_robot->queued_action = PhysicalRobot::QueuedAction::NOTHING;
         return;
     }
     switch (event->key()) {
