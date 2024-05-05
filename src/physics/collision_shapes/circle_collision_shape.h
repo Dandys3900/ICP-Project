@@ -48,9 +48,9 @@ class CircleCollisionShape : public CollisionShape {
 		 */
 		const Vector2 get_closest_vertex(const QVector<Vector2>& verticies) const;
 
-		virtual void set_radius(qreal radius);
+		void set_radius(qreal radius);
 		
-		virtual qreal get_radius() const;
+		qreal get_radius() const;
 };
 
 

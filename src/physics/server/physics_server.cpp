@@ -50,19 +50,17 @@ void PhysicsServer::force_step(bool clean_step_queue) {
 
 
 void PhysicsServer::register_robot(PhysicalRobot* robot) {
-	if (this->robots.contains(robot)) {
-		return;
+	if (!this->robots.contains(robot)) {
+		this->robots.append(robot);
 	}
-	this->robots.append(robot);
 }
 
 
 void PhysicsServer::unregister_robot(PhysicalRobot* robot) {
 	int index = this->robots.indexOf(robot);
-	if (index == -1) {
-		return;
+	if (index >= 0) {
+		this->robots.remove(index);
 	}
-	this->robots.remove(index);
 }
 
 
