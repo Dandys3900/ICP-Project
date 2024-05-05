@@ -8,12 +8,12 @@
 
 PlayGround::PlayGround (QGraphicsScene* scene)
     : QGraphicsRectItem            (nullptr),
-      mp_scene_objs_vec            (),
-      mp_active_obj_orig_pos       (),
-      mp_scene                     (scene),
-      mp_active_obj                (nullptr),
-      mp_toplace_obj               (nullptr),
-      mp_cur_action                (NO_ACTION),
+      scene_objs_vec               (),
+      active_obj_orig_pos          (),
+      scene                        (scene),
+      active_obj                   (nullptr),
+      toplace_obj                  (nullptr),
+      cur_action                   (NO_ACTION),
       automatic_mode_running       (false),
       automatic_mode_step_interval (0)
 {

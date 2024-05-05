@@ -68,10 +68,10 @@ QRectF Obstacle::get_rect () {
 }
 
 void Obstacle::set_obj_pos (const QPointF pos) {
-    mp_coords.setX(pos.x());
-    mp_coords.setY(pos.y());
+    coords.setX(pos.x());
+    coords.setY(pos.y());
 
-    this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
+    this->setRect(coords.x(), coords.y(), size.x(), size.y());
 
     // Update rotation origin
     this->setTransformOriginPoint(this->rect().center());

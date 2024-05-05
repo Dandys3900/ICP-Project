@@ -172,14 +172,14 @@ void Robot::set_active (bool active, Action action) {
 }
 
 void Robot::set_obj_pos (const QPointF pos) {
-    mp_coords.setX(pos.x());
-    mp_coords.setY(pos.y());
+    coords.setX(pos.x());
+    coords.setY(pos.y());
 
     // Set new position of robot
-    this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
+    this->setRect(coords.x(), coords.y(), diameter, diameter);
 
     // Re-center arrow after robot moved
-    mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
+    arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
 
     this->physical_robot->update_shape();
     this->physical_robot->update_shapecast();
