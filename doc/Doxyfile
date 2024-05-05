@@ -15,7 +15,7 @@ ENABLE_PREPROCESSING   = YES
 
 # Input settings
 INPUT                  = "./src/"
-FILE_PATTERNS          = *.h
+FILE_PATTERNS          = *.h *.cpp
 RECURSIVE              = YES
 
 # Additional options
