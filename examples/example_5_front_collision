@@ -1,0 +1,24 @@
+[
+    {
+        "collis_threshold": 8,
+        "coord_x": 100,
+        "coord_y": 250,
+        "diameter": 100,
+        "mode": 1,
+        "obj_type": "Robot",
+        "rotation": 90,
+        "rotation_direction": 0,
+        "rotation_step": 90
+    },
+    {
+        "collis_threshold": 8,
+        "coord_x": 600,
+        "coord_y": 250,
+        "diameter": 100,
+        "mode": 1,
+        "obj_type": "Robot",
+        "rotation": -90,
+        "rotation_direction": 1,
+        "rotation_step": 90
+    }
+]
