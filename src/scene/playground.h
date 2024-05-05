@@ -27,18 +27,18 @@ class PhysicsServer;
 class PlayGround : public QGraphicsRectItem, public QObject {
     private:
         // Vector for storing instancies of Robots and Obstacles placed to scene
-        QVector<SceneObject*> mp_scene_objs_vec;
+        QVector<SceneObject*> scene_objs_vec;
 
         // Vector for storing generated objects ids
         QVector<size_t> m_ids_array;
 
-        QPointF mp_active_obj_orig_pos;
+        QPointF active_obj_orig_pos;
 
-        QGraphicsScene*    mp_scene;
-        class SceneObject* mp_active_obj;
-        class SceneObject* mp_toplace_obj;
+        QGraphicsScene*    scene;
+        class SceneObject* active_obj;
+        class SceneObject* toplace_obj;
 
-        Action mp_cur_action;
+        Action cur_action;
 
         // PhysicsServer of the Playground
         PhysicsServer* physics_server;
@@ -54,6 +54,9 @@ class PlayGround : public QGraphicsRectItem, public QObject {
          */
         void add_to_scene (QGraphicsItem* new_item);
 
+        /**
+         * @brief Handles automatic mode timer timeout event.
+         */
         void on_automatic_mode_timer_timeout();
 
     public:

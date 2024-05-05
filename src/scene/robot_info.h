@@ -41,17 +41,17 @@ class Robot_Info : public QWidget {
         static void clean_up ();
 
     private:
-        QGraphicsScene*       mp_scene;
-        QWidget*              mp_main_window;
-        class Robot*          mp_robot; // Current robot instance
-        QWidget*              mp_info_container;
-        QComboBox*            mp_typeComboBox;
-        QLineEdit*            mp_collisionLineEdit;
-        QLineEdit*            mp_rotationLineEdit;
-        QComboBox*            mp_directionComboBox;
-        QGraphicsProxyWidget* mp_proxy;
-        QGroupBox*            mp_auto_mode_items;
-        bool                  mp_visible;
+        QGraphicsScene*       scene;
+        QWidget*              main_window;
+        class Robot*          robot; // Current robot instance
+        QWidget*              info_container;
+        QComboBox*            typeComboBox;
+        QLineEdit*            collisionLineEdit;
+        QLineEdit*            rotationLineEdit;
+        QComboBox*            directionComboBox;
+        QGraphicsProxyWidget* proxy;
+        QGroupBox*            auto_mode_items;
+        bool                  visible;
 
         static Robot_Info* instance;
 
@@ -67,10 +67,29 @@ class Robot_Info : public QWidget {
 
     private slots:
         // Methods for handling widget items events
+        /**
+         * @brief Handles the OK button click event.
+         */
         void ok_click ();
+        /**
+         * @brief Handles selection of robot type (automatic/manual).
+         * @param index Index of the selected robot type.
+         */
         void robot_type (int index);
+        /**
+         * @brief Handles the input of collision threshold value.
+         * @param text Input text representing threshold new value.
+         */
         void collision_value (const QString& text);
+        /**
+         * @brief Handles the input of rotation step value.
+         * @param text Input text representing rotation step new value.
+         */
         void rotation_value (const QString& text);
+        /**
+         * @brief Handles the selection of rotation direction.
+         * @param index Index of the selected rotation direction.
+         */
         void rotation_direction (int index);
 };
 

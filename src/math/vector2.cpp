@@ -53,9 +53,9 @@ Vector2 Vector2::normalized() const {
 void Vector2::rotate(qreal angle) {
 	qreal angle_sin = qSin(angle);
 	qreal angle_cos = qCos(angle);
-	qreal new_x = this->x() * angle_cos - this->y() * angle_sin; // just so we don't modify the x value prematurely as Y relies on its initial value
+	qreal new_x = this->x() * angle_cos - this->y() * angle_sin; // Just so we don't modify the x value prematurely as Y relies on its initial value
 	this->setY(this->x() * angle_sin + this->y() * angle_cos);
-	this->setX(new_x); // after Y is set, update X
+	this->setX(new_x); // After Y is set, update X
 }
 
 

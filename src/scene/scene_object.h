@@ -16,11 +16,11 @@ class SceneObject {
          * @param coords Vector containing position of object (robot/obstacle) in the scene.
          */
         SceneObject (const Vector2& coords) :
-            mp_coords     (coords),
-            mp_rotation   (0),
-            mp_obj_action (NO_ACTION),
-            mp_is_active  (false),
-            mp_color      (Qt::black)
+            coords         (coords),
+            rotation_angle (0),
+            obj_action     (NO_ACTION),
+            is_active      (false),
+            color          (Qt::black)
         {
         }
         /**
@@ -31,7 +31,7 @@ class SceneObject {
         SceneObject (const Vector2& coords, qreal rotation) :
             SceneObject (coords)
         {
-            mp_rotation = rotation;
+            rotation_angle = rotation;
         }
         /**
          * @brief Virtual destructor.
@@ -63,28 +63,28 @@ class SceneObject {
          * @param new_rotation New object's rotation.
          */
         virtual void set_rotation (qreal new_rotation) {
-            this->mp_rotation = new_rotation;
+            this->rotation_angle = new_rotation;
         }
         /**
          * @brief Pure virtual setter for object's current rotation in radians.
          * @param new_rotation New object's rotation in radians.
          */
         virtual void set_rotation_radians (qreal new_rotation) {
-            this->mp_rotation = qRadiansToDegrees(new_rotation);
+            this->rotation_angle = qRadiansToDegrees(new_rotation);
         }
         /**
          * @brief Pure virtual getter for object's current rotation.
          * @return qreal Object rotation.
          */
         virtual qreal get_rotation () {
-            return this->mp_rotation;
+            return this->rotation_angle;
         }
         /**
          * @brief Pure virtual getter for object's current rotation in radians.
          * @return qreal Object rotation.
          */
         virtual qreal get_rotation_radians () {
-            return qDegreesToRadians(this->mp_rotation);
+            return qDegreesToRadians(this->rotation_angle);
         }
         /**
          * @brief Pure virtual setter for toggling object's active (focus) status (active/inactive).
@@ -99,9 +99,9 @@ class SceneObject {
          */
         virtual QJsonObject get_obj_data () {
             QJsonObject conf_data;
-            conf_data["coord_x"]  = mp_coords.x();
-            conf_data["coord_y"]  = mp_coords.y();
-            conf_data["rotation"] = mp_rotation;
+            conf_data["coord_x"]  = coords.x();
+            conf_data["coord_y"]  = coords.y();
+            conf_data["rotation"] = rotation_angle;
             // Return constructed object
             return conf_data;
         }
@@ -150,12 +150,12 @@ class SceneObject {
 
     protected:
         // Attributes similar for both robot and obstacle classes
-        Vector2 mp_coords;
-        qreal mp_rotation;
-        Action mp_obj_action;
-        bool mp_is_active;
-        Qt::GlobalColor mp_color;
-        Vector2 mp_move_action_mouse_offset;
+        Vector2 coords;
+        qreal rotation_angle;
+        Action obj_action;
+        bool is_active;
+        Qt::GlobalColor color;
+        Vector2 move_action_mouse_offset;
 };
 
 #endif // SCENEOBJECT_H

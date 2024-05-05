@@ -9,7 +9,7 @@
 
 PhysicalObstacle::PhysicalObstacle(Obstacle* obstacle) {
 	this->obstacle = obstacle;
-	this->update_shape(); // create a new shape as it does not exist yet
+	this->update_shape(); // Create a new shape as it does not exist yet
 }
 
 
@@ -21,8 +21,8 @@ PhysicalObstacle::~PhysicalObstacle() {
 
 
 void PhysicalObstacle::update_shape() {
-	if (this->shape == nullptr) { // ensure shape
-		this->shape = new RectangeCollisionShape(Vector2()); // don't care about the constructor variables - will be set anyway
+	if (this->shape == nullptr) { // Ensure shape
+		this->shape = new RectangeCollisionShape(Vector2()); // Don't care about the constructor variables - will be set anyway
 	}
 	this->shape->set_position(Vector2(this->obstacle->get_rect().center()));
 	this->shape->resize(Vector2(this->obstacle->get_size()));
