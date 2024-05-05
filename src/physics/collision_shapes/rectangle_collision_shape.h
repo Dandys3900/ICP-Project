@@ -9,8 +9,10 @@
 
 
 #include "physics/collision_shapes/polygon_collision_shape.h"
+#include "physics/collision_shapes/polygon_collision_shape.h"
 
 
+class RectangeCollisionShape : public PolygonCollisionShape {
 class RectangeCollisionShape : public PolygonCollisionShape {
 	public:
 		/**

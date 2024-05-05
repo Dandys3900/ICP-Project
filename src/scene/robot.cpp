@@ -203,6 +203,7 @@ void Robot::keyPressEvent (QKeyEvent* event) {
             this->playground->get_physics_server()->queue_step();
             break;
         case Qt::Key_Down: // Ignore as robot should move only forward
+        case Qt::Key_Down: // Ignore as robot should move only forward
             break;
         case Qt::Key_Space:
             this->playground->get_physics_server()->queue_step();
@@ -236,7 +237,6 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 
     if (event->button() == Qt::MouseButton::RightButton) {
         if (is_active) { // Lose focus and return to previous pos
-            // this->set_obj_pos(playground->get_active_obj_orig_pos());
             playground->disable_focus();
         }
         else { // Show Robot details

@@ -5,6 +5,7 @@
  */
 
 #include "physics/collision_shapes/polygon_collision_shape.h"
+#include "physics/collision_shapes/polygon_collision_shape.h"
 
 
 void PolygonCollisionShape::set_origin(Vector2 origin) {
@@ -22,6 +23,7 @@ void PolygonCollisionShape::set_position(Vector2 position) {
 	this->origin = position;
 	// Move all the verticies based on position_delta
 	for (int i = 0; i < this->verticies.size(); i++) {
+	for (int i = 0; i < this->verticies.size(); i++) {
 		this->verticies[i] = Vector2(this->verticies[i] + position_delta);
 	}
 }
@@ -33,6 +35,7 @@ Vector2 PolygonCollisionShape::get_position() const {
 
 
 void PolygonCollisionShape::set_rotation(qreal angle) {
+	for (int i = 0; i < this->verticies.size(); i++) {
 	for (int i = 0; i < this->verticies.size(); i++) {
 		this->verticies[i] = this->verticies[i].rotated_around(this->origin, -this->angle).rotated_around(this->origin, angle);
 	}
@@ -62,6 +65,7 @@ void PolygonCollisionShape::project_to_axis(const Vector2& axis, qreal* min, qre
 	*max = -qInf();
 
 	for (int i = 0; i < verticies.size(); i++) {
+	for (int i = 0; i < verticies.size(); i++) {
 		qreal vertex_projection = Vector2::dotProduct(verticies[i], axis);
 		if (vertex_projection < *min) {
 			*min = vertex_projection;
@@ -83,6 +87,7 @@ QVector<Vector2> PolygonCollisionShape::get_sat_collision_normals(const Collisio
 }
 
 
+QVector<Vector2> PolygonCollisionShape::get_sat_collision_verticies() const {
 QVector<Vector2> PolygonCollisionShape::get_sat_collision_verticies() const {
 	return this->verticies;
 }

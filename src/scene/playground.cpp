@@ -51,6 +51,13 @@ PlayGround::~PlayGround () {
 void PlayGround::resize_playground(QRectF new_rect) {
     this->setRect(new_rect);
     this->physics_server->register_boundaries(Vector2(new_rect.width(), new_rect.height()));
+    delete this->physics_server;
+    delete this->automatic_mode_timer;
+}
+
+void PlayGround::resize_playground(QRectF new_rect) {
+    this->setRect(new_rect);
+    this->physics_server->register_boundaries(Vector2(new_rect.width(), new_rect.height()));
 }
 
 void PlayGround::add_to_scene (QGraphicsItem* new_item) {
@@ -58,6 +65,10 @@ void PlayGround::add_to_scene (QGraphicsItem* new_item) {
     if (!scene->items().contains(new_item)) {
         scene->addItem(new_item);
     }
+}
+
+void PlayGround::on_automatic_mode_timer_timeout() {
+    this->physics_server->force_step();
 }
 
 void PlayGround::on_automatic_mode_timer_timeout() {
@@ -98,6 +109,34 @@ void PlayGround::set_toplace_obj (SceneObject* object) {
     toplace_obj = object;
     // Change mouse icon to notify user about object to be placed
     QApplication::setOverrideCursor(Qt::PointingHandCursor);
+}
+
+void PlayGround::set_mode(Mode mode) {
+    this->simulation_mode = mode;
+    if (mode == MANUAL) {
+        this->automatic_mode_running = false;
+        this->automatic_mode_timer->stop();
+    }
+}
+
+void PlayGround::set_automatic_mode_running(bool running) {
+    this->automatic_mode_running = running;
+    if (running) {
+        this->automatic_mode_timer->start(this->automatic_mode_step_interval);
+    } else {
+        this->automatic_mode_timer->stop();
+    }
+}
+
+void PlayGround::set_automatic_mode_speed(int speed) {
+    this->automatic_mode_step_interval = (int)remap_value_between_ranges((double)speed, 1.0, 100.0, 250.0, 1.0);
+    if (this->automatic_mode_running) {
+        this->automatic_mode_timer->start(this->automatic_mode_step_interval);
+    }
+}
+
+PhysicsServer* PlayGround::get_physics_server() {
+    return this->physics_server;
 }
 
 void PlayGround::set_mode(Mode mode) {
@@ -188,6 +227,11 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
             if ((*iter)->get_type() == QString("Robot")) {
                 (*iter)->keyPressEvent(event);
             }
+        }
+        if (event->key() == Qt::Key_Space) {
+            this->physics_server->force_step();
+        } else if (this->simulation_mode == MANUAL) {
+            this->physics_server->step();
         }
         if (event->key() == Qt::Key_Space) {
             this->physics_server->force_step();
@@ -322,7 +366,9 @@ void PlayGround::load_config () {
                 (scene_obj.contains("rotation_step")) ? scene_obj["rotation_step"].toDouble() : 5.0;
             Direction rot_direction = static_cast<enum Direction>(
                 (scene_obj.contains("rotation_direction")) ? scene_obj["rotation_direction"].toInt() : CLOCKWISE);
+                (scene_obj.contains("rotation_direction")) ? scene_obj["rotation_direction"].toInt() : CLOCKWISE);
             qreal collision_thr =
+                (scene_obj.contains("collis_threshold")) ? scene_obj["collis_threshold"].toDouble() : 0;
                 (scene_obj.contains("collis_threshold")) ? scene_obj["collis_threshold"].toDouble() : 0;
 
             new_obj = new Robot(diameter,

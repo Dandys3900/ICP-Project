@@ -9,8 +9,12 @@
 
 #include "includes/libs_file.h"
 
+#include "includes/libs_file.h"
+
 #include "scene/robot.h"
 #include "scene/obstacle.h"
+
+#include "physics/server/physics_server.h"
 
 #include "physics/server/physics_server.h"
 
@@ -20,6 +24,11 @@ enum Operation : int {
     STORE
 };
 
+
+class PhysicsServer;
+
+
+class PlayGround : public QGraphicsRectItem, public QObject {
 
 class PhysicsServer;
 
@@ -77,6 +86,12 @@ class PlayGround : public QGraphicsRectItem, public QObject {
         void resize_playground(QRectF new_rect);
 
         /**
+         * @brief Resizes the playground
+         * @param new_rect new rect of the playground with the new size
+         */
+        void resize_playground(QRectF new_rect);
+
+        /**
          * @brief Adding objects to the playground (scene).
          * @param object Target object.
          */
@@ -122,6 +137,26 @@ class PlayGround : public QGraphicsRectItem, public QObject {
          */
         PhysicsServer* get_physics_server();
         /**
+         * @brief Sets the simulation mode
+         * @param mode new simulation mode
+         */
+        void set_mode(Mode mode);
+        /**
+         * @brief Enables or pauses automatic mode
+         * @param running determines if automatic simulation is enabled or stopped
+         */
+        void set_automatic_mode_running(bool running);
+        /**
+         * @brief sets the speed of automatic mode
+         * @param speed speed of the automatic mode simulation from 1 to 100. Higher is faster.
+         */
+        void set_automatic_mode_speed(int speed);
+        /**
+         * @brief Returns pointer to the Playground's PhysicsServer
+         * @return PhysicsServer* of this Playground.
+         */
+        PhysicsServer* get_physics_server();
+        /**
          * @brief Returns scene coordinates where current active object is located.
          * @return QPointF Active object coordinates.
          */
@@ -146,6 +181,7 @@ class PlayGround : public QGraphicsRectItem, public QObject {
         void keyPressEvent (QKeyEvent* event) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent* event) override;
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
+        void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) override;
         void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) override;
 };
 

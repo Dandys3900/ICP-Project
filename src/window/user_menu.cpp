@@ -54,6 +54,7 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
     // Set corresponding icons
     stop_sim_btn->setIcon(QIcon(":/icons/stop_icon.png"));
     stop_sim_btn->setEnabled(false);
+    stop_sim_btn->setEnabled(false);
     start_sim_btn->setIcon(QIcon(":/icons/play_icon.png"));
 
     // Create horizontal layout for start and stop buttons

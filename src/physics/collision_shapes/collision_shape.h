@@ -84,6 +84,7 @@ class CollisionShape {
 		 * @note The verticies might not be the true representation of the shape. For instance circle has infinite verticies, but is represented by it's center.
 		 */
 		virtual QVector<Vector2> get_sat_collision_verticies() const = 0;
+		virtual QVector<Vector2> get_sat_collision_verticies() const = 0;
 
 		/**
 		 * Checks if this shape is colliding with @param other_shape. This method accepts any other CollisionShape regardless of it's implementation.

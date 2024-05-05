@@ -12,6 +12,7 @@
 #include "scene/playground.h"
 #include "scene/robot_info.h"
 #include "physics/physical_objects/physical_robot.h"
+#include "physics/physical_objects/physical_robot.h"
 
 class Robot : public SceneObject, public QGraphicsEllipseItem {
     private:
@@ -83,6 +84,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         // Implementations of virtual base class methods
         QString get_type () override;
         QPointF get_pos () override;
+        qreal get_diameter();
         qreal get_diameter();
         QRectF get_rect () override;
         void set_obj_pos (const QPointF pos) override;
@@ -163,6 +165,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
     protected:
         // Events - handling
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
+        void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) override;
         void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent* event) override;
         void keyPressEvent (QKeyEvent* event) override;

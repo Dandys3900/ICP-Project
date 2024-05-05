@@ -139,6 +139,7 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
             break;
     }
     this->physical_obstacle->update_shape();
+    this->physical_obstacle->update_shape();
 }
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
@@ -156,6 +157,7 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
             if (playground->boundingRect().contains(newRect)) {
                 this->setRect(newRect);
                 this->setTransformOriginPoint(newRect.center());
+                this->physical_obstacle->update_shape();
                 this->physical_obstacle->update_shape();
             }
         }

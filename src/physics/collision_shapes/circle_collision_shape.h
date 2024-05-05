@@ -9,6 +9,7 @@
 
 
 #include "physics/collision_shapes/collision_shape.h"
+#include "physics/collision_shapes/collision_shape.h"
 #include <QtGlobal>
 
 
@@ -46,6 +47,7 @@ class CircleCollisionShape : public CollisionShape {
 
 		QVector<Vector2> get_sat_collision_normals(const CollisionShape& other_shape) const override;
 
+		QVector<Vector2> get_sat_collision_verticies() const override;
 		QVector<Vector2> get_sat_collision_verticies() const override;
 
 		/**

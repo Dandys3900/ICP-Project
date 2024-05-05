@@ -11,6 +11,8 @@ Vector2::Vector2() : QPointF() {}
 
 Vector2::Vector2(qreal xy) : QPointF(xy, xy) {}
 
+Vector2::Vector2(qreal xy) : QPointF(xy, xy) {}
+
 Vector2::Vector2(qreal x, qreal y) : QPointF(x, y) {}
 
 Vector2::Vector2(const Vector2& v) : QPointF(v) {}
