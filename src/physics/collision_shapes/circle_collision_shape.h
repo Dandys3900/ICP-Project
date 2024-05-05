@@ -59,12 +59,12 @@ class CircleCollisionShape : public CollisionShape {
          * @brief Setter for shape radius.
 		 * @param radius New value to be set.
          */
-		virtual void set_radius(qreal radius);
+		void set_radius(qreal radius);
 		/**
          * @brief Getter for shape current radius.
          * @return Current radius of the shape.
          */
-		virtual qreal get_radius() const;
+		qreal get_radius() const;
 };
 
 

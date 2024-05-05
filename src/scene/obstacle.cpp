@@ -68,17 +68,15 @@ QRectF Obstacle::get_rect () {
 }
 
 void Obstacle::set_obj_pos (const QPointF pos) {
-    // if (playground->boundingRect().contains(QRectF(pos.x(), pos.y(), size.x(), size.y()))) { // If new position is inside current scene, update robot coords
-        coords.setX(pos.x());
-        coords.setY(pos.y());
+    mp_coords.setX(pos.x());
+    mp_coords.setY(pos.y());
 
-        this->setRect(coords.x(), coords.y(), size.x(), size.y());
+    this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
-        // Update rotation origin
-        this->setTransformOriginPoint(this->rect().center());
+    // Update rotation origin
+    this->setTransformOriginPoint(this->rect().center());
 
-        this->physical_obstacle->update_shape();
-    // }
+    this->physical_obstacle->update_shape();
 }
 
 

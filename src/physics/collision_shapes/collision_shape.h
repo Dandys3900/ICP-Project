@@ -22,7 +22,11 @@ class CollisionShape {
 		 */
 		qreal angle = 0.0;
 
-	public: // methods
+	public: // Methods
+		/**
+		* @brief Virtual destructor.
+		*/
+		virtual ~CollisionShape () {}
 		/**
 		 * Sets the shape's "origin" to the @param origin.
 		 * This will not move the shape, but rather just move the origin that the whole shape moves around.

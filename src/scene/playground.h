@@ -45,8 +45,8 @@ class PlayGround : public QGraphicsRectItem, public QObject {
         Mode simulation_mode = MANUAL;
 
         QTimer* automatic_mode_timer;
-        bool automatic_mode_running = false;
-        int automatic_mode_step_interval = 0;
+        bool automatic_mode_running;
+        int automatic_mode_step_interval;
 
         /**
          * @brief Private method for adding new item(s) to the scene.
