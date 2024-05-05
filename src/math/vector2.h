@@ -19,7 +19,7 @@ class Vector2 : public QPointF {
         Vector2();
         /**
          * @brief Constructor.
-         * @param xy Initial position of vector.
+         * @param xy Initial position of vector. Both x-value and y-value will be set to xy.
          */
         Vector2(qreal xy);
         /**
