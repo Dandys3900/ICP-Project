@@ -56,7 +56,7 @@ class PhysicsServer {
 		~PhysicsServer();
 
 		/**
-		 * @brief Executes a step.
+		 * @brief Executes a physics step if queued. See queue_step().
 		 */
 		void step();
 		/**
