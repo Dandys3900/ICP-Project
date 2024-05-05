@@ -49,8 +49,11 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
     // Add buttons for user to control automatic simulation process
     QPushButton* stop_sim_btn = new QPushButton("Stop");
     QPushButton* start_sim_btn = new QPushButton("Start");
+    this->mp_stop_sim_button = stop_sim_btn;
+    this->mp_start_sim_button = start_sim_btn;
     // Set corresponding icons
     stop_sim_btn->setIcon(QIcon(":/icons/stop_icon.png"));
+    stop_sim_btn->setEnabled(false);
     start_sim_btn->setIcon(QIcon(":/icons/play_icon.png"));
 
     // Create horizontal layout for start and stop buttons
@@ -60,6 +63,11 @@ UserMenu::UserMenu (QGraphicsScene* scene, PlayGround* playground, QWidget* wind
 
     // Slider for user to regulate automatic simulation Robots movement speed
     QSlider* speed_slider = new QSlider(Qt::Horizontal);
+    speed_slider->setMinimum(1);
+    speed_slider->setMaximum(100);
+    speed_slider->setSingleStep(1);
+    speed_slider->setValue(50);
+    mp_playground->set_automatic_mode_speed(speed_slider->value());
     // Add the speed slider above the buttons within the same group box
     QVBoxLayout* sim_items_layout = new QVBoxLayout(mp_sim_mode_items);
     sim_items_layout->addWidget(speed_slider);
@@ -140,16 +148,21 @@ void UserMenu::mode_select (int index) {
         mp_sim_mode_items->show();
     }
     mp_menu_container->adjustSize();
+    mp_playground->set_mode(index == MANUAL ? MANUAL : AUTOMATIC);
 }
 
 void UserMenu::sim_speed_set (int slider_value) {
-    // Placeholder for actions related to simulation speed change
+    mp_playground->set_automatic_mode_speed(slider_value);
 }
 
 void UserMenu::start_sim () {
-    // Placeholder for actions related to starting the simulation
+    mp_playground->set_automatic_mode_running(true);
+    this->mp_stop_sim_button->setEnabled(true);
+    this->mp_start_sim_button->setEnabled(false);
 }
 
 void UserMenu::stop_sim () {
-    // Placeholder for actions related to stopping the simulation
+    mp_playground->set_automatic_mode_running(false);
+    this->mp_stop_sim_button->setEnabled(false);
+    this->mp_start_sim_button->setEnabled(true);
 }

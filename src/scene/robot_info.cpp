@@ -159,13 +159,29 @@ void Robot_Info::robot_type (int index) {
 }
 
 void Robot_Info::collision_value (const QString& text) {
-    // Update robot collision distance threshold
-    mp_robot->set_detect_threshold(text.toDouble());
+    if (text.isEmpty()) {
+        return;
+    }
+    bool ok;
+    double new_threshold = text.trimmed().toDouble(&ok);
+    if (ok == false) {
+        new_threshold = mp_robot->get_rotation_step();
+    }
+    mp_collisionLineEdit->setText(QString::number(new_threshold));
+    mp_robot->set_detect_threshold(new_threshold);
 }
 
 void Robot_Info::rotation_value (const QString& text) {
-    // Update robot rotation angle
-    mp_robot->set_rotation_angle(text.toDouble());
+    if (text.isEmpty()) {
+        return;
+    }
+    bool ok;
+    double new_rotation = text.trimmed().toDouble(&ok);
+    if (ok == false) {
+        new_rotation = mp_robot->get_rotation_step();
+    }
+    mp_rotationLineEdit->setText(QString::number(new_rotation));
+    mp_robot->set_rotation_step(new_rotation);
 }
 
 void Robot_Info::rotation_direction (int index) {

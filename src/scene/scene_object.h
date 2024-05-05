@@ -59,6 +59,34 @@ class SceneObject {
          */
         virtual void set_obj_pos (QPointF pos)               = 0;
         /**
+         * @brief Pure virtual setter for object's current rotation.
+         * @param new_rotation New object's rotation.
+         */
+        virtual void set_rotation (qreal new_rotation) {
+            this->mp_rotation = new_rotation;
+        }
+        /**
+         * @brief Pure virtual setter for object's current rotation in radians.
+         * @param new_rotation New object's rotation in radians.
+         */
+        virtual void set_rotation_radians (qreal new_rotation) {
+            this->mp_rotation = qRadiansToDegrees(new_rotation);
+        }
+        /**
+         * @brief Pure virtual getter for object's current rotation.
+         * @return qreal Object rotation.
+         */
+        virtual qreal get_rotation () {
+            return this->mp_rotation;
+        }
+        /**
+         * @brief Pure virtual getter for object's current rotation in radians.
+         * @return qreal Object rotation.
+         */
+        virtual qreal get_rotation_radians () {
+            return qDegreesToRadians(this->mp_rotation);
+        }
+        /**
          * @brief Pure virtual setter for toggling object's active (focus) status (active/inactive).
          * @param active Boolean value marking object active or not.
          * @param action Selects action to be done with object when active.
@@ -84,6 +112,11 @@ class SceneObject {
          * Each derived class must implement this function to define custom behavior for this event.
          */
         virtual void mousePressEvent (QGraphicsSceneMouseEvent* event)       = 0;
+        /**
+         * @brief Pure virtual method for handling key release event in the scene.
+         * @param event Generated key release event.
+         */
+        virtual void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) {};
         /**
          * @brief Pure virtual method for handling mouse double click event in the scene.
          * @param event Generated mouse press event.

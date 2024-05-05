@@ -11,6 +11,7 @@
 #include "scene/scene_object.h"
 #include "scene/playground.h"
 #include "scene/robot_info.h"
+#include "physics/physical_objects/physical_robot.h"
 
 class Robot : public SceneObject, public QGraphicsEllipseItem {
     private:
@@ -19,6 +20,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
 
         // Robot details
         enum Mode mp_mode;
+        enum Mode mp_old_mode;
         enum Direction mp_rotation_direction;
         qreal mp_rotation_step;
         qreal mp_detect_threshold;
@@ -26,9 +28,9 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         class PlayGround*     mp_playground;
         QGraphicsPolygonItem* mp_arrow;
 
+        class PhysicalRobot* physical_robot;
+
         void constructor_actions ();
-        void do_rotation (const qreal angle);
-        void move_forward ();
 
     public:
         /**
@@ -78,6 +80,7 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         // Implementations of virtual base class methods
         QString get_type () override;
         QPointF get_pos () override;
+        qreal get_diameter();
         QRectF get_rect () override;
         void set_obj_pos (const QPointF pos) override;
         void set_active (bool active, Action action) override;
@@ -96,13 +99,23 @@ class Robot : public SceneObject, public QGraphicsEllipseItem {
         QVector<QString> get_robot_info ();
         // Setters for possible updates of robot attributes
         void set_mode (Mode new_mode);
-        void set_rotation_angle (qreal new_angle);
+        void set_rotation_step (qreal new_angle);
+        void set_rotation_step_radians (qreal new_angle);
         void set_rotation_direction (Direction new_direction);
         void set_detect_threshold (qreal new_threshold);
+        // Getters for robot attributes
+        Mode get_mode();
+        qreal get_rotation_step ();
+        qreal get_rotation_step_radians ();
+        Direction get_rotation_direction ();
+        qreal get_detect_threshold ();
+
+        void do_rotation (const qreal angle);
 
     protected:
         // Events - handling
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
+        void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent* event) override;
         void keyPressEvent (QKeyEvent* event) override;
         void mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) override;

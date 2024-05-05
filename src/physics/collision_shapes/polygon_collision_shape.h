@@ -8,7 +8,7 @@
 #define POLYGON_COLLISION_SHAPE_H
 
 
-#include "physics/collision_shape.h"
+#include "physics/collision_shapes/collision_shape.h"
 
 
 class PolygonCollisionShape : public CollisionShape {
@@ -67,7 +67,7 @@ class PolygonCollisionShape : public CollisionShape {
 
 		QVector<Vector2> get_sat_collision_normals(const CollisionShape& other_shape) const override;
 
-		const QVector<Vector2>& get_sat_collision_verticies() const override;
+		QVector<Vector2> get_sat_collision_verticies() const override;
 
 	protected:
 		// Do nothing constructor for use in derived classes
