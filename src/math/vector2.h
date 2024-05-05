@@ -14,6 +14,7 @@
 class Vector2 : public QPointF {
     public: // methods
         Vector2();
+        Vector2(qreal xy);
         Vector2(qreal x, qreal y);
         Vector2(const Vector2& v);
         Vector2(const QPointF& qp);

@@ -8,10 +8,10 @@
 #define RECTANGLE_COLLISION_SHAPE_H
 
 
-#include "physics/polygon_collision_shape.h"
+#include "physics/collision_shapes/polygon_collision_shape.h"
 
 
-class RectangeCollisionShape : protected PolygonCollisionShape {
+class RectangeCollisionShape : public PolygonCollisionShape {
 	public:
 		RectangeCollisionShape(const Vector2& size) : PolygonCollisionShape() {
 			this->origin = Vector2();
@@ -27,6 +27,8 @@ class RectangeCollisionShape : protected PolygonCollisionShape {
 		RectangeCollisionShape(const Vector2& size, Vector2 position) : RectangeCollisionShape(size) {
 			this->set_position(position);
 		}
+
+		void resize(const Vector2& size);
 
 		/*!
 		 * A rectangle has two pairs of parallel edges, so just getting one of them is sufficient.

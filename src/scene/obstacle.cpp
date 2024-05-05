@@ -45,9 +45,14 @@ void Obstacle::constructor_actions () {
 
     // Set rotation
     this->setRotation(mp_rotation);
+
+    this->physical_obstacle = new PhysicalObstacle(this);
+    mp_playground->get_physics_server()->register_obstacle(this->physical_obstacle);
 }
 
 Obstacle::~Obstacle () {
+    mp_playground->get_physics_server()->unregister_obstacle(this->physical_obstacle);
+    delete physical_obstacle;
 }
 
 QString Obstacle::get_type () {
@@ -63,16 +68,20 @@ QRectF Obstacle::get_rect () {
 }
 
 void Obstacle::set_obj_pos (const QPointF pos) {
-    if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_size.x(), mp_size.y()))) {
-        // If new position is inside current scene, update robot coords
-        mp_coords.setX(pos.x());
-        mp_coords.setY(pos.y());
+    mp_coords.setX(pos.x());
+    mp_coords.setY(pos.y());
 
-        this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
+    this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
 
-        // Update rotation origin
-        this->setTransformOriginPoint(this->rect().center());
-    }
+    // Update rotation origin
+    this->setTransformOriginPoint(this->rect().center());
+
+    this->physical_obstacle->update_shape();
+}
+
+
+Vector2 Obstacle::get_size() {
+    return mp_size;
 }
 
 void Obstacle::set_active (bool active, Action action) {
@@ -110,7 +119,7 @@ void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
             mp_playground->set_active_obj(this, RESIZE_ACTION);
         }
         else { // Lose focus and return to previous pos
-            this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
+            // this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
             mp_playground->disable_focus();
         }
     }
@@ -129,6 +138,7 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
         default:
             break;
     }
+    this->physical_obstacle->update_shape();
 }
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
@@ -146,6 +156,7 @@ void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
             if (mp_playground->boundingRect().contains(newRect)) {
                 this->setRect(newRect);
                 this->setTransformOriginPoint(newRect.center());
+                this->physical_obstacle->update_shape();
             }
         }
         else { // MOVE_ACTION

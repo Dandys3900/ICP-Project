@@ -79,4 +79,10 @@ enum Direction : int {
     ANTICLOCKWISE
 };
 
+// for remaping values eg. 0.5 in 0-1 to 50 in 0-100
+template<typename T>
+T remap_value_between_ranges(T value, T from1, T to1, T from2, T to2) {
+    return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+}
+
 #endif // INCLUDEFILE_H

@@ -12,10 +12,12 @@
 #include "math/vector2.h"
 
 /***** PHYSICS *****/
-#include "physics/collision_shape.h"
-#include "physics/circle_collision_shape.h"
-#include "physics/polygon_collision_shape.h"
-#include "physics/rectangle_collision_shape.h"
+#include "physics/server/physics_server.h"
+
+#include "physics/collision_shapes/collision_shape.h"
+#include "physics/collision_shapes/circle_collision_shape.h"
+#include "physics/collision_shapes/polygon_collision_shape.h"
+#include "physics/collision_shapes/rectangle_collision_shape.h"
 
 
 #endif // PHYSICS_H

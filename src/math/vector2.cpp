@@ -9,6 +9,8 @@
 
 Vector2::Vector2() : QPointF() {}
 
+Vector2::Vector2(qreal xy) : QPointF(xy, xy) {}
+
 Vector2::Vector2(qreal x, qreal y) : QPointF(x, y) {}
 
 Vector2::Vector2(const Vector2& v) : QPointF(v) {}
@@ -51,8 +53,9 @@ Vector2 Vector2::normalized() const {
 void Vector2::rotate(qreal angle) {
 	qreal angle_sin = qSin(angle);
 	qreal angle_cos = qCos(angle);
-	setX(this->x() * angle_cos - this->y() * angle_sin);
-	setY(this->x() * angle_sin + this->y() * angle_cos);
+	qreal new_x = this->x() * angle_cos - this->y() * angle_sin; // just so we don't modify the x value prematurely as Y relies on its initial value
+	this->setY(this->x() * angle_sin + this->y() * angle_cos);
+	this->setX(new_x); // after Y is set, update X
 }
 
 

@@ -23,6 +23,10 @@ class CollisionShape {
 		qreal angle = 0.0;
 
 	public: // methods
+		/**
+		* @brief Virtual destructor.
+		*/
+		virtual ~CollisionShape () {}
 		/*!
 		 * Sets the shape's "origin" to the @param origin.
 		 * This will not move the shape, but rather just move the origin that the whole shape moves around.
@@ -79,7 +83,7 @@ class CollisionShape {
 		 * Returns QVector of verticies, that take part in the SAT collision detection.
 		 * @note The verticies might not be the true representation of the shape. For instance circle has infinite verticies, but is represented by it's center.
 		 */
-		virtual const QVector<Vector2>& get_sat_collision_verticies() const = 0;
+		virtual QVector<Vector2> get_sat_collision_verticies() const = 0;
 
 		/*!
 		 * Checks if this shape is colliding with @param other_shape. This method accepts any other CollisionShape regardless of it's implementation.
