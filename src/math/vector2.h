@@ -14,7 +14,7 @@
 class Vector2 : public QPointF {
     public: // Methods
         /**
-         * @brief Constructor.
+         * @brief Constructor. x-value and y-value are set to 0.
          */
         Vector2();
         /**
