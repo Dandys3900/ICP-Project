@@ -20,20 +20,34 @@
 class Obstacle;
 
 
-/*!
+/**
  * Obstacle representaion for the PhysicsServer
  */
 class PhysicalObstacle {
-	protected: // fields
+	protected: // Fields
 		Obstacle* obstacle = nullptr;
 		RectangeCollisionShape* shape = nullptr;
 
-	public: // methods
+	public: // Methods
+		/**
+         * @brief Constructor.
+         * @param obstacle Related obstacle object.
+         */
 		PhysicalObstacle(Obstacle* obstacle);
+		/**
+         * @brief Destructor.
+         */
 		~PhysicalObstacle();
 
+		/**
+         * @brief Updates obstacle's shape to match the obstacle's position, rotation and scale.
+         */
 		void update_shape();
 
+		/**
+         * @brief Getter for the obstacle shape.
+		 * @return Obstacle (rectangle) collision shape.
+         */
 		const RectangeCollisionShape* get_shape();
 };
 

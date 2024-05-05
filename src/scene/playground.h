@@ -9,8 +9,12 @@
 
 #include "includes/libs_file.h"
 
+#include "includes/libs_file.h"
+
 #include "scene/robot.h"
 #include "scene/obstacle.h"
+
+#include "physics/server/physics_server.h"
 
 #include "physics/server/physics_server.h"
 
@@ -25,20 +29,25 @@ class PhysicsServer;
 
 
 class PlayGround : public QGraphicsRectItem, public QObject {
+
+class PhysicsServer;
+
+
+class PlayGround : public QGraphicsRectItem, public QObject {
     private:
         // Vector for storing instancies of Robots and Obstacles placed to scene
-        QVector<SceneObject*> mp_scene_objs_vec;
+        QVector<SceneObject*> scene_objs_vec;
 
         // Vector for storing generated objects ids
         QVector<size_t> m_ids_array;
 
-        QPointF mp_active_obj_orig_pos;
+        QPointF active_obj_orig_pos;
 
-        QGraphicsScene*    mp_scene;
-        class SceneObject* mp_active_obj;
-        class SceneObject* mp_toplace_obj;
+        QGraphicsScene*    scene;
+        class SceneObject* active_obj;
+        class SceneObject* toplace_obj;
 
-        Action mp_cur_action;
+        Action cur_action;
 
         // PhysicsServer of the Playground
         PhysicsServer* physics_server;
@@ -54,6 +63,9 @@ class PlayGround : public QGraphicsRectItem, public QObject {
          */
         void add_to_scene (QGraphicsItem* new_item);
 
+        /**
+         * @brief Handles automatic mode timer timeout event.
+         */
         void on_automatic_mode_timer_timeout();
 
     public:
@@ -66,6 +78,12 @@ class PlayGround : public QGraphicsRectItem, public QObject {
          * @brief Destructor.
          */
         ~PlayGround ();
+
+        /**
+         * @brief Resizes the playground
+         * @param new_rect new rect of the playground with the new size
+         */
+        void resize_playground(QRectF new_rect);
 
         /**
          * @brief Resizes the playground
@@ -119,6 +137,26 @@ class PlayGround : public QGraphicsRectItem, public QObject {
          */
         PhysicsServer* get_physics_server();
         /**
+         * @brief Sets the simulation mode
+         * @param mode new simulation mode
+         */
+        void set_mode(Mode mode);
+        /**
+         * @brief Enables or pauses automatic mode
+         * @param running determines if automatic simulation is enabled or stopped
+         */
+        void set_automatic_mode_running(bool running);
+        /**
+         * @brief sets the speed of automatic mode
+         * @param speed speed of the automatic mode simulation from 1 to 100. Higher is faster.
+         */
+        void set_automatic_mode_speed(int speed);
+        /**
+         * @brief Returns pointer to the Playground's PhysicsServer
+         * @return PhysicsServer* of this Playground.
+         */
+        PhysicsServer* get_physics_server();
+        /**
          * @brief Returns scene coordinates where current active object is located.
          * @return QPointF Active object coordinates.
          */
@@ -143,6 +181,7 @@ class PlayGround : public QGraphicsRectItem, public QObject {
         void keyPressEvent (QKeyEvent* event) override;
         void mouseMoveEvent (QGraphicsSceneMouseEvent* event) override;
         void mousePressEvent (QGraphicsSceneMouseEvent* event) override;
+        void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) override;
         void mouseReleaseEvent (QGraphicsSceneMouseEvent* event) override;
 };
 

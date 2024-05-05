@@ -31,10 +31,10 @@ class Error_PopUp : public QWidget {
         static void clean_up ();
 
     private:
-        QLabel*      mp_err_txt_label; // Error label inside of widget
-        QWidget*     mp_main_window;
-        QTimer*      mp_popup_timer;
-        QVBoxLayout* mp_layout;
+        QLabel*      err_txt_label; // Error label inside of widget
+        QWidget*     main_window;
+        QTimer*      popup_timer;
+        QVBoxLayout* layout;
 
         static Error_PopUp* instance;
 };

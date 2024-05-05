@@ -8,12 +8,12 @@
 
 PlayGround::PlayGround (QGraphicsScene* scene)
     : QGraphicsRectItem            (nullptr),
-      mp_scene_objs_vec            (),
-      mp_active_obj_orig_pos       (),
-      mp_scene                     (scene),
-      mp_active_obj                (nullptr),
-      mp_toplace_obj               (nullptr),
-      mp_cur_action                (NO_ACTION),
+      scene_objs_vec               (),
+      active_obj_orig_pos          (),
+      scene                        (scene),
+      active_obj                   (nullptr),
+      toplace_obj                  (nullptr),
+      cur_action                   (NO_ACTION),
       automatic_mode_running       (false),
       automatic_mode_step_interval (0)
 {
@@ -32,18 +32,25 @@ PlayGround::PlayGround (QGraphicsScene* scene)
     add_to_scene(this);
 
     this->physics_server = new PhysicsServer();
-    
+
     this->resize_playground(scene->sceneRect());
-    
+
     this->automatic_mode_timer = new QTimer();
     connect(this->automatic_mode_timer, &QTimer::timeout, this, &PlayGround::on_automatic_mode_timer_timeout);
 }
 
 PlayGround::~PlayGround () {
     // Remove all scene objects
-    for (SceneObject* obj : this->mp_scene_objs_vec) {
+    for (SceneObject* obj : this->scene_objs_vec) {
         delete obj;
     }
+    delete this->physics_server;
+    delete this->automatic_mode_timer;
+}
+
+void PlayGround::resize_playground(QRectF new_rect) {
+    this->setRect(new_rect);
+    this->physics_server->register_boundaries(Vector2(new_rect.width(), new_rect.height()));
     delete this->physics_server;
     delete this->automatic_mode_timer;
 }
@@ -55,8 +62,8 @@ void PlayGround::resize_playground(QRectF new_rect) {
 
 void PlayGround::add_to_scene (QGraphicsItem* new_item) {
     // Avoid duplicit insertion to the scene
-    if (!mp_scene->items().contains(new_item)) {
-        mp_scene->addItem(new_item);
+    if (!scene->items().contains(new_item)) {
+        scene->addItem(new_item);
     }
 }
 
@@ -64,38 +71,42 @@ void PlayGround::on_automatic_mode_timer_timeout() {
     this->physics_server->force_step();
 }
 
+void PlayGround::on_automatic_mode_timer_timeout() {
+    this->physics_server->force_step();
+}
+
 QPointF PlayGround::get_active_obj_orig_pos () {
-    return mp_active_obj_orig_pos;
+    return active_obj_orig_pos;
 }
 
 void PlayGround::disable_focus () {
     // Reset original position of active object
-    mp_active_obj_orig_pos = QPointF(0, 0);
+    active_obj_orig_pos = QPointF(0, 0);
 
     // Active item change, lose focus on current active
-    if (mp_active_obj) {
-        mp_active_obj->set_active(false, NO_ACTION);
-        mp_active_obj = nullptr;
+    if (active_obj) {
+        active_obj->set_active(false, NO_ACTION);
+        active_obj = nullptr;
     }
 }
 
 void PlayGround::set_active_obj (SceneObject* object, Action action) {
-    mp_cur_action = action;
+    cur_action = action;
 
     // Un-focus current active object, if any
     disable_focus();
 
     // Set new active object
-    mp_active_obj = object;
+    active_obj = object;
 
-    if (mp_active_obj) {
-        mp_active_obj_orig_pos = mp_active_obj->get_pos();
-        mp_active_obj->set_active(true, mp_cur_action);
+    if (active_obj) {
+        active_obj_orig_pos = active_obj->get_pos();
+        active_obj->set_active(true, cur_action);
     }
 }
 
 void PlayGround::set_toplace_obj (SceneObject* object) {
-    mp_toplace_obj = object;
+    toplace_obj = object;
     // Change mouse icon to notify user about object to be placed
     QApplication::setOverrideCursor(Qt::PointingHandCursor);
 }
@@ -128,9 +139,37 @@ PhysicsServer* PlayGround::get_physics_server() {
     return this->physics_server;
 }
 
+void PlayGround::set_mode(Mode mode) {
+    this->simulation_mode = mode;
+    if (mode == MANUAL) {
+        this->automatic_mode_running = false;
+        this->automatic_mode_timer->stop();
+    }
+}
+
+void PlayGround::set_automatic_mode_running(bool running) {
+    this->automatic_mode_running = running;
+    if (running) {
+        this->automatic_mode_timer->start(this->automatic_mode_step_interval);
+    } else {
+        this->automatic_mode_timer->stop();
+    }
+}
+
+void PlayGround::set_automatic_mode_speed(int speed) {
+    this->automatic_mode_step_interval = (int)remap_value_between_ranges((double)speed, 1.0, 100.0, 250.0, 1.0);
+    if (this->automatic_mode_running) {
+        this->automatic_mode_timer->start(this->automatic_mode_step_interval);
+    }
+}
+
+PhysicsServer* PlayGround::get_physics_server() {
+    return this->physics_server;
+}
+
 void PlayGround::add_scene_obj (SceneObject* object) {
     // Add to scene object vector
-    mp_scene_objs_vec.push_back(object);
+    scene_objs_vec.push_back(object);
 
     if (object->get_type() == QString("Robot")) {
         // Cast it to the Robot class
@@ -158,21 +197,21 @@ void PlayGround::remove_scene_obj (SceneObject* object) {
     QVector<SceneObject*>::iterator iter;
 
     // Try to find object to be deleted in objects vector
-    iter = std::find_if(mp_scene_objs_vec.begin(), mp_scene_objs_vec.end(),
+    iter = std::find_if(scene_objs_vec.begin(), scene_objs_vec.end(),
                         [object](SceneObject* curObj) {
                             return object == curObj;
                         });
 
     // Found - delete it
-    if (iter != mp_scene_objs_vec.end()) {
+    if (iter != scene_objs_vec.end()) {
         // Delete found object
         delete object;
         // Remove from vector as well
-        mp_scene_objs_vec.erase(iter);
+        scene_objs_vec.erase(iter);
 
         // In case deleted object is active
-        if (object == mp_active_obj) {
-            mp_active_obj = nullptr;
+        if (object == active_obj) {
+            active_obj = nullptr;
         }
     }
 }
@@ -180,14 +219,19 @@ void PlayGround::remove_scene_obj (SceneObject* object) {
 void PlayGround::keyPressEvent (QKeyEvent* event) {
     QVector<SceneObject*>::iterator iter;
 
-    if (mp_active_obj) { // If we have active object, deliver this exclusively to it
-        mp_active_obj->keyPressEvent(event);
+    if (active_obj) { // If we have active object, deliver this exclusively to it
+        active_obj->keyPressEvent(event);
     }
     else { // All robots should receive key presses to move
-        for (iter = mp_scene_objs_vec.begin(); iter < mp_scene_objs_vec.end(); ++iter) {
+        for (iter = scene_objs_vec.begin(); iter < scene_objs_vec.end(); ++iter) {
             if ((*iter)->get_type() == QString("Robot")) {
                 (*iter)->keyPressEvent(event);
             }
+        }
+        if (event->key() == Qt::Key_Space) {
+            this->physics_server->force_step();
+        } else if (this->simulation_mode == MANUAL) {
+            this->physics_server->step();
         }
         if (event->key() == Qt::Key_Space) {
             this->physics_server->force_step();
@@ -198,28 +242,28 @@ void PlayGround::keyPressEvent (QKeyEvent* event) {
 }
 
 void PlayGround::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
-    if (mp_active_obj) { // Distribute mouse move event to focused (active) object
-        mp_active_obj->mouseMoveEvent(event);
+    if (active_obj) { // Distribute mouse move event to focused (active) object
+        active_obj->mouseMoveEvent(event);
     }
 }
 
 void PlayGround::mousePressEvent (QGraphicsSceneMouseEvent* event) {
-    if (mp_active_obj) { // Distribute mouse press event to focused (active) object
-        mp_active_obj->mousePressEvent(event);
+    if (active_obj) { // Distribute mouse press event to focused (active) object
+        active_obj->mousePressEvent(event);
     }
-    else if (mp_toplace_obj) { // Place new object to mouse click position
-        mp_toplace_obj->set_obj_pos(event->scenePos());
-        add_scene_obj(mp_toplace_obj);
+    else if (toplace_obj) { // Place new object to mouse click position
+        toplace_obj->set_obj_pos(event->scenePos());
+        add_scene_obj(toplace_obj);
         // Reset for next use
-        mp_toplace_obj = nullptr;
+        toplace_obj = nullptr;
         // Restore mouse icon
         QApplication::restoreOverrideCursor();
     }
 }
 
 void PlayGround::mouseReleaseEvent (QGraphicsSceneMouseEvent* event) {
-    if (mp_active_obj) { // Distribute mouse press event to focused (active) object
-        mp_active_obj->mouseReleaseEvent(event);
+    if (active_obj) { // Distribute mouse press event to focused (active) object
+        active_obj->mouseReleaseEvent(event);
     }
 }
 
@@ -255,8 +299,8 @@ void PlayGround::store_config () {
 
     // Array of JSON objects from each scene obj
     QJsonArray objs_data_arr;
-    for (auto pos = 0; pos < mp_scene_objs_vec.size(); ++pos) {
-        objs_data_arr.append(mp_scene_objs_vec.at(pos)->get_obj_data());
+    for (auto pos = 0; pos < scene_objs_vec.size(); ++pos) {
+        objs_data_arr.append(scene_objs_vec.at(pos)->get_obj_data());
     }
 
     // Store to file
@@ -273,10 +317,10 @@ void PlayGround::load_config () {
     }
 
     // Clear current scene objects as new one will be created
-    for (SceneObject* obj : this->mp_scene_objs_vec) {
+    for (SceneObject* obj : this->scene_objs_vec) {
         delete obj;
     }
-    mp_scene_objs_vec.clear();
+    scene_objs_vec.clear();
 
     // Parse the file to JSON format
     QJsonParseError parse_error;
@@ -322,7 +366,9 @@ void PlayGround::load_config () {
                 (scene_obj.contains("rotation_step")) ? scene_obj["rotation_step"].toDouble() : 5.0;
             Direction rot_direction = static_cast<enum Direction>(
                 (scene_obj.contains("rotation_direction")) ? scene_obj["rotation_direction"].toInt() : CLOCKWISE);
+                (scene_obj.contains("rotation_direction")) ? scene_obj["rotation_direction"].toInt() : CLOCKWISE);
             qreal collision_thr =
+                (scene_obj.contains("collis_threshold")) ? scene_obj["collis_threshold"].toDouble() : 0;
                 (scene_obj.contains("collis_threshold")) ? scene_obj["collis_threshold"].toDouble() : 0;
 
             new_obj = new Robot(diameter,

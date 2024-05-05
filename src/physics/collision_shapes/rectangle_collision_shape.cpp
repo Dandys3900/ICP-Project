@@ -11,18 +11,18 @@ void RectangeCollisionShape::resize(const Vector2& size) {
 	Vector2 old_origin = this->origin;
 	qreal old_angle = this->angle;
 
-	this->origin = Vector2(); // reset origin to (0,0)
-	this->angle = 0; // reset angle to 0
+	this->origin = Vector2(); // Reset origin to (0,0)
+	this->angle = 0; // Reset angle to 0
 
-	// create the new rect
+	// Create the new rect
 	QPointF half_size = size / 2;
 	this->verticies[0] = Vector2(this->origin.x() - half_size.x(), this->origin.y() - half_size.y());
 	this->verticies[1] = Vector2(this->origin.x() + half_size.x(), this->origin.y() - half_size.y());
 	this->verticies[2] = Vector2(this->origin.x() + half_size.x(), this->origin.y() + half_size.y());
 	this->verticies[3] = Vector2(this->origin.x() - half_size.x(), this->origin.y() + half_size.y());
 
-	this->set_rotation(old_angle); // rotate the new rect
-	this->set_position(old_origin); // move the new rect
+	this->set_rotation(old_angle); // Rotate the new rect
+	this->set_position(old_origin); // Move the new rect
 }
 
 

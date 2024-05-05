@@ -27,28 +27,57 @@ class UserMenu : public QWidget {
         ~UserMenu ();
 
     private:
-        PlayGround*           mp_playground;
-        QGraphicsScene*       mp_scene;
-        QWidget*              mp_menu_container; // Widgets containing all menu items
-        QGroupBox*            mp_sim_mode_items;
-        QGraphicsProxyWidget* mp_proxy_button;
-        QGraphicsProxyWidget* mp_container_proxy;
+        PlayGround*           playground;
+        QGraphicsScene*       scene;
+        QWidget*              menu_container; // Widgets containing all menu items
+        QGroupBox*            sim_mode_items;
+        QGraphicsProxyWidget* proxy_button;
+        QGraphicsProxyWidget* container_proxy;
 
-        QPushButton* mp_stop_sim_button;
-        QPushButton* mp_start_sim_button;
+        QPushButton* stop_sim_button;
+        QPushButton* start_sim_button;
 
-        bool mp_expanded;
+        bool expanded;
 
     private slots:
         // Methods for handling menu items events
+        /**
+         * @brief Handles the button click event.
+         */
         void btn_click ();
+        /**
+         * @brief Triggers playground method for selecting config file to load a scene from.
+         */
         void load_config();
+        /**
+         * @brief Triggers playground method for storing current scene into config file.
+         */
         void store_config();
+        /**
+         * @brief Creates new robot which user will place to the scene.
+         */
         void add_robot ();
+        /**
+         * @brief Creates new obstacle which user will place to the scene.
+         */
         void add_obstacle ();
+        /**
+         * @brief Handles the selection of simulation mode (automatic/manual).
+         * @param index Index of the selected mode.
+         */
         void mode_select (int index);
+        /**
+         * @brief Sets the simulation speed.
+         * @param slider_value The value of the simulation speed (0-100).
+         */
         void sim_speed_set (int slider_value);
+        /**
+         * @brief Starts the simulation.
+         */
         void start_sim ();
+        /**
+         * @brief Stops the simulation.
+         */
         void stop_sim ();
 };
 

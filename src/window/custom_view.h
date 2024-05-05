@@ -32,7 +32,7 @@ class CustomView : public QGraphicsView {
         void resizeEvent (QResizeEvent* event) override;
 
     private:
-        PlayGround* mp_playground;
+        PlayGround* playground;
 };
 
 #endif // CUSTOM_VIEW_H
