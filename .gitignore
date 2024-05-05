@@ -27,7 +27,7 @@ qrc_*.cpp
 ui_*.h
 *.qmlc
 *.jsc
-Makefile*
+QMakefile
 *build-*
 *.qm
 *.prl
@@ -55,3 +55,6 @@ compile_commands.json
 
 #VSCode
 .vscode/*
+
+# ZIP files
+*.zip
