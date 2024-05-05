@@ -61,7 +61,7 @@ class PhysicalRobot {
 		~PhysicalRobot();
 
 		/**
-         * @brief Updates robot's shape.
+         * @brief Updates robot's shape to match the Robot's position, rotation and scale.
          */
 		void update_shape();
 		/**
