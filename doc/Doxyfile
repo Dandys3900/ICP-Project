@@ -1,0 +1,24 @@
+# Doxyfile for ICP project documentation
+
+# Project settings
+PROJECT_NAME           = "ICP-Project"
+PROJECT_NUMBER         = 1.0
+OUTPUT_DIRECTORY       = "doc"
+GENERATE_HTML          = YES
+HTML_OUTPUT            = "html"
+GENERATE_LATEX         = YES
+LATEX_OUTPUT           = "latex"
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+ENABLE_PREPROCESSING   = YES
+
+# Input settings
+INPUT                  = "./src/"
+FILE_PATTERNS          = *.h
+RECURSIVE              = YES
+
+# Additional options
+OPTIMIZE_OUTPUT_FOR_C  = YES
+WARNINGS               = NO
+QUIET                  = YES

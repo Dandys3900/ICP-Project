@@ -55,3 +55,7 @@ compile_commands.json
 
 #VSCode
 .vscode/*
+
+# DOCS
+doc/*
+!doc/Doxyfile
