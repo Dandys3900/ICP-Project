@@ -64,7 +64,7 @@ class PhysicsServer {
 		 */
 		void queue_step();
 		/**
-		 * @brief Forces a step to be executed.
+		 * @brief Forces a physics step to be executed.
 		 * @param clean_step_queue If true, clears the step queue after execution.
 		 */
 		void force_step(bool clean_step_queue = true);
