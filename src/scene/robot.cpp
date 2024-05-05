@@ -212,7 +212,7 @@ void Robot::keyPressEvent (QKeyEvent* event) {
 void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
     // Remove Robot
     if (event->button() == Qt::MouseButton::RightButton) {
-        // if robot widget is shown, hide it first
+        // If robot widget is shown, hide it first
         Robot_Info::hide_related_widget(this);
         mp_playground->remove_scene_obj(this);
     }
@@ -221,7 +221,7 @@ void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
         if (!mp_is_active) { // Notify PlayGround and get focus
-            // stop the robot if moving around
+            // Stop the robot if moving around
             this->mp_old_mode = this->mp_mode;
             this->mp_mode = MANUAL;
             this->mp_move_action_mouse_offset = this->mp_coords - event->scenePos();
@@ -234,7 +234,6 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 
     if (event->button() == Qt::MouseButton::RightButton) {
         if (mp_is_active) { // Lose focus and return to previous pos
-            // this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
             mp_playground->disable_focus();
         }
         else { // Show Robot details
@@ -245,7 +244,7 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 
 void Robot::mouseReleaseEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) { // move event ended
-        // reenable robot
+        // Re-enable robot
         this->mp_mode = this->mp_old_mode;
     }
 }

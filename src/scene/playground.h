@@ -53,7 +53,9 @@ class PlayGround : public QGraphicsRectItem, public QObject {
          * @param new_item Item to be added.
          */
         void add_to_scene (QGraphicsItem* new_item);
-
+        /**
+         * @brief Handles automatic mode timer timeout event.
+         */
         void on_automatic_mode_timer_timeout();
 
     public:

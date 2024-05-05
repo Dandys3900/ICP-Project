@@ -12,22 +12,26 @@
 
 
 class PolygonCollisionShape : public CollisionShape {
-	protected: // fields
-		/*!
-		 * QVector of plygon's verticies in CLOCKWISE direction in GLOBAL coordinates.
+	protected: // Fields
+		/**
+		 * QVector of polygon's verticies in CLOCKWISE direction in GLOBAL coordinates.
 		 * The first and last verticies will be connected to form a closing edge of the polygon.
 		 * A valid polygon is guaranteed to have between 3 and 256 (inclusive) verticies.
 		 * An invalid polygon is represended with not verticies.
 		 */
 		QVector<Vector2> verticies; // Should not be handled ONLY by provided methods
 
-		/*!
-		 * Polyon's imaginary origin around which is everything scaled and rotated.
+		/**
+		 * Polygon's imaginary origin around which is everything scaled and rotated.
 		 * If not set, the first vertex is used as origin.
 		 */
 		Vector2 origin;
 
-	public: // methods
+	public: // Methods
+		/**
+         * @brief Constructor.
+         * @param verticies Initial verticies for the polygon.
+         */
 		PolygonCollisionShape(QVector<Vector2> verticies) {
 			int size = verticies.size();
 			if (size < 3) {
@@ -40,11 +44,20 @@ class PolygonCollisionShape : public CollisionShape {
 			this->verticies = verticies;
 			this->origin = verticies[0];
 		}
-
+		/**
+         * @brief Constructor.
+         * @param verticies Initial verticies for the polygon.
+		 * @param origin Initial rotation origin.
+         */
 		PolygonCollisionShape(QVector<Vector2> verticies, Vector2 origin) : PolygonCollisionShape(verticies) {
 			this->origin = origin;
 		}
-
+		/**
+         * @brief Constructor.
+         * @param verticies Initial verticies for the polygon.
+		 * @param origin Initial rotation origin.
+		 * @param position Initial shape position.
+         */
 		PolygonCollisionShape(QVector<Vector2> verticies, Vector2 origin, Vector2 position) : PolygonCollisionShape(verticies, origin) {
 			this->set_position(position);
 		}
@@ -70,7 +83,9 @@ class PolygonCollisionShape : public CollisionShape {
 		QVector<Vector2> get_sat_collision_verticies() const override;
 
 	protected:
-		// Do nothing constructor for use in derived classes
+		/**
+         * @brief Do nothing constructor for use in derived classes.
+         */
 		PolygonCollisionShape(){}
 };
 

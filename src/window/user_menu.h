@@ -41,14 +41,43 @@ class UserMenu : public QWidget {
 
     private slots:
         // Methods for handling menu items events
+        /**
+         * @brief Handles the button click event.
+         */
         void btn_click ();
+        /**
+         * @brief Triggers playground method for selecting config file to load a scene from.
+         */
         void load_config();
+        /**
+         * @brief Triggers playground method for storing current scene into config file.
+         */
         void store_config();
+        /**
+         * @brief Creates new robot which user will place to the scene.
+         */
         void add_robot ();
+        /**
+         * @brief Creates new obstacle which user will place to the scene.
+         */
         void add_obstacle ();
+        /**
+         * @brief Handles the selection of simulation mode (automatic/manual).
+         * @param index Index of the selected mode.
+         */
         void mode_select (int index);
+        /**
+         * @brief Sets the simulation speed.
+         * @param slider_value The value of the simulation speed (0-100).
+         */
         void sim_speed_set (int slider_value);
+        /**
+         * @brief Starts the simulation.
+         */
         void start_sim ();
+        /**
+         * @brief Stops the simulation.
+         */
         void stop_sim ();
 };
 

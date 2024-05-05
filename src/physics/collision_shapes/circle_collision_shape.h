@@ -13,11 +13,16 @@
 
 
 class CircleCollisionShape : public CollisionShape {
-	protected: // fields
+	protected: // Fields
 		Vector2 center;
 		qreal radius;
 
-	public: // methods
+	public: // Methods
+		/**
+         * @brief Constructor.
+         * @param position Initial position of circle shape.
+         * @param radius Initial radius angle of circle shape.
+         */
 		CircleCollisionShape(Vector2 position, qreal radius) {
 			this->center = position;
 			this->radius = radius;
@@ -43,13 +48,22 @@ class CircleCollisionShape : public CollisionShape {
 
 		QVector<Vector2> get_sat_collision_verticies() const override;
 
-		/*!
-		 * Returns the closes vertex from @param verticies to center of this circle.
-		 */
+		/**
+         * @brief Returns the closest vertex from @param verticies to center of this circle.
+         * @param verticies Vector containing verticies where the closest vertex is to be found.
+		 * @return Closest vertex from given vector.
+         */
 		const Vector2 get_closest_vertex(const QVector<Vector2>& verticies) const;
 
+		/**
+         * @brief Setter for shape radius.
+		 * @param radius New value to be set.
+         */
 		void set_radius(qreal radius);
-		
+		/**
+         * @brief Getter for shape current radius.
+         * @return Current radius of the shape.
+         */
 		qreal get_radius() const;
 };
 
