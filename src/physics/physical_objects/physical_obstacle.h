@@ -40,7 +40,7 @@ class PhysicalObstacle {
 		~PhysicalObstacle();
 
 		/**
-         * @brief Updates obstacle's shape.
+         * @brief Updates obstacle's shape to match the obstacle's position, rotation and scale.
          */
 		void update_shape();
 
