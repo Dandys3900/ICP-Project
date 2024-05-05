@@ -26,6 +26,7 @@ SOURCES += window/main.cpp \
 HEADERS += window/custom_view.h \
            window/user_menu.h \
            includes/libs_file.h \
+           includes/physics.h \
            scene/playground.h \
            scene/scene_object.h \
            scene/obstacle.h \

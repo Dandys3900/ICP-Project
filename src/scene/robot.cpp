@@ -7,16 +7,16 @@
 #include "robot.h"
 
 Robot::Robot (const qreal size, const qreal coord_x, const qreal coord_y, PlayGround* playground)
-    : SceneObject           (Vector2(coord_x, coord_y)),
-      QGraphicsEllipseItem  (nullptr),
-      mp_diameter           (size),
-      mp_obj_type           ("Robot"),
-      mp_mode               (MANUAL),
-      mp_rotation_direction (CLOCKWISE),
-      mp_rotation_step      (15.0),
-      mp_detect_threshold   (0.0),
-      mp_playground         (playground),
-      mp_arrow              (nullptr)
+    : SceneObject          (Vector2(coord_x, coord_y)),
+      QGraphicsEllipseItem (nullptr),
+      diameter             (size),
+      obj_type             ("Robot"),
+      mode                 (MANUAL),
+      rotation_direction   (CLOCKWISE),
+      rotation_step        (15.0),
+      detect_threshold     (0.0),
+      playground           (playground),
+      arrow                (nullptr)
 {
     constructor_actions();
 }
@@ -26,17 +26,17 @@ Robot::Robot (const qreal size, const Vector2& coords, PlayGround* playground)
 {
 }
 
-Robot::Robot (const qreal size, const Vector2& coords, qreal rotation, const Mode mode, const Direction rot_direction, const qreal rotation_step, const qreal collision_thr, PlayGround* playground)
-    : SceneObject           (coords, rotation),
-      QGraphicsEllipseItem  (nullptr),
-      mp_diameter           (size),
-      mp_obj_type           ("Robot"),
-      mp_mode               (mode),
-      mp_rotation_direction (rot_direction),
-      mp_rotation_step      (rotation_step),
-      mp_detect_threshold   (collision_thr),
-      mp_playground         (playground),
-      mp_arrow              (nullptr)
+Robot::Robot (const qreal size, const Vector2& coords, qreal rotation_angle, const Mode mode, const Direction rot_direction, const qreal rotation_step, const qreal collision_thr, PlayGround* playground)
+    : SceneObject          (coords, rotation_angle),
+      QGraphicsEllipseItem (nullptr),
+      diameter             (size),
+      obj_type             ("Robot"),
+      mode                 (mode),
+      rotation_direction   (rot_direction),
+      rotation_step        (rotation_step),
+      detect_threshold     (collision_thr),
+      playground           (playground),
+      arrow                (nullptr)
 {
     constructor_actions();
 }
@@ -46,7 +46,7 @@ void Robot::constructor_actions() {
     this->setZValue(0);
 
     // Set ellipsis properties
-    this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
+    this->setRect(coords.x(), coords.y(), diameter, diameter);
 
     // Prepare vector of points from which polygon will be created
     QVector<QPointF> points_arr;
@@ -62,37 +62,40 @@ void Robot::constructor_actions() {
     // Arrow right side
     points_arr.append(QPointF(5, 5));
 
-    // Create arrow showing current rotation
-    mp_arrow = new QGraphicsPolygonItem(QPolygonF(points_arr), this);
-    mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
-    mp_arrow->setRotation(mp_rotation);
+    // Create arrow showing current rotation_angle
+    arrow = new QGraphicsPolygonItem(QPolygonF(points_arr), this);
+    arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
+    arrow->setRotation(rotation_angle);
 
-    // Set correct rotation origin
-    mp_arrow->setTransformOriginPoint(QPointF(0, ARROW_LENGTH));
+    // Set arrow color to red to ensure better visibility inside scene
+    arrow->setPen(QPen(Qt::red));
+
+    // Set correct rotation_angle origin
+    arrow->setTransformOriginPoint(QPointF(0, ARROW_LENGTH));
 
     // Allow hover events
     this->setAcceptHoverEvents(true);
 
     this->physical_robot = new PhysicalRobot(this);
-    mp_playground->get_physics_server()->register_robot(this->physical_robot);
+    playground->get_physics_server()->register_robot(this->physical_robot);
 }
 
 Robot::~Robot () {
-    delete mp_arrow;
-    mp_playground->get_physics_server()->unregister_robot(this->physical_robot);
+    delete arrow;
+    playground->get_physics_server()->unregister_robot(this->physical_robot);
     delete physical_robot;
 }
 
 QString Robot::get_type () {
-    return mp_obj_type;
+    return obj_type;
 }
 
 QPointF Robot::get_pos () {
-    return QPointF(mp_coords.x(), mp_coords.y());
+    return QPointF(coords.x(), coords.y());
 }
 
 qreal Robot::get_diameter () {
-    return mp_diameter;
+    return diameter;
 }
 
 QRectF Robot::get_rect () {
@@ -100,85 +103,84 @@ QRectF Robot::get_rect () {
 }
 
 QGraphicsPolygonItem* Robot::get_robot_arrow () {
-    return mp_arrow;
+    return arrow;
 }
 
 QVector<QString> Robot::get_robot_info () {
     // Construct new vector containing robot's details
     return QVector<QString> {
-        QString::number(mp_mode),
-        QString::number(mp_detect_threshold),
-        QString::number(mp_rotation_step),
-        QString::number(mp_rotation_direction)
+        QString::number(mode),
+        QString::number(detect_threshold),
+        QString::number(rotation_step),
+        QString::number(rotation_direction)
     };
 }
 
 void Robot::set_mode (Mode new_mode) {
-    mp_mode = new_mode;
-    physical_robot->queued_action = PhysicalRobot::QueuedAction::NONE; // reset queud action just to be sure
+    mode = new_mode;
+    physical_robot->queued_action = PhysicalRobot::QueuedAction::NONE; // Reset queued action just to be sure
 }
 
 void Robot::set_detect_threshold (qreal new_threshold) {
-    mp_detect_threshold = new_threshold;
+    detect_threshold = new_threshold;
 }
 
 void Robot::set_rotation_step (qreal new_step) {
-    mp_rotation_step = new_step;
+    rotation_step = new_step;
 }
 
 void Robot::set_rotation_step_radians (qreal new_step) {
-    mp_rotation_step = qRadiansToDegrees(new_step);
+    rotation_step = qRadiansToDegrees(new_step);
 }
 
 void Robot::set_rotation_direction (Direction new_direction) {
-    mp_rotation_direction = new_direction;
+    rotation_direction = new_direction;
 }
 
 Mode Robot::get_mode() {
-    return mp_mode;
+    return mode;
 }
 
 qreal Robot::get_rotation_step () {
-    return mp_rotation_step;
+    return rotation_step;
 }
 
 qreal Robot::get_rotation_step_radians () {
-    return qDegreesToRadians(mp_rotation_step);
+    return qDegreesToRadians(rotation_step);
 }
 
 Direction Robot::get_rotation_direction () {
-    return mp_rotation_direction;
+    return rotation_direction;
 }
 
 qreal Robot::get_detect_threshold () {
-    return mp_detect_threshold;
+    return detect_threshold;
 }
 
 void Robot::set_active (bool active, Action action) {
-    mp_color      = Qt::black;
-    mp_is_active  = active;
-    mp_obj_action = action;
+    color      = Qt::black;
+    is_active  = active;
+    obj_action = action;
 
     if (active && action == MOVE_ACTION) { // Focused and moving -> red
-        mp_color = Qt::red;
+        color = Qt::red;
     }
 
-    QPen pen(mp_color);
+    QPen pen(color);
     // Apply new color
     this->setPen(pen);
-    this->mp_arrow->setPen(pen);
 }
 
 void Robot::set_obj_pos (const QPointF pos) {
-    // if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_diameter, mp_diameter))) { // If new position is inside current scene, update robot coords
-        mp_coords.setX(pos.x());
-        mp_coords.setY(pos.y());
+    // if (playground->boundingRect().contains(QRectF(pos.x(), pos.y(), diameter, diameter))) { // If new position is inside current scene, update robot coords
+        coords.setX(pos.x());
+        coords.setY(pos.y());
 
         // Set new position of robot
-        this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
+        this->setRect(coords.x(), coords.y(), diameter, diameter);
 
         // Re-center arrow after robot moved
-        mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
+        arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
 
         this->physical_robot->update_shape();
         this->physical_robot->update_shapecast();
@@ -186,26 +188,26 @@ void Robot::set_obj_pos (const QPointF pos) {
 }
 
 void Robot::keyPressEvent (QKeyEvent* event) {
-    if (mp_mode == AUTOMATIC) {
+    if (mode == AUTOMATIC) {
         return;
     }
     switch (event->key()) {
         case Qt::Key_Left: // Rotate counter-clockwise
             this->physical_robot->queued_action = PhysicalRobot::QueuedAction::TURN_LEFT;
-            this->mp_playground->get_physics_server()->queue_step();
+            this->playground->get_physics_server()->queue_step();
             break;
         case Qt::Key_Right: // Rotate clockwise
             this->physical_robot->queued_action = PhysicalRobot::QueuedAction::TURN_RIGHT;
-            this->mp_playground->get_physics_server()->queue_step();
+            this->playground->get_physics_server()->queue_step();
             break;
         case Qt::Key_Up: // Move forward
             this->physical_robot->queued_action = PhysicalRobot::QueuedAction::MOVE;
-            this->mp_playground->get_physics_server()->queue_step();
+            this->playground->get_physics_server()->queue_step();
             break;
         case Qt::Key_Down: // Ignore as robot should move only forward
             break;
         case Qt::Key_Space:
-            this->mp_playground->get_physics_server()->queue_step();
+            this->playground->get_physics_server()->queue_step();
         default: // Ignore any other keys
             break;
     }
@@ -214,30 +216,30 @@ void Robot::keyPressEvent (QKeyEvent* event) {
 void Robot::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
     // Remove Robot
     if (event->button() == Qt::MouseButton::RightButton) {
-        // if robot widget is shown, hide it first
+        // If robot widget is shown, hide it first
         Robot_Info::hide_related_widget(this);
-        mp_playground->remove_scene_obj(this);
+        playground->remove_scene_obj(this);
     }
 }
 
 void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
-        if (!mp_is_active) { // Notify PlayGround and get focus
-            // stop the robot if moving around
-            this->mp_old_mode = this->mp_mode;
-            this->mp_mode = MANUAL;
-            this->mp_move_action_mouse_offset = this->mp_coords - event->scenePos();
-            mp_playground->set_active_obj(this, MOVE_ACTION);
+        if (!is_active) { // Notify PlayGround and get focus
+            // Stop the robot if moving around
+            this->old_mode = this->mode;
+            this->mode = MANUAL;
+            this->move_action_mouse_offset = this->coords - event->scenePos();
+            playground->set_active_obj(this, MOVE_ACTION);
         }
         else { // Lose focus
-            mp_playground->disable_focus();
+            playground->disable_focus();
         }
     }
 
     if (event->button() == Qt::MouseButton::RightButton) {
-        if (mp_is_active) { // Lose focus and return to previous pos
-            // this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
-            mp_playground->disable_focus();
+        if (is_active) { // Lose focus and return to previous pos
+            // this->set_obj_pos(playground->get_active_obj_orig_pos());
+            playground->disable_focus();
         }
         else { // Show Robot details
             Robot_Info::show_widget(this);
@@ -247,14 +249,14 @@ void Robot::mousePressEvent (QGraphicsSceneMouseEvent* event) {
 
 void Robot::mouseReleaseEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) { // move event ended
-        // reenable robot
-        this->mp_mode = this->mp_old_mode;
+        // Re-enable robot
+        this->mode = this->old_mode;
     }
 }
 
 void Robot::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
-    if (mp_is_active) { // Move robot, if focused
-        this->set_obj_pos(event->scenePos() + this->mp_move_action_mouse_offset);
+    if (is_active) { // Move robot, if focused
+        this->set_obj_pos(event->scenePos() + this->move_action_mouse_offset);
     }
 }
 
@@ -265,7 +267,7 @@ void Robot::hoverEnterEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
 }
 
 void Robot::hoverLeaveEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
-    QPen pen(mp_color);
+    QPen pen(color);
     // Apply new color
     this->setPen(pen);
 }
@@ -283,18 +285,18 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 }
 
 void Robot::do_rotation (const qreal angle) {
-    mp_rotation += angle;
-    // Rotation of the arrow
-    mp_arrow->setRotation(mp_rotation);
+    rotation_angle += angle;
+    // Rotation_angle of the arrow
+    arrow->setRotation(rotation_angle);
 }
 
 QJsonObject Robot::get_obj_data () {
     QJsonObject conf_data = SceneObject::get_obj_data();
-    conf_data["obj_type"]           = mp_obj_type;
-    conf_data["diameter"]           = mp_diameter;
-    conf_data["mode"]               = mp_mode;
-    conf_data["rotation_step"]      = mp_rotation_step;
-    conf_data["rotation_direction"] = mp_rotation_direction;
-    conf_data["collis_threshold"]   = mp_detect_threshold;
+    conf_data["obj_type"]           = obj_type;
+    conf_data["diameter"]           = diameter;
+    conf_data["mode"]               = mode;
+    conf_data["rotation_step"]      = rotation_step;
+    conf_data["rotation_direction"] = rotation_direction;
+    conf_data["collis_threshold"]   = detect_threshold;
     return conf_data;
 }

@@ -79,7 +79,15 @@ enum Direction : int {
     ANTICLOCKWISE
 };
 
-// for remaping values eg. 0.5 in 0-1 to 50 in 0-100
+/**
+ * @brief Function for remapping values from one range to another.
+ * @param value The value to be remapped.
+ * @param from1 The lower bound of the original range.
+ * @param to1 The upper bound of the original range.
+ * @param from2 The lower bound of the target range.
+ * @param to2 The upper bound of the target range.
+ * @return The remapped value.
+ */
 template<typename T>
 T remap_value_between_ranges(T value, T from1, T to1, T from2, T to2) {
     return (value - from1) / (to1 - from1) * (to2 - from2) + from2;

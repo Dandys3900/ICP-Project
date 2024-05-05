@@ -9,9 +9,9 @@
 Obstacle::Obstacle (const qreal width, const qreal height, const qreal coord_x, const qreal coord_y, PlayGround* playground)
     : SceneObject       (Vector2(coord_x, coord_y)),
       QGraphicsRectItem (nullptr),
-      mp_obj_type       ("Obstacle"),
-      mp_size           (width, height),
-      mp_playground     (playground)
+      obj_type          ("Obstacle"),
+      size              (width, height),
+      playground        (playground)
 {
     constructor_actions();
 }
@@ -24,9 +24,9 @@ Obstacle::Obstacle (const Vector2& size, const Vector2& coords, PlayGround* play
 Obstacle::Obstacle (const Vector2& size, const Vector2& coords, qreal rotation, PlayGround* playground)
     : SceneObject       (coords, rotation),
       QGraphicsRectItem (nullptr),
-      mp_obj_type       ("Obstacle"),
-      mp_size           (size),
-      mp_playground     (playground)
+      obj_type          ("Obstacle"),
+      size              (size),
+      playground        (playground)
 {
     constructor_actions();
 }
@@ -35,7 +35,7 @@ void Obstacle::constructor_actions () {
     // Set proper stack order
     this->setZValue(0);
 
-    this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
+    this->setRect(coords.x(), coords.y(), size.x(), size.y());
 
     // Set rotation origin
     this->setTransformOriginPoint(QPointF(this->rect().center().x(), this->rect().center().y()));
@@ -44,19 +44,19 @@ void Obstacle::constructor_actions () {
     this->setAcceptHoverEvents(true);
 
     // Set rotation
-    this->setRotation(mp_rotation);
+    this->setRotation(rotation_angle);
 
     this->physical_obstacle = new PhysicalObstacle(this);
-    mp_playground->get_physics_server()->register_obstacle(this->physical_obstacle);
+    playground->get_physics_server()->register_obstacle(this->physical_obstacle);
 }
 
 Obstacle::~Obstacle () {
-    mp_playground->get_physics_server()->unregister_obstacle(this->physical_obstacle);
+    playground->get_physics_server()->unregister_obstacle(this->physical_obstacle);
     delete physical_obstacle;
 }
 
 QString Obstacle::get_type () {
-    return mp_obj_type;
+    return obj_type;
 }
 
 QPointF Obstacle::get_pos () {
@@ -68,11 +68,11 @@ QRectF Obstacle::get_rect () {
 }
 
 void Obstacle::set_obj_pos (const QPointF pos) {
-    // if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_size.x(), mp_size.y()))) { // If new position is inside current scene, update robot coords
-        mp_coords.setX(pos.x());
-        mp_coords.setY(pos.y());
+    // if (playground->boundingRect().contains(QRectF(pos.x(), pos.y(), size.x(), size.y()))) { // If new position is inside current scene, update robot coords
+        coords.setX(pos.x());
+        coords.setY(pos.y());
 
-        this->setRect(mp_coords.x(), mp_coords.y(), mp_size.x(), mp_size.y());
+        this->setRect(coords.x(), coords.y(), size.x(), size.y());
 
         // Update rotation origin
         this->setTransformOriginPoint(this->rect().center());
@@ -83,46 +83,46 @@ void Obstacle::set_obj_pos (const QPointF pos) {
 
 
 Vector2 Obstacle::get_size() {
-    return mp_size;
+    return size;
 }
 
 void Obstacle::set_active (bool active, Action action) {
-    mp_color      = Qt::black;
-    mp_obj_action = action;
-    mp_is_active  = active;
+    color      = Qt::black;
+    obj_action = action;
+    is_active  = active;
 
     if (active) {
         if (action == RESIZE_ACTION) { // Focused and resizing -> blue
-            mp_color = Qt::blue;
+            color = Qt::blue;
         }
         else { // Focused and moving -> red
-            mp_color = Qt::red;
+            color = Qt::red;
         }
     }
 
-    QPen pen(mp_color);
+    QPen pen(color);
     // Apply new color
     this->setPen(pen);
 }
 
 void Obstacle::mousePressEvent (QGraphicsSceneMouseEvent* event) {
     if (event->button() == Qt::MouseButton::LeftButton) {
-        if (!mp_is_active) { // Notify PlayGround and get focus
-            this->mp_move_action_mouse_offset = this->rect().topLeft() - event->scenePos();
-            mp_playground->set_active_obj(this, MOVE_ACTION);
+        if (!is_active) { // Notify PlayGround and get focus
+            this->move_action_mouse_offset = this->rect().topLeft() - event->scenePos();
+            playground->set_active_obj(this, MOVE_ACTION);
         }
         else { // Lose focus
-            mp_playground->disable_focus();
+            playground->disable_focus();
         }
     }
 
     if (event->button() == Qt::MouseButton::RightButton) {
-        if (!mp_is_active) { // Notify PlayGround and get focus
-            mp_playground->set_active_obj(this, RESIZE_ACTION);
+        if (!is_active) { // Notify PlayGround and get focus
+            playground->set_active_obj(this, RESIZE_ACTION);
         }
         else { // Lose focus and return to previous pos
-            // this->set_obj_pos(mp_playground->get_active_obj_orig_pos());
-            mp_playground->disable_focus();
+            // this->set_obj_pos(playground->get_active_obj_orig_pos());
+            playground->disable_focus();
         }
     }
 }
@@ -145,24 +145,24 @@ void Obstacle::keyPressEvent (QKeyEvent* event) {
 
 void Obstacle::mouseMoveEvent (QGraphicsSceneMouseEvent* event) {
     // React to mouse move only if focused
-    if (mp_is_active) {
-        if (mp_obj_action == RESIZE_ACTION) {
+    if (is_active) {
+        if (obj_action == RESIZE_ACTION) {
             // Calculate new rectangle based on initial position and current mouse position
-            QRectF newRect = QRectF(mp_coords, event->scenePos()).normalized();
+            QRectF newRect = QRectF(coords, event->scenePos()).normalized();
 
-            // Update mp_size
-            mp_size.setX(newRect.size().width());
-            mp_size.setY(newRect.size().height());
+            // Update size
+            size.setX(newRect.size().width());
+            size.setY(newRect.size().height());
 
             // If the new rectangle is within the scene, update rectangle and rotation origin
-            if (mp_playground->boundingRect().contains(newRect)) {
+            if (playground->boundingRect().contains(newRect)) {
                 this->setRect(newRect);
                 this->setTransformOriginPoint(newRect.center());
                 this->physical_obstacle->update_shape();
             }
         }
         else { // MOVE_ACTION
-            this->set_obj_pos(event->scenePos() + this->mp_move_action_mouse_offset);
+            this->set_obj_pos(event->scenePos() + this->move_action_mouse_offset);
         }
     }
 }
@@ -171,15 +171,15 @@ void Obstacle::mouseDoubleClickEvent (QGraphicsSceneMouseEvent* event) {
     // Insert new Obstacle
     if (event->button() == Qt::MouseButton::LeftButton) {
         // Clone this obstacle and insert it to Playground
-        Obstacle* newObstacle = new Obstacle(mp_size.x(), mp_size.y(), this->rect().x(), this->rect().y(), mp_playground);
+        Obstacle* newObstacle = new Obstacle(size.x(), size.y(), this->rect().x(), this->rect().y(), playground);
 
         // Add obstacle to the PlayGround
-        mp_playground->add_scene_obj(newObstacle);
+        playground->add_scene_obj(newObstacle);
     }
 
     // Remove Obstacle
     if (event->button() == Qt::MouseButton::RightButton) {
-        mp_playground->remove_scene_obj(this);
+        playground->remove_scene_obj(this);
     }
 }
 
@@ -190,7 +190,7 @@ void Obstacle::hoverEnterEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
 }
 
 void Obstacle::hoverLeaveEvent (QGraphicsSceneHoverEvent* event /*not used*/) {
-    QPen pen(mp_color);
+    QPen pen(color);
     // Apply new color
     this->setPen(pen);
 }
@@ -209,15 +209,15 @@ void Obstacle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 }
 
 void Obstacle::do_rotation (const qreal angle) {
-    mp_rotation += angle;
+    rotation_angle += angle;
     // Rotate obstacle
-    this->setRotation(mp_rotation);
+    this->setRotation(rotation_angle);
 }
 
 QJsonObject Obstacle::get_obj_data () {
     QJsonObject conf_data = SceneObject::get_obj_data();
-    conf_data["obj_type"] = mp_obj_type;
-    conf_data["size_x"]   = mp_size.x();
-    conf_data["size_y"]   = mp_size.y();
+    conf_data["obj_type"] = obj_type;
+    conf_data["size_x"]   = size.x();
+    conf_data["size_y"]   = size.y();
     return conf_data;
 }
