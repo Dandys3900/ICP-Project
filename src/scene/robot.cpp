@@ -170,19 +170,17 @@ void Robot::set_active (bool active, Action action) {
 }
 
 void Robot::set_obj_pos (const QPointF pos) {
-    // if (mp_playground->boundingRect().contains(QRectF(pos.x(), pos.y(), mp_diameter, mp_diameter))) { // If new position is inside current scene, update robot coords
-        mp_coords.setX(pos.x());
-        mp_coords.setY(pos.y());
+    mp_coords.setX(pos.x());
+    mp_coords.setY(pos.y());
 
-        // Set new position of robot
-        this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
+    // Set new position of robot
+    this->setRect(mp_coords.x(), mp_coords.y(), mp_diameter, mp_diameter);
 
-        // Re-center arrow after robot moved
-        mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
+    // Re-center arrow after robot moved
+    mp_arrow->setPos(this->rect().center().x(), this->rect().center().y() - ARROW_LENGTH);
 
-        this->physical_robot->update_shape();
-        this->physical_robot->update_shapecast();
-    // }
+    this->physical_robot->update_shape();
+    this->physical_robot->update_shapecast();
 }
 
 void Robot::keyPressEvent (QKeyEvent* event) {
