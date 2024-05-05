@@ -73,7 +73,7 @@ QVector<Vector2> CircleCollisionShape::get_sat_collision_verticies() const {
 
 const Vector2 CircleCollisionShape::get_closest_vertex(const QVector<Vector2>& verticies) const {
 	int closest_vertex_index = 0;
-	// we just need the closest distance and not the exact one
+	// We just need the closest distance and not the exact one
 	qreal closest_vertex_distance_squared = this->center.length_squared_to(verticies[0]);
 
 	for (int i = 1; i < verticies.size(); i++) {

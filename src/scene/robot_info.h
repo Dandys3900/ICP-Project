@@ -67,10 +67,29 @@ class Robot_Info : public QWidget {
 
     private slots:
         // Methods for handling widget items events
+        /**
+         * @brief Handles the OK button click event.
+         */
         void ok_click ();
+        /**
+         * @brief Handles selection of robot type (automatic/manual).
+         * @param index Index of the selected robot type.
+         */
         void robot_type (int index);
+        /**
+         * @brief Handles the input of collision threshold value.
+         * @param text Input text representing threshold new value.
+         */
         void collision_value (const QString& text);
+        /**
+         * @brief Handles the input of rotation step value.
+         * @param text Input text representing rotation step new value.
+         */
         void rotation_value (const QString& text);
+        /**
+         * @brief Handles the selection of rotation direction.
+         * @param index Index of the selected rotation direction.
+         */
         void rotation_direction (int index);
 };
 

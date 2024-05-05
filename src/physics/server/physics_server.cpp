@@ -32,17 +32,17 @@ void PhysicsServer::force_step(bool clean_step_queue) {
 		this->is_step_queued = false;
 	}
 
-	// obstacle shapes
+	// Obstacle shapes
 	QVector<const CollisionShape*> obstacle_shapes = {};
 	for (PhysicalObstacle* obstacle : this->obstacles) {
 		obstacle_shapes.append(obstacle->get_shape());
 	}
-	// robot shapes
+	// Robot shapes
 	QVector<const CollisionShape*> robot_shapes = {};
 	for (PhysicalRobot* robot : this->robots) {
 		robot_shapes.append(robot->get_shape());
 	}
-	
+
 	for (PhysicalRobot* robot : this->robots) {
 		robot->step(playground_boundary_obstacle_shapes, obstacle_shapes, robot_shapes);
 	}
@@ -87,8 +87,8 @@ void PhysicsServer::register_boundaries(Vector2 playground_size) {
 	QPointF half_size = playground_size / 2;
 
 	this->playground_boundary_obstacle_shapes = {
-		new RectangeCollisionShape(playground_size, Vector2(half_size.x(), -half_size.y())), // upper boundary
-		new RectangeCollisionShape(playground_size, Vector2(half_size.x(), playground_size.y() + half_size.y())), // lower boundary
+		new RectangeCollisionShape(playground_size, Vector2(half_size.x(), -half_size.y())), // Upper boundary
+		new RectangeCollisionShape(playground_size, Vector2(half_size.x(), playground_size.y() + half_size.y())), // Lower boundary
 		new RectangeCollisionShape(playground_size, Vector2(-half_size.x(), half_size.y())),
 		new RectangeCollisionShape(playground_size, Vector2(playground_size.x() + half_size.x(), half_size.y()))
 	};

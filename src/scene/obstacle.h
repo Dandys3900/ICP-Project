@@ -26,7 +26,14 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
 
         class PhysicalObstacle* physical_obstacle;
 
+        /**
+         * @brief Method handling initial setup of scene object.
+         */
         void constructor_actions ();
+        /**
+         * @brief Performs obstacle rotation by given angle.
+         * @param angle Rotation angle.
+         */
         void do_rotation (const qreal angle);
 
     public:
@@ -75,7 +82,11 @@ class Obstacle : public SceneObject, public QGraphicsRectItem {
         void set_obj_pos (const QPointF pos) override;
         void set_active (bool active, Action action) override;
         QJsonObject get_obj_data () override;
-        
+
+        /**
+         * @brief Getter for obstacle current size.
+         * @return Vector Obstacle size.
+         */
         Vector2 get_size ();
 
     protected:
