@@ -40,7 +40,7 @@ class Vector2 : public QPointF {
         Vector2(const QPointF& qp);
 
         /**
-         * @brief Calculates normal vector to the current vector.
+         * @brief Calculates normal vector to the current vector. Same as normal_right().
          * @return Normal vector.
          */
         Vector2 normal() const;
