@@ -45,7 +45,7 @@ class Vector2 : public QPointF {
          */
         Vector2 normal() const;
         /**
-         * @brief Calculates normal vector to the current vector on the right side.
+         * @brief Calculates normal vector to the current vector on the right (clockwise) side.
          * @return Normal vector on the right side.
          */
         Vector2 normal_right() const;
